@@ -1,10 +1,14 @@
 package com.example.trinetraai
 
+import android.net.Uri
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,5 +20,12 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val videoView = findViewById<VideoView>(R.id.videoView)
+        val videoUri = Uri.parse("android.resource://${packageName}/${R.raw.trinetra}")
+        videoView.setVideoURI(videoUri)
+        videoView.setOnCompletionListener {
+            return@setOnCompletionListener
+        }
+        videoView.start()
     }
 }

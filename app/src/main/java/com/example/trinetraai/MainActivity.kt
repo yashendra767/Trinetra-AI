@@ -1,7 +1,10 @@
 package com.example.trinetraai
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
@@ -27,5 +30,9 @@ class MainActivity : AppCompatActivity() {
             return@setOnCompletionListener
         }
         videoView.start()
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, Welcome_Screen::class.java))
+            finish()
+        },2000)
     }
 }

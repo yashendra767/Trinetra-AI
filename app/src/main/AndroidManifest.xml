@@ -13,10 +13,10 @@
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
         <activity
-            android:name=".LoginIn"
+            android:name=".Authentication.Login"
             android:exported="false" />
         <activity
-            android:name=".SignUp"
+            android:name=".Authentication.SignUp"
             android:exported="false" />
         <activity
             android:name=".Welcome_Screen"

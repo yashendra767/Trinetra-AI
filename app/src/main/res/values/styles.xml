@@ -11,4 +11,11 @@
         <item name="android:clipToPadding">false</item>
     </style>
 
+    <style name="DarkAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="backgroundColor">#1E1E1E</item> <!-- Matches surface -->
+        <item name="android:textColorPrimary">#FAF9F6</item> <!-- Light text -->
+        <item name="android:textColorSecondary">#A9A9A9</item> <!-- Subtext -->
+    </style>
+
+
 </resources>

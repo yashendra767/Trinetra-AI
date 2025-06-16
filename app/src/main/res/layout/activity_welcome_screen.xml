@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#111a22"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
     android:id="@+id/main"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -29,22 +29,20 @@
             android:layout_height="wrap_content"
             android:text="Welcome to Trinetra AI"
             android:textSize="24sp"
-            android:textColor="#E7E9EB"
+            android:textColor="@color/textPrimary"
             android:gravity="center"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
-        <!-- Subtitle -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Empowering law enforcement with cutting-edge AI for a safer tomorrow."
             android:textSize="14sp"
-            android:textColor="#CCD2DB"
+            android:textColor="@color/textPrimary"
             android:gravity="center"
             android:layout_marginBottom="24dp" />
 
-        <!-- Card: Proactive Policing -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +74,6 @@
                 android:textColor="#374151" />
         </LinearLayout>
 
-        <!-- Card: Operational Efficiency -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,8 +101,6 @@
                 android:textColor="#374151" />
         </LinearLayout>
 
-
-        <!-- Card: Key Benefits -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -134,24 +129,23 @@
                 android:textColor="#374151" />
         </LinearLayout>
 
-        <!-- CTA Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Explore Trinetra AI"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#3B82F6"
+            android:textColor="@color/textPrimary"
+            android:backgroundTint="@color/primary"
             android:elevation="4dp"
+            app:cornerRadius="12dp"
             android:layout_marginTop="16dp" />
 
-        <!-- Footer -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="© 2024 Trinetra AI. All rights reserved."
             android:textSize="12sp"
-            android:textColor="#9CA3AF"
+            android:textColor="@color/textSecondary"
             android:gravity="center"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp" />

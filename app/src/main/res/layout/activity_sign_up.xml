@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <!-- Logo -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/backgroundImage"
         android:layout_width="140dp"
@@ -17,8 +16,7 @@
         android:contentDescription="Background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:shapeAppearanceOverlay="@style/RoundedCornerImage" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -47,7 +45,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="12dp"
-            android:cardElevation="8dp"
+            app:cardElevation="8dp"
             app:cardBackgroundColor="@color/surface">
 
             <LinearLayout

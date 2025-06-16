@@ -1,0 +1,60 @@
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/background"
+    tools:context=".LandingDashboard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/surface"
+            android:elevation="5dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/surface"
+                app:title="Trinetra AI"
+                app:titleTextColor="@color/textPrimary"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/adminFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <me.ibrahimsn.lib.SmoothBottomBar
+            android:id="@+id/adminBottomNav"
+            app:elevation="5dp"
+            app:indicatorColor="@color/surface"
+            app:backgroundColor="@color/surface"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:textColor="@color/primary"
+            app:iconTintActive="@color/primary"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_nav"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/adminNavView"
+        android:layout_width="wrap_content"
+        android:background="@color/surface"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:itemIconTint="@color/textPrimary"
+        app:itemTextColor="@color/textPrimary"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu"/>
+</androidx.drawerlayout.widget.DrawerLayout>

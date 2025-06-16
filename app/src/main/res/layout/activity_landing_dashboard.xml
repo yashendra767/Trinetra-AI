@@ -36,15 +36,14 @@
         <me.ibrahimsn.lib.SmoothBottomBar
             android:id="@+id/adminBottomNav"
             app:elevation="5dp"
-            app:indicatorColor="@color/surface"
+            app:indicatorColor="#2F2F2F"
             app:backgroundColor="@color/surface"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            app:textColor="@color/primary"
-            app:iconTintActive="@color/primary"
+            app:textColor="#7280F0"
+            app:iconTintActive="#7280F0"
             android:layout_gravity="bottom"
             app:menu="@menu/bottom_nav"/>
-
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

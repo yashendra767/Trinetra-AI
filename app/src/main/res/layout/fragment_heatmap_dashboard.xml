@@ -3,12 +3,644 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".bottom_fragments.HeatmapDashboard">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/pin_map"
+                    android:layout_gravity="center">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delhi, India"
+                    android:textSize="22sp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/textPrimary">
+                </TextView>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/map">
+                </ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="5dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/firs"
+                            app:tint="@color/textPrimary">
+                        </ImageView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Active FIRs"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="18sp">
+
+                        </TextView>
+                        <TextView
+                            android:id="@+id/tVActiveFir"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading..."
+                            android:textSize="16sp"
+                            android:textColor="@color/accentGold">
+                        </TextView>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/hotspot"
+                            app:tint="@color/textPrimary">
+                        </ImageView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hotspots"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:textSize="18sp"
+                            android:textColor="@color/textPrimary">
+
+                        </TextView>
+                        <TextView
+                            android:id="@+id/tVHotspots"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading..."
+                            android:textSize="16sp"
+                            android:textColor="@color/accentGold">
+                        </TextView>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/surface"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="12dp"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Map Filter"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_weight="1"
+                            android:textColor="@color/accentSaffron">
+                        </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Crime Type"
+                        android:textSize="16sp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/textSecondary">
+                    </TextView>
+
+                    <Spinner
+                        android:id="@+id/crimeTypeSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:padding="8dp">
+                    </Spinner>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Date Range"
+                                android:textSize="16sp"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/textSecondary">
+                            </TextView>
+
+                            <Spinner
+                                android:id="@+id/dateRangeSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="1"
+                                android:padding="8dp">
+                            </Spinner>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Time Period"
+                                android:textSize="16sp"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/textSecondary">
+                            </TextView>
+                            <Spinner
+                                android:id="@+id/timePeriodSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:padding="8dp">
+                            </Spinner>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnApplyFilter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Apply Filter"
+                        android:textColor="@color/textPrimary"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        android:backgroundTint="@color/primary">
+                    </com.google.android.material.button.MaterialButton>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:elevation="4dp"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:textColor="@color/accentSaffron"
+                            android:text="Crime Hotspot Map" />
+
+                        <ImageView
+                            android:id="@+id/iVExpandMapHotspot"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/expand"
+                            app:tint="@color/textPrimary" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="8dp">
+
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/mapViewPreview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:apiKey="YOUR_API_KEY_HERE" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|end"
+                            android:layout_margin="12dp"
+                            android:orientation="horizontal"
+                            android:background="@drawable/rounded_bg"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Crime rate: "
+                                android:textColor="@color/textPrimary"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="8dp"
+                                android:backgroundTint="@color/lowMedium"
+                                android:background="@drawable/rate_box"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="L"
+                                android:textColor="@color/textPrimary"
+                                android:layout_marginStart="4dp" />
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/medium"
+                                android:background="@drawable/rate_box" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="M"
+                                android:textColor="@color/textPrimary"
+                                android:layout_marginStart="4dp" />
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/highSeverity"
+                                android:background="@drawable/rate_box" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="H"
+                                android:textColor="@color/textPrimary"
+                                android:layout_marginStart="4dp" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="12dp"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:textColor="@color/accentSaffron"
+                        android:text="Hotspot Zones List" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/surfaceLight"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="8dp"
+                        app:cardElevation="5dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Zone 15 Karol Bagh"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="25 Cases"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="14sp">
+                            </TextView>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/surfaceLight"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="8dp"
+                        app:cardElevation="5dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Zone 1 Lakshmi Nagar"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="21 Cases"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="14sp">
+                            </TextView>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewAllZones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="View All Zones"
+                        android:textColor="@color/textPrimary"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        android:backgroundTint="@color/primary">
+                    </com.google.android.material.button.MaterialButton>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/surface"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recent Cases"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:textColor="@color/accentSaffron">
+                    </TextView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/surfaceLight"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="8dp"
+                        app:cardElevation="5dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="FIR#8001"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="14sp">
+                            </TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Zone 15 Karol Bagh"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Theft"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2025-06-16 22:06 PM"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="14sp">
+                            </TextView>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/surfaceLight"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="8dp"
+                        app:cardElevation="5dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="FIR#8002"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="14sp">
+                            </TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Zone 2 Saket"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Snatching"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2025-06-16 22:06 PM"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="14sp">
+                            </TextView>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/surfaceLight"
+                        app:cardCornerRadius="12dp"
+                        android:layout_margin="8dp"
+                        app:cardElevation="5dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="FIR#8003"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="14sp">
+                            </TextView>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Zone 7 Rohini"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Murder"
+                                android:textColor="@color/textPrimary"
+                                android:textSize="16sp">
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2025-06-16 22:06 PM"
+                                android:textColor="@color/textSecondary"
+                                android:textSize="14sp">
+                            </TextView>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewAllFirs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="View All FIRs"
+                        android:textColor="@color/textPrimary"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        android:backgroundTint="@color/primary">
+                    </com.google.android.material.button.MaterialButton>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

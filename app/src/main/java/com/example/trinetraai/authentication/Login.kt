@@ -1,4 +1,4 @@
-package com.example.trinetraai.Authentication
+package com.example.trinetraai.authentication
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

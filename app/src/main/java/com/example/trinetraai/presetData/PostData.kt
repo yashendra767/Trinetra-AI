@@ -1,4 +1,4 @@
-package com.example.trinetraai.PresetData
+package com.example.trinetraai.presetData
 
 object PostData {
     val postList = arrayOf(

@@ -4,11 +4,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#121212</color>
     <color name="surface">#1E1E1E</color>
+    <color name="surfaceLight">#303030</color>
     <color name="primary">#283593</color>
+    <color name="primary_light">#7280F0</color>
     <color name="textPrimary">#FAF9F6</color>
     <color name="secondary">#03DAC6</color>
     <color name="alerts">#CF6679</color>
-    <color name="textSecondary">#A9A9A9</color>
+    <color name="textSecondary">#C5C4C4</color>
     <color name="accentGold">#FFC107</color>
     <color name="accentSaffron">#FF9800</color>
     <color name="cyberBlue">#00B8F4</color>

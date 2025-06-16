@@ -47,7 +47,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="12dp"
-            android:cardElevation="8dp"
+            app:cardElevation="8dp"
             app:cardBackgroundColor="@color/surface">
 
             <LinearLayout
@@ -60,7 +60,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Name"
+                    android:hint="  Name"
                     app:boxBackgroundColor="@color/surface"
                     app:boxStrokeWidth="2dp"
                     app:boxCornerRadiusTopStart="12dp"

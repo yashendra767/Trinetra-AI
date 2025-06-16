@@ -7,18 +7,20 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import com.example.trinetraai.bottom_fragments.HeatmapDashboard
+import com.example.trinetraai.bottom_fragments.PatrolRoutes
+import com.example.trinetraai.bottom_fragments.TrendAnalyser
+import com.example.trinetraai.bottom_fragments.WomenSafety
+import com.example.trinetraai.drawer_fragments.AllFIRsFragment
+import com.example.trinetraai.drawer_fragments.Notifications
+import com.example.trinetraai.drawer_fragments.Settings
 import com.google.android.material.navigation.NavigationView
 
 class LandingDashboard : AppCompatActivity() {
@@ -42,6 +44,7 @@ class LandingDashboard : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
         toolbar = findViewById(R.id.toolbar)
         navView = findViewById(R.id.adminNavView)
+        val bottomNav = findViewById<me.ibrahimsn.lib.SmoothBottomBar>(R.id.adminBottomNav)
 
         setSupportActionBar(toolbar)
 
@@ -52,6 +55,27 @@ class LandingDashboard : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        replaceTheFragment(HeatmapDashboard())
+
+        bottomNav.setOnItemSelectedListener {
+            when (it) {
+                0 -> replaceTheFragment(HeatmapDashboard())
+                1 -> replaceTheFragment(TrendAnalyser())
+                2 -> replaceTheFragment(PatrolRoutes())
+                3 -> replaceTheFragment(WomenSafety())
+            }
+        }
+
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_notification -> replaceTheFragment(Notifications())
+                R.id.nav_Settings -> replaceTheFragment(Settings())
+                R.id.nav_allFirs -> replaceTheFragment(AllFIRsFragment())
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
 
     }
 
@@ -70,8 +94,6 @@ class LandingDashboard : AppCompatActivity() {
         }
     }
 
-
-
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -79,4 +101,10 @@ class LandingDashboard : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+    private fun replaceTheFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.adminFragmentContainer, fragment)
+            .commit()
+    }
+
 }

@@ -50,5 +50,4 @@ dependencies {
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
     implementation ("com.google.android.gms:play-services-maps:18.2.0")
 
-
 }

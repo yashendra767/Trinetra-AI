@@ -21,8 +21,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/pin_map"
                     android:layout_gravity="center">
 
@@ -32,15 +32,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Delhi, India"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:textColor="@color/textPrimary">
                 </TextView>
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:src="@drawable/map">
                 </ImageView>
@@ -68,8 +68,8 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
                             android:src="@drawable/firs"
                             app:tint="@color/textPrimary">
                         </ImageView>
@@ -113,8 +113,8 @@
                         android:padding="8dp">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
                             android:src="@drawable/hotspot"
                             app:tint="@color/textPrimary">
                         </ImageView>
@@ -158,7 +158,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Map Filter"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             android:layout_weight="1"
                             android:textColor="@color/accentSaffron">
@@ -168,7 +168,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Crime Type"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/textSecondary">
                     </TextView>
@@ -178,6 +178,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:background="@drawable/spinner_bg_dashboard"
                         android:padding="8dp">
                     </Spinner>
 
@@ -195,7 +196,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Date Range"
-                                android:textSize="16sp"
+                                android:textSize="15sp"
                                 android:layout_marginTop="10dp"
                                 android:textColor="@color/textSecondary">
                             </TextView>
@@ -203,9 +204,10 @@
                             <Spinner
                                 android:id="@+id/dateRangeSpinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_weight="1"
+                                android:background="@drawable/spinner_bg_dashboard"
                                 android:padding="8dp">
                             </Spinner>
                         </LinearLayout>
@@ -221,16 +223,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Time Period"
-                                android:textSize="16sp"
+                                android:textSize="15sp"
                                 android:layout_marginTop="10dp"
                                 android:textColor="@color/textSecondary">
                             </TextView>
                             <Spinner
                                 android:id="@+id/timePeriodSpinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginStart="8dp"
+                                android:background="@drawable/spinner_bg_dashboard"
                                 android:layout_weight="1"
                                 android:padding="8dp">
                             </Spinner>
@@ -274,7 +277,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textStyle="bold"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textColor="@color/accentSaffron"
                             android:text="Crime Hotspot Map" />
 
@@ -378,7 +381,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textColor="@color/accentSaffron"
                         android:text="Hotspot Zones List" />
 
@@ -480,7 +483,7 @@
                         android:layout_height="wrap_content"
                         android:text="Recent Cases"
                         android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textColor="@color/accentSaffron">
                     </TextView>
 

@@ -40,8 +40,8 @@
             app:backgroundColor="@color/surface"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            app:textColor="#7280F0"
-            app:iconTintActive="#7280F0"
+            app:textColor="@color/primary_light"
+            app:iconTintActive="@color/primary_light"
             android:layout_gravity="bottom"
             app:menu="@menu/bottom_nav"/>
     </LinearLayout>

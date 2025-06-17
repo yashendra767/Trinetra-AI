@@ -2,61 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#111827"
+    android:background="@color/background"
     android:padding="16dp">
 
-
-    <FrameLayout
-        android:id="@+id/imageContainer"
-        android:layout_width="0dp"
-        android:layout_height="240dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/headerImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="240dp"
             android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedCornerImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/women_safety"
             android:contentDescription="Header Image" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#4D000000" />
-    </FrameLayout>
-
     <LinearLayout
         android:id="@+id/titleLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/imageContainer"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/headerImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="33dp"
-            android:src="@drawable/ic_women"
-           />
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_women" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/noto_sans_bold"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:textStyle="bold"
             android:text="Netra 3: Women Safety"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textColor="@color/textPrimary"
+            android:textSize="22sp" />
     </LinearLayout>
 
     <TextView
@@ -64,9 +53,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Strengthen women's security by mapping high-risk areas and optimizing patrol support."
-        android:textColor="#D1D5DB"
-        android:textSize="14sp"
-        android:layout_marginTop="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/titleLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -77,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Key Features:"
-        android:textColor="#60A5FA"
+        android:textColor="@color/textPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
@@ -88,8 +77,8 @@
         android:id="@+id/featuresList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="#E5E7EB"
-        android:textSize="14sp"
+        android:textColor="@color/textSecondary"
+        android:textSize="16sp"
         android:layout_marginTop="4dp"
         android:lineSpacingExtra="4dp"
         android:text="• Identify harassment-prone zones using IPC sections\n• SOS integration for rapid response\n• Heat zones for women-related crimes\n• Time-slot-based alerts (e.g., night hours)\n• Safe route suggestions\n• AI pattern analysis for repeated offenses"
@@ -103,7 +92,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/featuresList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -118,8 +107,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Use Case:"
-            android:textColor="#60A5FA"
-            android:textSize="15sp"
+            android:textColor="@color/textPrimary"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginStart="8dp" />
     </LinearLayout>
@@ -129,24 +118,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Dedicated crime prevention and alert system for vulnerable populations, improving public confidence in law enforcement."
-        android:textColor="#CBD5E1"
-        android:textSize="14sp"
+        android:textColor="@color/textSecondary"
+        android:textSize="16sp"
         android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@id/useCaseLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/women_nextbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/useCaseDesc"
         app:srcCompat="@drawable/ic_next"
-        app:tint="@color/primary">
-
+        app:tint="@color/primary_light">
     </com.google.android.material.imageview.ShapeableImageView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

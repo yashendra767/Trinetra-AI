@@ -2,21 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/main"
     android:layout_height="match_parent"
-    android:background="#111922"
+    android:background="@color/background"
     android:padding="16dp"
     android:fitsSystemWindows="true">
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bannerImage"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="240dp"
         android:scaleType="centerCrop"
         android:src="@drawable/netra1_heatmap"
+        app:shapeAppearanceOverlay="@style/RoundedCornerImage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,11 +28,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/space_grotesk_bold"
         android:gravity="center"
         android:text="🔥 Netra 1: Heatmap Intelligence"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,12 +42,11 @@
         android:id="@+id/descriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/noto_sans_semibold"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Visualize crime hotspots using FIR data and criminal sections across time, location, and category."
-        android:textColor="#DADADA"
-        android:textSize="16sp"
+        android:textColor="@color/textPrimary"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
@@ -59,13 +57,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="• Dynamic crime heatmaps from FIR and CCTNS\n• Filter by time, type (e.g., theft, assault)\n• Color-coded zones by intensity and frequency\n• IPC-based categorization\n• Crime density scaling for predictive analysis\n• Seasonal, time-of-day map layers"
-        android:textSize="15sp"
-        android:textColor="#BBBBBB"
-        android:fontFamily="@font/noto_sans_light"
+        android:textSize="16sp"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@color/textSecondary"
         app:layout_constraintTop_toBottomOf="@id/descriptionText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="16dp" />
 
 
     <TextView
@@ -74,24 +72,25 @@
         android:layout_height="wrap_content"
         android:text="🎯 Use Case:\nHelps law enforcement deploy forces in high-crime areas through accurate visual crime representation."
         android:textSize="16sp"
-        android:textColor="#9AA0A6"
-        android:fontFamily="@font/space_grotesk_bold"
+        android:textColor="@color/textSecondary"
         app:layout_constraintTop_toBottomOf="@id/keyFeaturesText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="16dp" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/heatmap_nextbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/useCaseText"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="12dp"
+        android:backgroundTint="@color/primary_light"
+        android:padding="12dp"
+        android:contentDescription="Next"
         app:srcCompat="@drawable/ic_next"
-        app:tint="@color/primary">
+        app:tint="@color/primary_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    </com.google.android.material.imageview.ShapeableImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

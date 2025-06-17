@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/main"
+    android:layout_height="match_parent"
+    android:background="#111922"
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
+
+
+    <ImageView
+        android:id="@+id/bannerImage"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/netra1_heatmap"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Crime Heatmap Banner" />
+
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/space_grotesk_bold"
+        android:gravity="center"
+        android:text="🔥 Netra 1: Heatmap Intelligence"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bannerImage" />
+
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/noto_sans_semibold"
+        android:gravity="center"
+        android:text="Visualize crime hotspots using FIR data and criminal sections across time, location, and category."
+        android:textColor="#DADADA"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleText" />
+
+
+    <TextView
+        android:id="@+id/keyFeaturesText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="• Dynamic crime heatmaps from FIR and CCTNS\n• Filter by time, type (e.g., theft, assault)\n• Color-coded zones by intensity and frequency\n• IPC-based categorization\n• Crime density scaling for predictive analysis\n• Seasonal, time-of-day map layers"
+        android:textSize="15sp"
+        android:textColor="#BBBBBB"
+        android:fontFamily="@font/noto_sans_light"
+        app:layout_constraintTop_toBottomOf="@id/descriptionText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+
+    <TextView
+        android:id="@+id/useCaseText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="🎯 Use Case:\nHelps law enforcement deploy forces in high-crime areas through accurate visual crime representation."
+        android:textSize="16sp"
+        android:textColor="#9AA0A6"
+        android:fontFamily="@font/space_grotesk_bold"
+        app:layout_constraintTop_toBottomOf="@id/keyFeaturesText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+
+    <Button
+        android:id="@+id/getStartedButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="Forward"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#1978e5"
+        android:textStyle="bold"
+        android:fontFamily="@font/noto_sans_light"
+        app:layout_constraintTop_toBottomOf="@id/useCaseText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

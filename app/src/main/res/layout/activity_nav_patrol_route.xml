@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/main"
+    android:layout_height="match_parent"
+    android:background="#0f172a"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/bannerImage"
+        android:layout_width="0dp"
+        android:layout_height="240dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="Network Map Visualization"
+        android:src="@drawable/patrol_route"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/titleRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/bannerImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/ic_policecar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:text="   Netra 2: Patrol Route"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Enable automated patrol route generation based on crime trends and seasonal analysis."
+        android:textColor="#CBD5E1"
+        android:textSize="14sp"
+        android:fontFamily="@font/noto_sans_light"
+        app:layout_constraintTop_toBottomOf="@id/titleRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/featuresTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Key Features:"
+        android:textColor="#F1F5F9"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/noto_sans_semibold"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/featuresList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="• Auto-generated patrol paths\n• Seasonal route suggestions\n• Real-time rerouting based on FIR/emergency"
+        android:textColor="#94A3B8"
+        android:textSize="16sp"
+        android:fontFamily="@font/noto_sans_light"
+        app:layout_constraintTop_toBottomOf="@id/featuresTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/integrationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Integration with:"
+        android:textColor="#F1F5F9"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/space_grotesk_bold"
+        app:layout_constraintTop_toBottomOf="@id/featuresList"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/integrationList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="• iRAD accident data\n• GPS tracking\n• Highway and urban patrol optimization"
+        android:textColor="#94A3B8"
+        android:textSize="16sp"
+        android:fontFamily="@font/noto_sans_light"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/integrationTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/useCaseRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/integrationList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_case"
+            app:tint="@color/secondary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Use Case:\nEnsures efficient patrol planning, reduces blind spots, and improves emergency response."
+            android:textColor="#CBD5E1"
+            android:textSize="14sp"
+            android:fontFamily="@font/noto_sans_light"/>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/configureRouteButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="Forward"
+        android:textStyle="bold"
+        android:fontFamily="@font/space_grotesk_bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#2563eb"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/useCaseRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

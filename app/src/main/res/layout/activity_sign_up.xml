@@ -14,12 +14,12 @@
         android:id="@+id/backgroundImage"
         android:layout_width="140dp"
         android:layout_height="140dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="Background"
         android:scaleType="centerCrop"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/RoundedCornerImage" />
@@ -64,8 +64,10 @@
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeWidth="2dp"
-
+            app:boxStrokeWidth="1dp"
+            app:cursorColor="@color/textSecondary"
+            app:boxStrokeColor="@color/stroke_color"
+            app:hintTextColor="@color/textSecondary"
             app:endIconMode="clear_text"
             app:endIconTint="@color/textSecondary">
 
@@ -85,14 +87,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="  Email"
+            android:hint="Email"
             android:textColorHint="@color/textSecondary"
             app:boxBackgroundColor="@color/surface"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeWidth="2dp"
+            app:boxStrokeWidth="1dp"
+            app:hintTextColor="@color/textSecondary"
+            app:cursorColor="@color/textSecondary"
+            app:boxStrokeColor="@color/stroke_color"
             app:endIconMode="clear_text"
             app:endIconTint="@color/textPrimary">
 
@@ -100,6 +105,7 @@
                 android:id="@+id/signupEmail"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:drawablePadding="10dp"
                 android:drawableStart="@drawable/envelope"
                 android:drawableTint="@color/textSecondary"
                 android:inputType="textEmailAddress"
@@ -113,15 +119,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="  Select Post"
+            android:hint="Select Post"
             android:textColorHint="@color/textSecondary"
             app:boxBackgroundColor="@color/surface"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
+            app:boxStrokeColor="@color/stroke_color"
+            app:hintTextColor="@color/textSecondary"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeWidth="2dp"
-
+            app:boxStrokeWidth="1dp"
             app:endIconTint="@color/textSecondary">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -129,11 +136,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:cursorVisible="false"
+                android:drawablePadding="10dp"
                 android:drawableStart="@drawable/envelope"
                 android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
                 android:drawableTint="@color/textSecondary"
                 android:focusable="false"
-                android:textColor="@color/textSecondary" />
+                android:textColor="@color/textPrimary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Zone Location Selection -->
@@ -143,13 +151,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="  Assigned Area"
+            android:hint="Assigned Area"
+            app:hintTextColor="@color/textSecondary"
             app:boxBackgroundColor="@color/surface"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/stroke_color"
 
             app:endIconTint="@color/textPrimary">
 
@@ -158,11 +167,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:cursorVisible="false"
+                android:drawablePadding="10dp"
                 android:drawableStart="@drawable/envelope"
                 android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
                 android:drawableTint="@color/textSecondary"
                 android:focusable="false"
-                android:textColor="@color/textSecondary" />
+                android:textColor="@color/textPrimary" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -171,14 +181,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="  Password"
+            android:hint="Password"
             android:textColorHint="@color/textSecondary"
             app:boxBackgroundColor="@color/surface"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/stroke_color"
+            app:hintTextColor="@color/textSecondary"
             app:endIconMode="password_toggle"
             app:endIconTint="@color/textSecondary">
 
@@ -186,6 +197,7 @@
                 android:id="@+id/signupPass"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:drawablePadding="10dp"
                 android:drawableStart="@drawable/lock"
                 android:drawableTint="@color/textSecondary"
                 android:inputType="textPassword"
@@ -196,8 +208,9 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="I agree to the Terms of Service and Privacy Policy"
-            android:textColor="#A9A9A9"
+            android:text="Remember me"
+            android:textColor="@color/textSecondary"
+            android:layout_gravity="right"
             android:layout_marginBottom="16dp"/>
 
 

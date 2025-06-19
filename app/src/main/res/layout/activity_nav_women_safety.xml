@@ -137,5 +137,13 @@
         app:srcCompat="@drawable/ic_next"
         app:tint="@color/primary_light">
     </com.google.android.material.imageview.ShapeableImageView>
-
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/swipegif"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

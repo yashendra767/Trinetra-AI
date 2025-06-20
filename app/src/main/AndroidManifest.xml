@@ -16,7 +16,7 @@
             android:name=".navigationScreen.Nav_WomenSafety"
             android:exported="false" />
         <activity
-            android:name=".navigationScreen.Nav_Heatmap"
+            android:name=".LandingDashboard"
             android:exported="false" />
         <activity
             android:name=".navigationScreen.Nav_PatrolRoute"
@@ -25,7 +25,7 @@
             android:name=".Profile"
             android:exported="false" />
         <activity
-            android:name=".LandingDashboard"
+            android:name=".navigationScreen.Nav_Heatmap"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

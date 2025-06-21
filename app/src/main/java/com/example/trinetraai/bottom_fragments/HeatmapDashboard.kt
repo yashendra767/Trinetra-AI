@@ -30,8 +30,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.common.reflect.TypeToken
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
@@ -47,6 +45,9 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     private lateinit var timePeriodSpinner: Spinner
     private lateinit var applyFilterButton: MaterialButton
 
+    private lateinit var activeFIR : TextView
+    private lateinit var hotspots : TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(requireContext())
@@ -59,6 +60,19 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_heatmap_dashboard, container, false)
+
+        activeFIR = view.findViewById(R.id.tVActiveFir)
+        getFIRCount(activeFIR)
+        
+        hotspots = view.findViewById(R.id.tVHotspots)
+        getHotspotCount(hotspots)
+        
+        
+
+
+
+
+
 
         db = FirebaseFirestore.getInstance()
         uploadFIRDataOnce()
@@ -95,6 +109,54 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
         return view
     }
+
+    private fun getHotspotCount(view: TextView) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("FIR_Records")
+            .get()
+            .addOnSuccessListener { documents ->
+                val zoneCountMap = mutableMapOf<String, Int>()
+
+                for (doc in documents) {
+                    val zone = doc.getString("zone")?.trim() ?: continue
+                    zoneCountMap[zone] = zoneCountMap.getOrDefault(zone, 0) + 1
+                }
+
+
+                val hotspotZones = zoneCountMap.filter { it.value > 10 }.keys.toList()
+                view.text = hotspotZones.size.toString()
+
+            }
+            .addOnFailureListener {
+                view.text = "Failed to fetch FIRs"
+            }
+    }
+
+
+
+    private fun getFIRCount(activeFIR: TextView) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("FIR_Records")
+            .get()
+            .addOnSuccessListener { documents ->
+                var openFIRCount = 0
+
+                for (doc in documents) {
+                    val status = doc.getString("status")
+                    if (status.equals("Open", ignoreCase = true) || status.equals("Under Investigation", ignoreCase = true)) {
+                        openFIRCount++
+                    }
+                }
+                activeFIR.text = openFIRCount.toString()
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                Toast.makeText(requireContext(), "Error fetching FIRs", Toast.LENGTH_SHORT).show()
+            }
+
+    }
+
 
     // === FIR UPLOADER ===
     @RequiresApi(Build.VERSION_CODES.O)

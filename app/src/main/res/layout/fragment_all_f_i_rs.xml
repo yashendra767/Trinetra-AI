@@ -27,8 +27,8 @@
             android:text="FIR Filters"
             android:drawableStart="@drawable/outline_filter_alt_24"
             android:drawablePadding="10dp"
-            android:drawableTint="@color/white"
-            android:textColor="@color/textPrimary"
+            android:drawableTint="@color/accentSaffron"
+            android:textColor="@color/accentSaffron"
             android:layout_weight="1"
             android:textSize="20sp"/>
             <ImageView
@@ -49,28 +49,66 @@
                 android:padding="6dp"
                 >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Crime Type"
-                    android:textSize="15sp"
-                    android:textColor="@color/textSecondary">
-                </TextView>
-
-                <Spinner
-                    android:id="@+id/crimeTypeSpinner"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/spinner_bg_dashboard"
-                    android:padding="8dp">
-                </Spinner>
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginRight="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Crime Type"
+                            android:textSize="15sp"
+                            android:textColor="@color/textSecondary">
+                        </TextView>
+
+                        <Spinner
+                            android:id="@+id/crimeTypeSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/spinner_bg_dashboard"
+                            android:padding="8dp">
+                        </Spinner>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="0.5">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Status"
+                            android:textSize="15sp"
+                            android:textColor="@color/textSecondary">
+                        </TextView>
+
+                        <Spinner
+                            android:id="@+id/statusSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/spinner_bg_dashboard"
+                            android:padding="8dp">
+                        </Spinner>
+
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    >
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -128,7 +166,7 @@
                     android:id="@+id/btnApplyFilter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="Apply Filter"
                     android:textColor="@color/textPrimary"
                     android:textStyle="bold"
@@ -136,16 +174,48 @@
                     android:backgroundTint="@color/primary">
                 </com.google.android.material.button.MaterialButton>
 
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/displayFIRs"
+                    android:layout_height="2dp"
+                    android:background="@color/surfaceLight"
+                    android:layout_marginTop="8dp"
+                   />
+
+                <TextView
+                    android:id="@+id/countMatchedTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Matched Cases : 0"
+                    android:textSize="16sp"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/textSecondary"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                        android:layout_marginTop="8dp">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/displayFIRs"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/noFIRsTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textPrimary"
+                        android:text="No Cases Found !"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_gravity="center"/>
+
+
+                </FrameLayout>
             </LinearLayout>
     </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,7 @@ import java.util.Calendar
 import java.util.Locale
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
+import org.w3c.dom.Text
 
 
 class AllFIRsFragment : Fragment() {
@@ -37,6 +39,10 @@ class AllFIRsFragment : Fragment() {
     private lateinit var crimeTypeSpinner: Spinner
     private lateinit var dateRangeSpinner: Spinner
     private lateinit var timePeriodSpinner: Spinner
+    private lateinit var statusSpinner: Spinner
+
+    private lateinit var matchedFIRs : TextView
+    private lateinit var noFIRsTextView: TextView
 
 
     private lateinit var btnApplyFilter: MaterialButton
@@ -70,17 +76,26 @@ class AllFIRsFragment : Fragment() {
         crimeTypeSpinner = view.findViewById(R.id.crimeTypeSpinner)
         dateRangeSpinner = view.findViewById(R.id.dateRangeSpinner)
         timePeriodSpinner = view.findViewById(R.id.timePeriodSpinner)
+        statusSpinner = view.findViewById(R.id.statusSpinner)
+        matchedFIRs = view.findViewById(R.id.countMatchedTV)
+        noFIRsTextView = view.findViewById(R.id.noFIRsTV)
+        matchedFIRs.visibility = View.GONE
+        noFIRsTextView.visibility = View.GONE
+
         btnApplyFilter = view.findViewById(R.id.btnApplyFilter)
 
         setupCrimeTypeSpinner(crimeTypeSpinner)
         setupdateRangeSpinner(dateRangeSpinner)
         setupTimePeriodSpinner(timePeriodSpinner)
+        setupStatusSpinner(statusSpinner)
 
         btnApplyFilter.setOnClickListener {
             fetchAndFilterFIRs()
         }
 
     }
+
+
 
     private fun fetchAndFilterFIRs() {
         val db = FirebaseFirestore.getInstance()
@@ -135,6 +150,7 @@ class AllFIRsFragment : Fragment() {
         val selectedCategory = crimeTypeSpinner.selectedItem.toString()
         val selectedDateRange = dateRangeSpinner.selectedItem.toString()
         val selectedTimePeriod = timePeriodSpinner.selectedItem.toString()
+        val selectedStatus = statusSpinner.selectedItem.toString()
 
         val now = System.currentTimeMillis()
         filteredFIRs.clear()
@@ -144,6 +160,8 @@ class AllFIRsFragment : Fragment() {
 
             val matchCategory = selectedCategory == "All" ||
                     CrimeTypesData.crimeTypeMap[selectedCategory]?.contains(fir.crime_type) == true
+
+            val matchStatus = selectedStatus == "All" || selectedStatus == fir.status
 
             val matchDate = when (selectedDateRange) {
                 "Last 7 Days" -> now - firTimestamp <= 7L * 24 * 60 * 60 * 1000
@@ -165,12 +183,25 @@ class AllFIRsFragment : Fragment() {
                 else -> true
             }
 
-            if (matchCategory && matchDate && matchTime) {
+
+            if (matchCategory && matchDate && matchTime && matchStatus) {
                 filteredFIRs.add(fir)
             }
         }
 
         adapter.notifyDataSetChanged()
+        if (filteredFIRs.isEmpty()) {
+            noFIRsTextView.visibility = View.VISIBLE
+            matchedFIRs.text = "Matched FIRs: 0"
+        } else {
+            noFIRsTextView.visibility = View.GONE
+            matchedFIRs.text = "Matched FIRs: ${filteredFIRs.size}"
+        }
+        matchedFIRs.alpha = 0f
+        matchedFIRs.visibility = View.VISIBLE
+        matchedFIRs.animate().alpha(1f).setDuration(400).start()
+        noFIRsTextView.animate().alpha(1f).setDuration(400).start()
+
     }
 
     private fun extractTimestamp(fir: FIR): Long? {
@@ -229,5 +260,11 @@ class AllFIRsFragment : Fragment() {
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_white)
         crimeTypeSpinner.adapter = adapter
+    }
+    private fun setupStatusSpinner(spinner: Spinner) {
+        val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item, arrayOf("All","Open", "Closed", "Pending", "Under Investigation"))
+        adapter.setDropDownViewResource(R.layout.spinner_item_white)
+        spinner.adapter = adapter
+
     }
 }

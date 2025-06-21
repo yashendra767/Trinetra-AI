@@ -29,7 +29,7 @@
                 </ImageView>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Delhi, India"
                     android:textSize="20sp"
@@ -39,8 +39,8 @@
                 </TextView>
 
                 <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/map">
                 </ImageView>
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="16dp">
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -331,12 +331,11 @@
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/markerToggle"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginRight="@dimen/gmp_ref_measurement_icon_size_18"
-                            android:checked="false"
-                            />
-
-
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            app:trackTint="@color/surfaceLight"
+                            app:thumbTint="@color/thumb_color_selector"
+                            android:checked="false" />
                         <ImageView
                             android:id="@+id/ExpandMapHotspot"
                             android:layout_width="24dp"
@@ -352,8 +351,6 @@
                         android:layout_height="2dp"
                         android:layout_marginTop="4dp"
                         android:background="@color/surfaceLight"/>
-
-
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -425,8 +422,6 @@
                                 android:textColor="@color/textPrimary"
                                 android:layout_marginStart="4dp" />
                         </LinearLayout>
-
-
                     </FrameLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -482,7 +477,6 @@
                             android:orientation="vertical"
                             android:padding="12dp">
 
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -515,7 +509,6 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:padding="12dp">
-
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -741,11 +734,8 @@
                         app:cornerRadius="12dp"
                         android:backgroundTint="@color/primary">
                     </com.google.android.material.button.MaterialButton>
-
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

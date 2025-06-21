@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fullscreen_map_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,7 +17,8 @@
         android:layout_margin="16dp"
         android:layout_gravity="top|end"
         android:src="@drawable/cancel"
-        android:background="?attr/selectableItemBackgroundBorderless" />
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/textPrimary" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,7 +27,7 @@
         android:layout_margin="12dp"
         android:orientation="horizontal"
         android:background="@drawable/rounded_bg"
-        android:padding="8dp">
+        android:padding="12dp">
 
         <TextView
             android:layout_width="wrap_content"

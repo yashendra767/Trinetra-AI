@@ -61,10 +61,8 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         val view = inflater.inflate(R.layout.fragment_heatmap_dashboard, container, false)
 
         db = FirebaseFirestore.getInstance()
-        // Upload FIRs only once
         uploadFIRDataOnce()
 
-        // Setup Spinners
         crimeTypeSpinner = view.findViewById(R.id.crimeTypeSpinner)
         dateRangeSpinner = view.findViewById(R.id.dateRangeSpinner)
         timePeriodSpinner = view.findViewById(R.id.timePeriodSpinner)

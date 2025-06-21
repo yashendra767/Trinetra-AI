@@ -52,30 +52,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation ("com.google.code.gson:gson:2.10.1")// or latest
-
+    implementation ("com.google.code.gson:gson:2.10.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.google.android.material:material:1.11.0")
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
     implementation ("com.google.android.gms:play-services-maps:18.2.0")
-    //gif
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
-
-    //map
     implementation("com.google.android.gms:play-services-maps:19.2.0")
     implementation("com.google.android.libraries.places:places:4.3.1")
-
     implementation("com.google.maps.android:android-maps-utils:2.2.3")
     implementation ("com.android.volley:volley:1.2.1")
-
-    // 🔥 Firebase BOM (Manages all versions)
     implementation (platform("com.google.firebase:firebase-bom:32.8.0"))
-
-// 🔥 Firestore (for storing FIRs)
     implementation ("com.google.firebase:firebase-firestore-ktx")
-
-
-
-
-
 }

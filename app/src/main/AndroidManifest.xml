@@ -43,7 +43,7 @@
             android:name=".authentication.SignUp"
             android:exported="false" />
         <activity
-            android:name=".Welcome_Screen"
+            android:name=".WelcomeScreen"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

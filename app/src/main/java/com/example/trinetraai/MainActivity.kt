@@ -5,13 +5,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.ImageView
 import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
         videoView.start()
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, Welcome_Screen::class.java))
+            startActivity(Intent(this, WelcomeScreen::class.java))
             finish()
         },2000)
     }

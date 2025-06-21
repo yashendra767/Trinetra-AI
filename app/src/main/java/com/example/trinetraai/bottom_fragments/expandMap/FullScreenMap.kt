@@ -32,11 +32,8 @@ class FullScreenMap : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Get the SupportMapFragment from the layout
         val mapFragment = childFragmentManager.findFragmentById(R.id.fullscreenMap) as? SupportMapFragment
         mapFragment?.getMapAsync { googleMap ->
-            // Get camera data passed from HeatmapDashboard
             val lat = arguments?.getDouble("lat", 28.6139) ?: 28.6139
             val lng = arguments?.getDouble("lng", 77.2090) ?: 77.2090
             val zoom = arguments?.getFloat("zoom", 13f) ?: 13f
@@ -44,7 +41,6 @@ class FullScreenMap : DialogFragment() {
 
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(delhi, zoom))
 
-            // Apply custom style
             try {
                 val styled = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style)
@@ -54,7 +50,6 @@ class FullScreenMap : DialogFragment() {
                 Log.e("MapStyle", "Map style resource not found", e)
             }
 
-            // Optional marker
             googleMap.addMarker(
                 MarkerOptions().position(delhi).title("Default Location: Delhi")
             )
@@ -62,7 +57,6 @@ class FullScreenMap : DialogFragment() {
             googleMap.uiSettings.isZoomControlsEnabled = true
         }
 
-        // Close button logic
         view.findViewById<ImageView>(R.id.closeButton)?.setOnClickListener {
             dismiss()
         }

@@ -29,7 +29,7 @@ class SignUp : AppCompatActivity() {
         val zoneOptions = ZoneData.zoneList
 
         postField.setOnClickListener {
-            MaterialAlertDialogBuilder(this, R.style.DarkAlertDialog) // Apply dark style
+            MaterialAlertDialogBuilder(this, R.style.DarkAlertDialog)
                 .setTitle("Select Post")
                 .setItems(postOptions) { dialog, which ->
                     postField.setText(postOptions[which])

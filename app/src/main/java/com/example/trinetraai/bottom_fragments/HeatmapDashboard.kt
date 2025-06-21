@@ -1,5 +1,6 @@
 package com.example.trinetraai.bottom_fragments
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.Spinner
 import com.example.trinetraai.R
+import com.example.trinetraai.bottom_fragments.expandMap.FullScreenMap
 import com.example.trinetraai.presetData.CrimeTypesData
 import com.example.trinetraai.presetData.DateRangeData
 import com.example.trinetraai.presetData.TimePeriodData
@@ -29,6 +32,7 @@ class HeatmapDashboard : Fragment() , OnMapReadyCallback {
 
     private var mGoogleMap: GoogleMap? = null
     private lateinit var mapOptionButton : ImageButton
+    private lateinit var expandMap : ImageView
 
 
 
@@ -44,6 +48,7 @@ class HeatmapDashboard : Fragment() , OnMapReadyCallback {
 
         }
     }
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -70,8 +75,23 @@ class HeatmapDashboard : Fragment() , OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
 
-        mapOptionButton = view.findViewById(R.id.mapstyler)
-        setupMapTypeSelector()
+
+
+        expandMap = view.findViewById(R.id.ExpandMapHotspot)
+        expandMap.setOnClickListener {
+            val currentPosition = mGoogleMap?.cameraPosition
+
+            val dialog = FullScreenMap()
+
+            val bundle = Bundle()
+            bundle.putDouble("lat", currentPosition?.target?.latitude ?: 28.6139)
+            bundle.putDouble("lng", currentPosition?.target?.longitude ?: 77.2090)
+            bundle.putFloat("zoom", currentPosition?.zoom ?: 13f)
+            dialog.arguments = bundle
+
+            dialog.show(parentFragmentManager, "map_fullscreen")
+        }
+
 
 
 
@@ -80,22 +100,7 @@ class HeatmapDashboard : Fragment() , OnMapReadyCallback {
         return view
     }
 
-    private fun setupMapTypeSelector() {
-        val popupMenu = PopupMenu(requireContext(), mapOptionButton)
-        popupMenu.menuInflater.inflate(R.menu.map_options, popupMenu.menu)
 
-        popupMenu.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.normal_map -> mGoogleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
-                R.id.hybrid_map -> mGoogleMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
-                R.id.satellite_map -> mGoogleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE
-                R.id.terrain_map -> mGoogleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
-            }
-            true
-        }
-
-        mapOptionButton.setOnClickListener { popupMenu.show() }
-    }
 
     private fun setTimePeriodSpinner(
         timeList: kotlin.collections.List<kotlin.String>,

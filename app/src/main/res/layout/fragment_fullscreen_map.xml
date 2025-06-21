@@ -1,0 +1,80 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fullscreen_map_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fullscreenMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="top|end"
+        android:src="@drawable/cancel"
+        android:background="?attr/selectableItemBackgroundBorderless" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="12dp"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_bg"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crime rate: "
+            android:textColor="@color/textPrimary"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/lowMedium"
+            android:background="@drawable/rate_box"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="L"
+            android:textColor="@color/textPrimary"
+            android:layout_marginStart="4dp" />
+        <View
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/medium"
+            android:background="@drawable/rate_box" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="M"
+            android:textColor="@color/textPrimary"
+            android:layout_marginStart="4dp" />
+
+        <View
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/highSeverity"
+            android:background="@drawable/rate_box" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="H"
+            android:textColor="@color/textPrimary"
+            android:layout_marginStart="4dp" />
+    </LinearLayout>
+
+</FrameLayout>

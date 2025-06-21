@@ -1,10 +1,7 @@
 package com.example.trinetraai.firdataclass
 
-data class LocationData(
-    val lat: Double = 0.0,
-    val lng: Double = 0.0,
-    val area: String = ""
-)
+import com.google.firebase.Timestamp
+
 
 data class FIR(
     val fir_id: String = "",

@@ -124,7 +124,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                     "lng" to fir.location.lng,
                     "area" to fir.location.area
                 ),
-                "timestamp" to parseTimestamp(fir.timestamp),
+                "timestamp" to fir.timestamp.toString(),
                 "zone" to fir.zone,
                 "status" to fir.status,
                 "reporting_station" to fir.reporting_station
@@ -146,11 +146,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun parseTimestamp(timestamp: String): LocalDateTime {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
-        return LocalDateTime.parse(timestamp, formatter)
-    }
+
 
     private fun setTimePeriodSpinner(timeList: List<String>, spinner: Spinner) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, timeList)

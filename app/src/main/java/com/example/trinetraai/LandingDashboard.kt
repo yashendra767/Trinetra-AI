@@ -78,6 +78,15 @@ class LandingDashboard : AppCompatActivity() {
             true
         }
 
+
+
+    }
+
+    fun hideBottomNav() {
+        findViewById<View>(R.id.adminBottomNav)?.visibility = View.GONE
+    }
+    fun showBottomNav() {
+        findViewById<View>(R.id.adminBottomNav)?.visibility = View.VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

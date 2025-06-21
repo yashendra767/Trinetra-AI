@@ -17,7 +17,13 @@
             android:exported="false" />
         <activity
             android:name=".LandingDashboard"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".navigationScreen.Nav_PatrolRoute"
             android:exported="false" />
@@ -26,12 +32,8 @@
             android:exported="false" />
         <activity
             android:name=".navigationScreen.Nav_Heatmap"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".authentication.Login"
@@ -49,6 +51,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCtR6Ly2xen0veKWOsMa5__pcSkj_JOHeQ"/>
     </application>
 
 </manifest>

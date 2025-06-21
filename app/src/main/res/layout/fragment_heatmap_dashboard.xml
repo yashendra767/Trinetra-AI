@@ -348,15 +348,15 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="320dp"
                         android:layout_marginTop="0dp">
 
-                        <com.google.android.gms.maps.MapView
-                            android:id="@+id/mapViewPreview"
+                        <androidx.fragment.app.FragmentContainerView
+                            android:id="@+id/map_fragment"
+                            class="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:apiKey="YOUR_API_KEY_HERE"
-                            tools:ignore="MissingClass" />
+                            />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -415,6 +415,20 @@
                                 android:text="H"
                                 android:textColor="@color/textPrimary"
                                 android:layout_marginStart="4dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:orientation="horizontal"
+                            android:layout_gravity="right|top"
+                            >
+                            <ImageButton
+                                android:id="@+id/mapstyler"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/layer3"/>
                         </LinearLayout>
                     </FrameLayout>
                 </LinearLayout>

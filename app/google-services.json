@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "276050010788",
+    "project_id": "trinetra-ai-8f435",
+    "storage_bucket": "trinetra-ai-8f435.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276050010788:android:9fcc713c2d8479cf383c31",
+        "android_client_info": {
+          "package_name": "com.example.trinetraai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD86bJ_X9dbLrjfaF6vmz65sr-52et9Prw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

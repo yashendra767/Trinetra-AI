@@ -1,7 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id ("com.google.gms.google-services")
+
 }
+
+
 
 android {
     namespace = "com.example.trinetraai"
@@ -16,6 +20,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -43,9 +48,12 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation ("com.google.code.gson:gson:2.10.1")// or latest
+
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.google.android.material:material:1.11.0")
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
@@ -59,5 +67,15 @@ dependencies {
 
     implementation("com.google.maps.android:android-maps-utils:2.2.3")
     implementation ("com.android.volley:volley:1.2.1")
+
+    // 🔥 Firebase BOM (Manages all versions)
+    implementation (platform("com.google.firebase:firebase-bom:32.8.0"))
+
+// 🔥 Firestore (for storing FIRs)
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+
+
+
+
 
 }

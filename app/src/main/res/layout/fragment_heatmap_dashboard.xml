@@ -328,6 +328,15 @@
                             android:textColor="@color/accentSaffron"
                             android:text="Crime Hotspot Map" />
 
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/markerToggle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="@dimen/gmp_ref_measurement_icon_size_18"
+                            android:checked="false"
+                            />
+
+
                         <ImageView
                             android:id="@+id/ExpandMapHotspot"
                             android:layout_width="24dp"

@@ -19,6 +19,12 @@ dependencyResolutionManagement {
         maven(url = "https://jitpack.io")
     }
 }
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
 
 rootProject.name = "Trinetra AI"
 include(":app")

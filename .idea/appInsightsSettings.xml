@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.trinetraai" />
+                  <option name="mobileSdkAppId" value="1:276050010788:android:9fcc713c2d8479cf383c31" />
+                  <option name="projectId" value="trinetra-ai-8f435" />
+                  <option name="projectNumber" value="276050010788" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

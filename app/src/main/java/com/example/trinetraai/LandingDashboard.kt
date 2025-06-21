@@ -22,6 +22,7 @@ import com.example.trinetraai.drawer_fragments.AllFIRsFragment
 import com.example.trinetraai.drawer_fragments.Notifications
 import com.example.trinetraai.drawer_fragments.Settings
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.FirebaseApp
 
 class LandingDashboard : AppCompatActivity() {
 

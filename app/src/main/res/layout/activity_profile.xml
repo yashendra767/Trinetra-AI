@@ -1,10 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Profile">
+    android:padding="24dp"
+    android:background="@color/background"
+    android:fitsSystemWindows="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/policeman"
+            app:shapeAppearanceOverlay="@style/RoundedCornerImage"
+            android:contentDescription="Profile Image"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="2dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="John Doe"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textPrimary" />
+
+        <TextView
+            android:id="@+id/emailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="john.doe@example.com"
+            android:textSize="18sp"
+            android:textColor="@color/textSecondary"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/joinedOnText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Joined on: Jan 10, 2024"
+            android:textSize="14sp"
+            android:textColor="@color/textSecondary"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/areaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Assigned Area: Karol Bagh"
+            android:textSize="16sp"
+            android:textColor="@color/textSecondary"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/postText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post: Sub-Inspector"
+            android:textSize="16sp"
+            android:textColor="@color/textSecondary"
+            android:layout_marginTop="4dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/surfaceLight"
+            android:layout_marginVertical="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editProfileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:textColor="@color/textPrimary"
+            android:backgroundTint="@color/primary"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/pencil"
+            app:iconSize="16dp"
+            android:textStyle="bold"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            android:layout_marginBottom="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/alerts"
+            app:strokeColor="@color/alerts"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/logout"
+            android:textStyle="bold"
+            app:iconSize="16dp"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/alerts"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

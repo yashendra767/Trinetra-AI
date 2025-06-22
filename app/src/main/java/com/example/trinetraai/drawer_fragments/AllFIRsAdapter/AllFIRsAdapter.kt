@@ -21,10 +21,10 @@ class AllFIRsAdapter(
         val firId: TextView = itemView.findViewById(R.id.FIRidTV)
         val crimeType: TextView = itemView.findViewById(R.id.crimeTypeTV)
         val timestamp: TextView = itemView.findViewById(R.id.timestampTV)
-        val areazone: TextView = itemView.findViewById(R.id.areazoneTV)
-        val firstatus : TextView = itemView.findViewById(R.id.firstatusTV)
-        val reportingstation : TextView = itemView.findViewById(R.id.reportingstationTV)
-        val viewDetails: TextView = itemView.findViewById(R.id.viewdetailsTV)
+        val areaZone: TextView = itemView.findViewById(R.id.areaZoneTV)
+        val firStatus : TextView = itemView.findViewById(R.id.firStatusTV)
+        val reportingStation : TextView = itemView.findViewById(R.id.reportingStationTV)
+        val viewDetails: TextView = itemView.findViewById(R.id.viewDetailsTV)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FIRViewHolder {
@@ -38,9 +38,9 @@ class AllFIRsAdapter(
         holder.firId.text = "${fir.fir_id}"
         holder.crimeType.text = "${fir.crime_type}"
         holder.timestamp.text = "${fir.timestamp}"
-        holder.areazone.text = "${fir.location.area} - ${fir.zone}"
-        holder.firstatus.text = "${fir.status}"
-        holder.reportingstation.text = "${fir.reporting_station}"
+        holder.areaZone.text = "${fir.location.area} - ${fir.zone}"
+        holder.firStatus.text = "${fir.status}"
+        holder.reportingStation.text = "${fir.reporting_station}"
 
 
 //        holder.viewDetails.setOnClickListener {

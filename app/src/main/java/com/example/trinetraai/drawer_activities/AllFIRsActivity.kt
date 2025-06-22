@@ -1,19 +1,16 @@
-package com.example.trinetraai.drawer_fragments
+package com.example.trinetraai.drawer_activities
 
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.view.WindowInsets
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trinetraai.LandingDashboard
+import com.bumptech.glide.Glide
 import com.example.trinetraai.R
-import com.example.trinetraai.drawer_fragments.AllFIRsAdapter.AllFIRsAdapter
+import com.example.trinetraai.drawer_activities.AllFIRsAdapter.AllFIRsAdapter
 import com.example.trinetraai.firdataclass.FIR
 import com.example.trinetraai.firdataclass.LocationData
 import com.example.trinetraai.presetData.CrimeTypesData
@@ -22,14 +19,9 @@ import com.example.trinetraai.presetData.TimePeriodData
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.Query
-import org.w3c.dom.Text
+import java.util.*
 
-
-class AllFIRsFragment : Fragment() {
+class AllFIRsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AllFIRsAdapter
@@ -41,110 +33,89 @@ class AllFIRsFragment : Fragment() {
     private lateinit var timePeriodSpinner: Spinner
     private lateinit var statusSpinner: Spinner
 
-    private lateinit var matchedFIRs : TextView
-    private lateinit var noFIRsTextView: TextView
-
+    private lateinit var matchedFIRs: TextView
+    private lateinit var noFIRsImageView: ImageView
 
     private lateinit var btnApplyFilter: MaterialButton
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
+        setContentView(R.layout.activity_all_f_i_rs)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
+
+        setupViews()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_all_f_i_rs, container, false)
-
-        setupViews(view)
-
-        return view
-    }
-
-    private fun setupViews(view: android.view.View) {
-        recyclerView = view.findViewById(R.id.displayFIRs)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = AllFIRsAdapter(filteredFIRs , requireContext())
+    private fun setupViews() {
+        recyclerView = findViewById(R.id.displayFIRs)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = AllFIRsAdapter(filteredFIRs, this)
         recyclerView.adapter = adapter
 
-        crimeTypeSpinner = view.findViewById(R.id.crimeTypeSpinner)
-        dateRangeSpinner = view.findViewById(R.id.dateRangeSpinner)
-        timePeriodSpinner = view.findViewById(R.id.timePeriodSpinner)
-        statusSpinner = view.findViewById(R.id.statusSpinner)
-        matchedFIRs = view.findViewById(R.id.countMatchedTV)
-        noFIRsTextView = view.findViewById(R.id.noFIRsTV)
-        matchedFIRs.visibility = View.GONE
-        noFIRsTextView.visibility = View.GONE
+        crimeTypeSpinner = findViewById(R.id.crimeTypeSpinner)
+        dateRangeSpinner = findViewById(R.id.dateRangeSpinner)
+        timePeriodSpinner = findViewById(R.id.timePeriodSpinner)
+        statusSpinner = findViewById(R.id.statusSpinner)
+        matchedFIRs = findViewById(R.id.countMatchedTV)
+        noFIRsImageView = findViewById(R.id.noFIRsIV)
 
-        btnApplyFilter = view.findViewById(R.id.btnApplyFilter)
+        matchedFIRs.visibility = TextView.GONE
+        noFIRsImageView.visibility = ImageView.GONE
 
-        setupCrimeTypeSpinner(crimeTypeSpinner)
-        setupdateRangeSpinner(dateRangeSpinner)
-        setupTimePeriodSpinner(timePeriodSpinner)
-        setupStatusSpinner(statusSpinner)
+        btnApplyFilter = findViewById(R.id.btnApplyFilter)
+
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.not_found)
+            .into(noFIRsImageView)
+
+        setupCrimeTypeSpinner()
+        setupdateRangeSpinner()
+        setupTimePeriodSpinner()
+        setupStatusSpinner()
 
         btnApplyFilter.setOnClickListener {
             fetchAndFilterFIRs()
         }
-
     }
-
-
 
     private fun fetchAndFilterFIRs() {
         val db = FirebaseFirestore.getInstance()
-
         db.collection("FIR_Records")
             .get()
             .addOnSuccessListener { documents ->
                 allFIRs.clear()
                 for (doc in documents) {
                     try {
-                        val fir_id = doc.getString("fir_id") ?: ""
-                        val crime_type = doc.getString("crime_type") ?: ""
-                        val ipc_sections = doc.get("ipc_sections") as? List<String> ?: listOf()
-                        val act_category = doc.getString("act_category") ?: ""
-                        val location = doc.get("location") as? Map<String, Any> ?: emptyMap()
-                        val timestamp = doc.getString("timestamp") ?: ""
-                        val zone = doc.getString("zone") ?: ""
-                        val status = doc.getString("status") ?: ""
-                        val reporting_station = doc.getString("reporting_station") ?: ""
-
                         val fir = FIR(
-                            fir_id = fir_id,
-                            crime_type = crime_type,
-                            ipc_sections = ipc_sections,
-                            act_category = act_category,
+                            fir_id = doc.getString("fir_id") ?: "",
+                            crime_type = doc.getString("crime_type") ?: "",
+                            ipc_sections = doc.get("ipc_sections") as? List<String> ?: listOf(),
+                            act_category = doc.getString("act_category") ?: "",
                             location = LocationData(
-                                lat = (location["lat"] as? Double) ?: 0.0,
-                                lng = (location["lng"] as? Double) ?: 0.0,
-                                area = (location["area"] as? String) ?: ""
+                                lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double ?: 0.0,
+                                lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double ?: 0.0,
+                                area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String ?: ""
                             ),
-                            timestamp = timestamp.toString(),
-                            zone = zone,
-                            status = status,
-                            reporting_station = reporting_station
+                            timestamp = doc.getString("timestamp") ?: "",
+                            zone = doc.getString("zone") ?: "",
+                            status = doc.getString("status") ?: "",
+                            reporting_station = doc.getString("reporting_station") ?: ""
                         )
-
                         allFIRs.add(fir)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
-
                 applyFilters()
             }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
-            }
+            .addOnFailureListener { it.printStackTrace() }
     }
-
 
     private fun applyFilters() {
         val selectedCategory = crimeTypeSpinner.selectedItem.toString()
@@ -183,7 +154,6 @@ class AllFIRsFragment : Fragment() {
                 else -> true
             }
 
-
             if (matchCategory && matchDate && matchTime && matchStatus) {
                 filteredFIRs.add(fir)
             }
@@ -191,25 +161,24 @@ class AllFIRsFragment : Fragment() {
 
         adapter.notifyDataSetChanged()
         if (filteredFIRs.isEmpty()) {
-            noFIRsTextView.visibility = View.VISIBLE
+            noFIRsImageView.visibility = View.VISIBLE
             matchedFIRs.text = "Matched FIRs: 0"
         } else {
-            noFIRsTextView.visibility = View.GONE
+            noFIRsImageView.visibility = View.GONE
             matchedFIRs.text = "Matched FIRs: ${filteredFIRs.size}"
         }
         matchedFIRs.alpha = 0f
         matchedFIRs.visibility = View.VISIBLE
         matchedFIRs.animate().alpha(1f).setDuration(400).start()
-        noFIRsTextView.animate().alpha(1f).setDuration(400).start()
-
+        noFIRsImageView.animate().alpha(1f).setDuration(400).start()
     }
 
     private fun extractTimestamp(fir: FIR): Long? {
         val tsRaw = fir.timestamp ?: return null
         val formats = listOf(
-            "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",  // most accurate
-            "yyyy-MM-dd'T'HH:mm:ss.SSS",     // common fallback
-            "yyyy-MM-dd'T'HH:mm:ss"          // basic fallback
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "yyyy-MM-dd'T'HH:mm:ss"
         )
         for (format in formats) {
             try {
@@ -222,49 +191,45 @@ class AllFIRsFragment : Fragment() {
         return null
     }
 
-
-
-
-    private fun setupTimePeriodSpinner(timePeriodSpinner:Spinner) {
-        val timePeriods = TimePeriodData.timePeriods
+    private fun setupTimePeriodSpinner() {
         val adapter = ArrayAdapter(
-            requireContext(),
+            this,
             android.R.layout.simple_spinner_item,
-            timePeriods
+            TimePeriodData.timePeriods
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_white)
         timePeriodSpinner.adapter = adapter
-
     }
 
-    private fun setupdateRangeSpinner(dateRangeSpinner: Spinner) {
-        val dateRanges = DateRangeData.dateRanges
+    private fun setupdateRangeSpinner() {
         val adapter = ArrayAdapter(
-            requireContext(),
+            this,
             android.R.layout.simple_spinner_item,
-            dateRanges
+            DateRangeData.dateRanges
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_white)
         dateRangeSpinner.adapter = adapter
-
     }
 
-    private fun setupCrimeTypeSpinner(crimeTypeSpinner: Spinner) {
+    private fun setupCrimeTypeSpinner() {
         val categories = mutableListOf("All")
         categories.addAll(CrimeTypesData.crimeTypeMap.keys)
-
         val adapter = ArrayAdapter(
-            requireContext(),
+            this,
             android.R.layout.simple_spinner_item,
             categories
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_white)
         crimeTypeSpinner.adapter = adapter
     }
-    private fun setupStatusSpinner(spinner: Spinner) {
-        val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item, arrayOf("All","Open", "Closed", "Pending", "Under Investigation"))
-        adapter.setDropDownViewResource(R.layout.spinner_item_white)
-        spinner.adapter = adapter
 
+    private fun setupStatusSpinner() {
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            arrayOf("All", "Open", "Closed", "Pending", "Under Investigation")
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_white)
+        statusSpinner.adapter = adapter
     }
 }

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -16,11 +16,17 @@
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
         <activity
+            android:name=".drawer_activities.Settings"
+            android:exported="false" />
+        <activity
+            android:name=".drawer_activities.Notifications"
+            android:exported="false" />
+        <activity
             android:name=".navigationScreen.Nav_WomenSafety"
             android:exported="false" />
         <activity
             android:name=".LandingDashboard"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,9 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".navigationScreen.Nav_Heatmap"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".authentication.Login"
             android:exported="false" />
@@ -54,10 +58,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCtR6Ly2xen0veKWOsMa5__pcSkj_JOHeQ"/>
+            android:value="AIzaSyCtR6Ly2xen0veKWOsMa5__pcSkj_JOHeQ" />
     </application>
 
 </manifest>

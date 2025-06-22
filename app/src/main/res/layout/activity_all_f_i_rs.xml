@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".drawer_fragments.AllFIRsFragment">
+    tools:context=".drawer_activities.AllFIRsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -195,13 +195,10 @@
                             android:layout_height="match_parent" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/noFIRsTV"
+                    <ImageView
+                        android:id="@+id/noFIRsIV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textPrimary"
-                        android:text="No Cases Found !"
-                        android:textSize="20sp"
                         android:gravity="center"
                         android:layout_gravity="center"/>
                 </FrameLayout>

@@ -18,11 +18,10 @@ import com.example.trinetraai.bottom_fragments.HeatmapDashboard
 import com.example.trinetraai.bottom_fragments.PatrolRoutes
 import com.example.trinetraai.bottom_fragments.TrendAnalyser
 import com.example.trinetraai.bottom_fragments.WomenSafety
-import com.example.trinetraai.drawer_fragments.AllFIRsFragment
-import com.example.trinetraai.drawer_fragments.Notifications
-import com.example.trinetraai.drawer_fragments.Settings
+import com.example.trinetraai.drawer_activities.AllFIRsActivity
+import com.example.trinetraai.drawer_activities.Notifications
+import com.example.trinetraai.drawer_activities.Settings
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.FirebaseApp
 
 class LandingDashboard : AppCompatActivity() {
 
@@ -70,9 +69,9 @@ class LandingDashboard : AppCompatActivity() {
 
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_notification -> replaceTheFragment(Notifications())
-                R.id.nav_Settings -> replaceTheFragment(Settings())
-                R.id.nav_allFirs -> replaceTheFragment(AllFIRsFragment())
+                R.id.nav_notification -> startActivity(Intent(this, Notifications::class.java))
+                R.id.nav_Settings -> startActivity(Intent(this, Settings::class.java))
+                R.id.nav_allFirs -> startActivity(Intent(this, AllFIRsActivity::class.java))
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true

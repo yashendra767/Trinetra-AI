@@ -1,8 +1,7 @@
-package com.example.trinetraai.drawer_fragments.AllFIRsAdapter
+package com.example.trinetraai.drawer_activities.AllFIRsAdapter
 
 
 
-import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

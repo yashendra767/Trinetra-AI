@@ -17,8 +17,7 @@
         android:layout_margin="16dp"
         android:layout_gravity="top|end"
         android:src="@drawable/cancel"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:tint="@color/textPrimary" />
+        android:background="?attr/selectableItemBackgroundBorderless" />
 
     <LinearLayout
         android:layout_width="wrap_content"

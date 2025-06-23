@@ -54,6 +54,12 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     private lateinit var activeFIR : TextView
     private lateinit var hotspots : TextView
 
+    private lateinit var hp_zone1name : TextView
+    private lateinit var hp_zone1cases : TextView
+    private lateinit var hp_zone2name : TextView
+    private lateinit var hp_zone2cases : TextView
+
+
 
     private lateinit var case1_FIRid : TextView
     private lateinit var case1_Crime : TextView
@@ -85,11 +91,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_heatmap_dashboard, container, false)
 
-        activeFIR = view.findViewById(R.id.tVActiveFir)
-        getFIRCount(activeFIR)
-        
-        hotspots = view.findViewById(R.id.tVHotspots)
-        getHotspotCount(hotspots)
 
         db = FirebaseFirestore.getInstance()
         uploadFIRDataOnce()
@@ -124,6 +125,18 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             dialog.show(parentFragmentManager, "map_fullscreen")
         }
 
+        activeFIR = view.findViewById(R.id.tVActiveFir)
+        getFIRCount(activeFIR)
+
+        hp_zone1name = view.findViewById(R.id.hp_Zone1)
+        hp_zone1cases = view.findViewById(R.id.hp_Zone1Cases)
+        hp_zone2name = view.findViewById(R.id.hp_Zone2)
+        hp_zone2cases = view.findViewById(R.id.hp_Zone2Cases)
+
+
+        hotspots = view.findViewById(R.id.tVHotspots)
+        getHotspotCount(hotspots , hp_zone1name , hp_zone1cases , hp_zone2name , hp_zone2cases)
+
         case1_Time =view.findViewById(R.id.case1_Timestamp)
         case1_FIRid = view.findViewById(R.id.case1_FIRid)
         case1_Crime = view.findViewById(R.id.case1_Crime)
@@ -150,10 +163,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             case3_Crime,
             case3_Location,
         )
-
-
-
-
         viewAllFIR = view.findViewById(R.id.btnViewAllFirs)
         viewAllFIR.setOnClickListener {
             startActivity(Intent(requireContext(), AllFIRsActivity ::class.java))
@@ -225,13 +234,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 case3_FIRid.text = firList[2].fir_id
                 case3_Crime.text = firList[2].crime_type
                 case3_Location.text = "${firList[2].zone} - ${firList[2].location.area}"
-
-
-
-
-
-
-
             }
 
             .addOnFailureListener {
@@ -251,26 +253,50 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     }
 
 
-    private fun getHotspotCount(view: TextView) {
+    private fun getHotspotCount(
+        hp_count: TextView,
+        hp_zone1name: TextView,
+        hp_zone1cases: TextView,
+        hp_zone2name: TextView,
+        hp_zone2cases: TextView
+    ) {
         val db = FirebaseFirestore.getInstance()
 
         db.collection("FIR_Records")
             .get()
             .addOnSuccessListener { documents ->
-                val zoneCountMap = mutableMapOf<String, Int>()
+                val zoneInfoMap = mutableMapOf<String, Pair<Int, String>>()
 
                 for (doc in documents) {
                     val zone = doc.getString("zone")?.trim() ?: continue
-                    zoneCountMap[zone] = zoneCountMap.getOrDefault(zone, 0) + 1
+                    val location = LocationData(
+                        lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double ?: 0.0,
+                        lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double ?: 0.0,
+                        area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String ?: ""
+                    )
+                    val currentCount = zoneInfoMap[zone]?.first?:0
+                    zoneInfoMap[zone] = Pair(currentCount + 1, location.area)
+                    val hotspotZones = zoneInfoMap.filter { it.value.first > 8 }.toMap()
+                    hp_count.text = hotspotZones.size.toString()
+
+
+                    val sortedHotspotList = hotspotZones.entries.sortedByDescending { it.value.first }
+
+                    sortedHotspotList.getOrNull(0)?.let { (zoneId, pair) ->
+                        val (count, area) = pair
+                        hp_zone1name.text = "$zoneId - $area"
+                        hp_zone1cases.text = "${count.toString()} cases"
+                    }
+
+                    sortedHotspotList.getOrNull(1)?.let { (zoneId, pair) ->
+                        val (count, area) = pair
+                        hp_zone2name.text = "$zoneId - $area"
+                        hp_zone2cases.text = "${count.toString()} cases"
+                    }
                 }
-
-
-                val hotspotZones = zoneCountMap.filter { it.value > 10 }.keys.toList()
-                view.text = hotspotZones.size.toString()
-
             }
             .addOnFailureListener {
-                view.text = "Failed to fetch FIRs"
+                hp_count.text = "Failed to fetch FIRs"
             }
     }
 

@@ -478,6 +478,7 @@
                             android:padding="12dp">
 
                             <TextView
+                                android:id="@+id/hp_Zone1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Zone 15 Karol Bagh"
@@ -486,6 +487,7 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/hp_Zone1Cases"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="25 Cases"
@@ -511,6 +513,7 @@
                             android:padding="12dp">
 
                             <TextView
+                                android:id="@+id/hp_Zone2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Zone 1 Lakshmi Nagar"
@@ -519,6 +522,7 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/hp_Zone2Cases"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="21 Cases"

@@ -2,6 +2,7 @@ package com.example.trinetraai.bottom_fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
@@ -15,7 +16,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.trinetraai.R
 import com.example.trinetraai.bottom_fragments.expandMap.FullScreenMap
+import com.example.trinetraai.drawer_activities.AllFIRsActivity
 import com.example.trinetraai.firdataclass.FIR
+import com.example.trinetraai.firdataclass.LocationData
 import com.example.trinetraai.presetData.CrimeTypesData
 import com.example.trinetraai.presetData.DateRangeData
 import com.example.trinetraai.presetData.TimePeriodData
@@ -30,6 +33,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.common.reflect.TypeToken
+import com.google.firebase.firestore.Query
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
@@ -47,6 +53,24 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
     private lateinit var activeFIR : TextView
     private lateinit var hotspots : TextView
+
+
+    private lateinit var case1_FIRid : TextView
+    private lateinit var case1_Crime : TextView
+    private lateinit var case1_Time : TextView
+    private lateinit var case1_Location : TextView
+
+    private lateinit var case2_FIRid : TextView
+    private lateinit var case2_Crime : TextView
+    private lateinit var case2_Time : TextView
+    private lateinit var case2_Location : TextView
+
+    private lateinit var case3_FIRid : TextView
+    private lateinit var case3_Crime : TextView
+    private lateinit var case3_Time : TextView
+    private lateinit var case3_Location : TextView
+
+    private lateinit var viewAllFIR : MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,13 +90,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         
         hotspots = view.findViewById(R.id.tVHotspots)
         getHotspotCount(hotspots)
-        
-        
-
-
-
-
-
 
         db = FirebaseFirestore.getInstance()
         uploadFIRDataOnce()
@@ -107,8 +124,132 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             dialog.show(parentFragmentManager, "map_fullscreen")
         }
 
+        case1_Time =view.findViewById(R.id.case1_Timestamp)
+        case1_FIRid = view.findViewById(R.id.case1_FIRid)
+        case1_Crime = view.findViewById(R.id.case1_Crime)
+        case1_Location = view.findViewById(R.id.case1_AreaZone)
+
+        case2_Time = view.findViewById(R.id.case2_Timestamp)
+        case2_FIRid = view.findViewById(R.id.case2_FIRid)
+        case2_Crime = view.findViewById(R.id.case2_Crime)
+        case2_Location = view.findViewById(R.id.case2_AreaZone)
+
+        case3_Time = view.findViewById(R.id.case3_Timestamp)
+        case3_FIRid = view.findViewById(R.id.case3_FIRid)
+        case3_Crime = view.findViewById(R.id.case3_Crime)
+        case3_Location = view.findViewById(R.id.case3_AreaZone)
+
+        loadRecentFIR(
+            case1_Time, case1_FIRid, case1_Crime, case1_Location,
+            case2_Time,
+            case2_FIRid,
+            case2_Crime,
+            case2_Location,
+            case3_Time,
+            case3_FIRid,
+            case3_Crime,
+            case3_Location,
+        )
+
+
+
+
+        viewAllFIR = view.findViewById(R.id.btnViewAllFirs)
+        viewAllFIR.setOnClickListener {
+            startActivity(Intent(requireContext(), AllFIRsActivity ::class.java))
+        }
+
+
+
+
         return view
     }
+
+    private fun loadRecentFIR(
+        case1_Time: TextView,
+        case1_FIRid: TextView,
+        case1_Crime: TextView,
+        case1_Location: TextView,
+        case2_Time: TextView,
+        case2_FIRid: TextView,
+        case2_Crime: TextView,
+        case2_Location: TextView,
+        case3_Time: TextView,
+        case3_FIRid: TextView,
+        case3_Crime: TextView,
+        case3_Location: TextView,
+    ) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("FIR_Records")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(3)
+            .get()
+            .addOnSuccessListener { documents ->
+                val firList = documents.mapNotNull { doc ->
+                        try {
+                            FIR(
+                                fir_id = doc.getString("fir_id") ?: "",
+                                crime_type = doc.getString("crime_type") ?: "",
+                                ipc_sections = doc.get("ipc_sections") as? List<String> ?: listOf(),
+                                act_category = doc.getString("act_category") ?: "",
+                                location = LocationData(
+                                    lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double
+                                        ?: 0.0,
+                                    lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double
+                                        ?: 0.0,
+                                    area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String
+                                        ?: ""
+                                ),
+                                timestamp = doc.getString("timestamp") ?: "",
+                                zone = doc.getString("zone") ?: "",
+                                status = doc.getString("status") ?: "",
+                                reporting_station = doc.getString("reporting_station") ?: ""
+                            )
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+                case1_Time.text = formatTimestampReadable(firList[0].timestamp)
+                case1_FIRid.text = firList[0].fir_id
+                case1_Crime.text = firList[0].crime_type
+                case1_Location.text = "${firList[0].zone} - ${firList[0].location.area}"
+
+                case2_Time.text = formatTimestampReadable(firList[1].timestamp)
+                case2_FIRid.text = firList[1].fir_id
+                case2_Crime.text = firList[1].crime_type
+                case2_Location.text = "${firList[1].zone} - ${firList[1].location.area}"
+
+                case3_Time.text = formatTimestampReadable(firList[2].timestamp)
+                case3_FIRid.text = firList[2].fir_id
+                case3_Crime.text = firList[2].crime_type
+                case3_Location.text = "${firList[2].zone} - ${firList[2].location.area}"
+
+
+
+
+
+
+
+            }
+
+            .addOnFailureListener {
+                it.printStackTrace()
+            }
+    }
+
+    private fun formatTimestampReadable(rawTimestamp: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd MMMM yyyy, hh:mm a", Locale.getDefault())
+            val date = inputFormat.parse(rawTimestamp)
+            if (date != null) outputFormat.format(date) else rawTimestamp
+        } catch (e: Exception) {
+            rawTimestamp
+        }
+    }
+
 
     private fun getHotspotCount(view: TextView) {
         val db = FirebaseFirestore.getInstance()

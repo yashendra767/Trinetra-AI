@@ -595,6 +595,7 @@
                             android:padding="12dp">
 
                             <TextView
+                                android:id="@+id/case1_FIRid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="FIR#8001"
@@ -603,6 +604,7 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/case1_AreaZone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Zone 15 Karol Bagh"
@@ -610,6 +612,7 @@
                                 android:textSize="16sp">
                             </TextView>
                             <TextView
+                                android:id="@+id/case1_Crime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Theft"
@@ -617,6 +620,7 @@
                                 android:textSize="16sp">
                             </TextView>
                             <TextView
+                                android:id="@+id/case1_Timestamp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2025-06-16 22:06 PM"
@@ -643,6 +647,7 @@
                             android:padding="12dp">
 
                             <TextView
+                                android:id="@+id/case2_FIRid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="FIR#8002"
@@ -651,6 +656,7 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/case2_AreaZone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Zone 2 Saket"
@@ -658,6 +664,7 @@
                                 android:textSize="16sp">
                             </TextView>
                             <TextView
+                                android:id="@+id/case2_Crime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Snatching"
@@ -665,6 +672,7 @@
                                 android:textSize="16sp">
                             </TextView>
                             <TextView
+                                android:id="@+id/case2_Timestamp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2025-06-16 22:06 PM"
@@ -691,6 +699,7 @@
                             android:padding="12dp">
 
                             <TextView
+                                android:id="@+id/case3_FIRid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="FIR#8003"
@@ -699,6 +708,7 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/case3_AreaZone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Zone 7 Rohini"
@@ -706,6 +716,7 @@
                                 android:textSize="16sp">
                             </TextView>
                             <TextView
+                                android:id="@+id/case3_Crime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Murder"
@@ -713,6 +724,7 @@
                                 android:textSize="16sp">
                             </TextView>
                             <TextView
+                                android:id="@+id/case3_Timestamp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2025-06-16 22:06 PM"

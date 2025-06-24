@@ -1,20 +1,31 @@
 package com.example.trinetraai.bottom_fragments
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.pdf.PdfDocument
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.trinetraai.R
+import com.example.trinetraai.bottom_fragments.AllZonesAdapter.HotspotZoneAdapter
 import com.example.trinetraai.bottom_fragments.expandMap.FullScreenMap
 import com.example.trinetraai.drawer_activities.AllFIRsActivity
 import com.example.trinetraai.firdataclass.FIR
@@ -23,17 +34,21 @@ import com.example.trinetraai.presetData.CrimeTypesData
 import com.example.trinetraai.presetData.DateRangeData
 import com.example.trinetraai.presetData.TimePeriodData
 import com.example.trinetraai.presetData.ZoneData.delhiZones
+import com.example.trinetraai.zoneDataClass.ZoneData_hp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.button.MaterialButton
+import com.google.common.reflect.TypeToken
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.Gson
-import com.google.common.reflect.TypeToken
 import com.google.firebase.firestore.Query
+import com.google.gson.Gson
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -77,6 +92,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     private lateinit var case3_Location : TextView
 
     private lateinit var viewAllFIR : MaterialButton
+    private lateinit var viewAllZones :MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,9 +149,12 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         hp_zone2name = view.findViewById(R.id.hp_Zone2)
         hp_zone2cases = view.findViewById(R.id.hp_Zone2Cases)
 
+        viewAllZones = view.findViewById(R.id.btnViewAllZones)
+
+
 
         hotspots = view.findViewById(R.id.tVHotspots)
-        getHotspotCount(hotspots , hp_zone1name , hp_zone1cases , hp_zone2name , hp_zone2cases)
+        getHotspotCount(hotspots , hp_zone1name , hp_zone1cases , hp_zone2name , hp_zone2cases , viewAllZones)
 
         case1_Time =view.findViewById(R.id.case1_Timestamp)
         case1_FIRid = view.findViewById(R.id.case1_FIRid)
@@ -258,7 +277,8 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         hp_zone1name: TextView,
         hp_zone1cases: TextView,
         hp_zone2name: TextView,
-        hp_zone2cases: TextView
+        hp_zone2cases: TextView,
+        viewAllZones: MaterialButton,
     ) {
         val db = FirebaseFirestore.getInstance()
 
@@ -293,11 +313,107 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                         hp_zone2name.text = "$zoneId - $area"
                         hp_zone2cases.text = "${count.toString()} cases"
                     }
+
+                    viewAllZones.setOnClickListener {
+                        val zoneList = hotspotZones.map { (zoneId , pair) ->
+                            val (count, area) = pair
+                            ZoneData_hp(zoneId, area ,count.toString())
+                        }
+                        showAllZonesDailog(requireContext() ,zoneList)
+                    }
+
                 }
             }
             .addOnFailureListener {
                 hp_count.text = "Failed to fetch FIRs"
             }
+
+    }
+
+    private fun showAllZonesDailog(context: Context, zoneStats: List<ZoneData_hp>) {
+        val dialog = Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.setContentView(R.layout.dilaog_all_zones)
+
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.zonesRecyclerView)
+        val closeBtn = dialog.findViewById<Button>(R.id.closeDialogBtn)
+        val exportBtn = dialog.findViewById<ImageView>(R.id.exportZone)
+
+
+        val sortedZoneData = zoneStats.sortedByDescending {
+            it.count.toIntOrNull() ?: 0
+        }
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = HotspotZoneAdapter(sortedZoneData)
+
+        closeBtn.setOnClickListener { dialog.dismiss() }
+        exportBtn.setOnClickListener {
+            exportZoneListToPDF(sortedZoneData , context)
+        }
+
+
+        dialog.show()
+    }
+
+    private fun exportZoneListToPDF(zoneList: List<ZoneData_hp>, context: Context) {
+        val pdfDocument = PdfDocument()
+        val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
+        val page = pdfDocument.startPage(pageInfo)
+        val canvas = page.canvas
+        val paint = Paint()
+        paint.textSize = 12f
+
+        var y = 20
+        paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        canvas.drawText("Trinetra AI - Zone FIR Report", 10f, y.toFloat(), paint)
+
+        y += 20
+        paint.typeface = Typeface.DEFAULT
+        for ((i, zone) in zoneList.withIndex()) {
+            y += 20
+            val text = "${zone.zoneId} (${zone.area}) - ${zone.count} cases"
+            canvas.drawText(text, 10f, y.toFloat(), paint)
+        }
+
+        pdfDocument.finishPage(page)
+
+        // Save to Downloads
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Zone_FIR_Report.pdf")
+        try {
+            pdfDocument.writeTo(FileOutputStream(file))
+            Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_LONG).show()
+            showDownloadNotification(context, file)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(context, "Error saving PDF", Toast.LENGTH_SHORT).show()
+        }
+
+        pdfDocument.close()
+    }
+
+    private fun showDownloadNotification(context: Context, file: File) {
+        val channelId = "trinetra_pdf_download"
+        val channelName = "PDF Downloads"
+
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // For Android 8+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Notification for PDF download"
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val builder = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.logo) // Replace with your icon
+            .setContentTitle("Zone FIR Report Downloaded")
+            .setContentText("Saved to Downloads as ${file.name}")
+            .setAutoCancel(true)
+
+        notificationManager.notify(1, builder.build())
     }
 
 
@@ -325,7 +441,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     }
 
 
-    // === FIR UPLOADER ===
+    // === FIR UPLOADER === this to be removed after full app get completed
     @RequiresApi(Build.VERSION_CODES.O)
     private fun uploadFIRDataOnce() {
         val prefs = requireContext().getSharedPreferences("fir_upload_status", Context.MODE_PRIVATE)

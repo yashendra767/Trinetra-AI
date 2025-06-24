@@ -4,10 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28"/>
-
-
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:name=".App"
@@ -20,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
+        <activity
+            android:name=".drawer_activities.AllZones"
+            android:exported="false" />
         <activity
             android:name=".drawer_activities.Settings"
             android:exported="false" />
@@ -56,9 +58,9 @@
         <activity
             android:name=".WelcomeScreen"
             android:exported="false" />
-        <activity android:name=".drawer_activities.AllFIRsActivity"
-            android:exported="false">
-        </activity>
+        <activity
+            android:name=".drawer_activities.AllFIRsActivity"
+            android:exported="false"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true" />

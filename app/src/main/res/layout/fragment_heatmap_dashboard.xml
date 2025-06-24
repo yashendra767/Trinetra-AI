@@ -463,6 +463,7 @@
                         android:background="@color/surfaceLight"/>
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/hp_card1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="@color/surfaceLight"
@@ -498,6 +499,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/hp_card2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="@color/surfaceLight"

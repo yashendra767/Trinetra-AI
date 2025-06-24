@@ -26,6 +26,12 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="RectangularFABStyle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15dp</item> <!-- No rounding = rectangle -->
+    </style>
+
+
 
 
 </resources>

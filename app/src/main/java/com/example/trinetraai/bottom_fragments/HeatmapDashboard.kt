@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.common.reflect.TypeToken
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,6 +60,12 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     private var mGoogleMap: GoogleMap? = null
     private lateinit var expandMap: ImageView
 
+    private var topHotspotZone1: String? = null
+    private var topHotspotZone2: String? = null
+
+
+    private lateinit var toggle : SwitchCompat
+
     private val zoneMarkers = mutableListOf<Marker>()
     private val zoneCenterMap = mutableMapOf<String, LatLng>()
 
@@ -73,6 +81,9 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     private lateinit var hp_zone1cases : TextView
     private lateinit var hp_zone2name : TextView
     private lateinit var hp_zone2cases : TextView
+
+    private lateinit var hp_card1 : MaterialCardView
+    private lateinit var hp_card2 : MaterialCardView
 
 
 
@@ -106,6 +117,9 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_heatmap_dashboard, container, false)
+
+
+
 
 
         db = FirebaseFirestore.getInstance()
@@ -190,9 +204,21 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
 
 
+
         return view
     }
-
+    private fun focusOnZone(zoneId: String) {
+        val center = zoneCenterMap[zoneId] ?: return
+        mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 12f))
+        popupMarker?.remove()
+        popupMarker = mGoogleMap?.addMarker(
+            MarkerOptions()
+                .position(center)
+                .title(zoneId)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+        )
+        popupMarker?.showInfoWindow()
+    }
     private fun loadRecentFIR(
         case1_Time: TextView,
         case1_FIRid: TextView,
@@ -259,7 +285,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 it.printStackTrace()
             }
     }
-
     private fun formatTimestampReadable(rawTimestamp: String): String {
         return try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
@@ -270,8 +295,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             rawTimestamp
         }
     }
-
-
     private fun getHotspotCount(
         hp_count: TextView,
         hp_zone1name: TextView,
@@ -296,22 +319,40 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                     )
                     val currentCount = zoneInfoMap[zone]?.first?:0
                     zoneInfoMap[zone] = Pair(currentCount + 1, location.area)
-                    val hotspotZones = zoneInfoMap.filter { it.value.first > 8 }.toMap()
+                    val hotspotZones = zoneInfoMap.filter { it.value.first > 10 }.toMap()
                     hp_count.text = hotspotZones.size.toString()
 
 
                     val sortedHotspotList = hotspotZones.entries.sortedByDescending { it.value.first }
 
+
+
                     sortedHotspotList.getOrNull(0)?.let { (zoneId, pair) ->
                         val (count, area) = pair
                         hp_zone1name.text = "$zoneId - $area"
                         hp_zone1cases.text = "${count.toString()} cases"
+                        topHotspotZone1 = zoneId
                     }
 
                     sortedHotspotList.getOrNull(1)?.let { (zoneId, pair) ->
                         val (count, area) = pair
                         hp_zone2name.text = "$zoneId - $area"
                         hp_zone2cases.text = "${count.toString()} cases"
+                        topHotspotZone2 = zoneId
+                    }
+
+                    hp_card1 = view?.findViewById(R.id.hp_card1)!!
+                    hp_card2 = view?.findViewById(R.id.hp_card2)!!
+
+                    hp_card1.setOnClickListener {
+                        topHotspotZone1?.let { zoneId ->
+                            focusOnZone(zoneId)
+                        }
+                    }
+                    hp_card2.setOnClickListener {
+                        topHotspotZone2?.let { zoneId ->
+                            focusOnZone(zoneId)
+                        }
                     }
 
                     viewAllZones.setOnClickListener {
@@ -327,9 +368,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             .addOnFailureListener {
                 hp_count.text = "Failed to fetch FIRs"
             }
-
     }
-
     private fun showAllZonesDailog(context: Context, zoneStats: List<ZoneData_hp>) {
         val dialog = Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
         dialog.setContentView(R.layout.dilaog_all_zones)
@@ -350,11 +389,8 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         exportBtn.setOnClickListener {
             exportZoneListToPDF(sortedZoneData , context)
         }
-
-
         dialog.show()
     }
-
     private fun exportZoneListToPDF(zoneList: List<ZoneData_hp>, context: Context) {
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
@@ -390,14 +426,13 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
         pdfDocument.close()
     }
-
     private fun showDownloadNotification(context: Context, file: File) {
         val channelId = "trinetra_pdf_download"
         val channelName = "PDF Downloads"
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // For Android 8+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
@@ -408,16 +443,13 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         }
 
         val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.logo) // Replace with your icon
+            .setSmallIcon(R.drawable.logo)
             .setContentTitle("Zone FIR Report Downloaded")
             .setContentText("Saved to Downloads as ${file.name}")
             .setAutoCancel(true)
 
         notificationManager.notify(1, builder.build())
     }
-
-
-
     private fun getFIRCount(activeFIR: TextView) {
         val db = FirebaseFirestore.getInstance()
         db.collection("FIR_Records")
@@ -439,8 +471,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             }
 
     }
-
-
     // === FIR UPLOADER === this to be removed after full app get completed
     @RequiresApi(Build.VERSION_CODES.O)
     private fun uploadFIRDataOnce() {
@@ -490,9 +520,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 }
         }
     }
-
-
-
     private fun setTimePeriodSpinner(timeList: List<String>, spinner: Spinner) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, timeList)
         adapter.setDropDownViewResource(R.layout.spinner_item_white)
@@ -528,11 +555,57 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         }
 
         googleMap.uiSettings.isZoomControlsEnabled = true
-        drawZoneBoxesOnMap(googleMap, false)
+
+
+        val drawnPolygons = mutableListOf<Polygon>()
+        val toggle = view?.findViewById<SwitchCompat>(R.id.markerToggle)
+        toggle?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                drawnPolygons.clear()
+                drawnPolygons.addAll(drawZoneBoxesOnMap(googleMap, false))
+
+                googleMap?.setOnPolygonClickListener { polygon ->
+                    val zoneId = polygonZoneMap[polygon] ?: "Unknown Zone"
+                    val center = getPolygonCenterPoint(polygon.points)
+
+                    popupMarker?.remove()
+
+                    popupMarker = googleMap.addMarker(
+                        MarkerOptions()
+                            .position(center)
+                            .title(zoneId)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    )
+
+                    popupMarker?.showInfoWindow()
+                }
+                
+            } else {
+                for (polygon in drawnPolygons) {
+                    polygon.remove()
+                }
+                drawnPolygons.clear()
+            }
+        }
     }
 
-    private fun drawZoneBoxesOnMap(googleMap: GoogleMap?, showMarkers: Boolean) {
+    private fun getPolygonCenterPoint(polygonPoints: List<LatLng>): LatLng {
+        var lat = 0.0
+        var lng = 0.0
+        for (point in polygonPoints) {
+            lat += point.latitude
+            lng += point.longitude
+        }
+        val size = polygonPoints.size
+        return LatLng(lat / size, lng / size)
+    }
+
+    private val polygonZoneMap = mutableMapOf<Polygon, String>() // Global map
+    private var popupMarker: Marker? = null
+
+    private fun drawZoneBoxesOnMap(googleMap: GoogleMap?, showMarkers: Boolean): List<Polygon> {
         val boxSize = 0.011
+        val polygons = mutableListOf<Polygon>()
         zoneMarkers.clear()
 
         delhiZones.forEach { zone ->
@@ -542,16 +615,21 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 LatLng(lat, lng),
                 LatLng(lat, lng + boxSize),
                 LatLng(lat - boxSize, lng + boxSize),
-                LatLng(lat - boxSize, lng),
+                LatLng(lat - boxSize, lng)
             )
 
-            googleMap?.addPolygon(
+            val polygon = googleMap?.addPolygon(
                 PolygonOptions()
                     .addAll(box)
                     .strokeColor(Color.GRAY)
                     .fillColor(0x3300FF00)
                     .strokeWidth(2f)
+                    .clickable(true)
             )
+
+            polygon?.let { polygons.add(it)
+                polygonZoneMap[it] = "Zone ${zone.id}"
+            }
 
             zoneCenterMap["Zone ${zone.id}"] = LatLng(lat - boxSize / 2, lng + boxSize / 2)
 
@@ -570,5 +648,8 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             marker.showInfoWindow()
             true
         }
+
+        return polygons
     }
+
 }

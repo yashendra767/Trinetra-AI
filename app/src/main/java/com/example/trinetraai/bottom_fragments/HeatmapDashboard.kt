@@ -295,6 +295,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             rawTimestamp
         }
     }
+
     private fun getHotspotCount(
         hp_count: TextView,
         hp_zone1name: TextView,
@@ -369,6 +370,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 hp_count.text = "Failed to fetch FIRs"
             }
     }
+
     private fun showAllZonesDailog(context: Context, zoneStats: List<ZoneData_hp>) {
         val dialog = Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
         dialog.setContentView(R.layout.dilaog_all_zones)
@@ -391,6 +393,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         }
         dialog.show()
     }
+
     private fun exportZoneListToPDF(zoneList: List<ZoneData_hp>, context: Context) {
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
@@ -426,6 +429,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
         pdfDocument.close()
     }
+
     private fun showDownloadNotification(context: Context, file: File) {
         val channelId = "trinetra_pdf_download"
         val channelName = "PDF Downloads"
@@ -450,6 +454,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
         notificationManager.notify(1, builder.build())
     }
+
     private fun getFIRCount(activeFIR: TextView) {
         val db = FirebaseFirestore.getInstance()
         db.collection("FIR_Records")
@@ -520,6 +525,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 }
         }
     }
+
     private fun setTimePeriodSpinner(timeList: List<String>, spinner: Spinner) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, timeList)
         adapter.setDropDownViewResource(R.layout.spinner_item_white)

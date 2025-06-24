@@ -20,6 +20,9 @@
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
         <activity
+            android:name=".drawer_activities.newFIR.AddNewFIR"
+            android:exported="false" />
+        <activity
             android:name=".drawer_activities.AllZones"
             android:exported="false" />
         <activity
@@ -60,10 +63,11 @@
             android:exported="false" />
         <activity
             android:name=".drawer_activities.AllFIRsActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

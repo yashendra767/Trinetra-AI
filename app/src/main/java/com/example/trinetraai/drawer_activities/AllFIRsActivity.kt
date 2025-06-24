@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.trinetraai.R
 import com.example.trinetraai.drawer_activities.AllFIRsAdapter.AllFIRsAdapter
+import com.example.trinetraai.drawer_activities.newFIR.AddNewFIR
 import com.example.trinetraai.firdataclass.FIR
 import com.example.trinetraai.firdataclass.LocationData
 import com.example.trinetraai.presetData.CrimeTypesData
 import com.example.trinetraai.presetData.DateRangeData
 import com.example.trinetraai.presetData.TimePeriodData
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -30,6 +32,7 @@ import java.util.*
 
 class AllFIRsActivity : AppCompatActivity() {
 
+    private lateinit var newFIR : FloatingActionButton
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AllFIRsAdapter
@@ -56,9 +59,11 @@ class AllFIRsActivity : AppCompatActivity() {
             @Suppress("DEPRECATION")
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
-
-
-
+        newFIR = findViewById(R.id.addNewFIR)
+        newFIR.setOnClickListener {
+            val intent = Intent(this, AddNewFIR ::class.java)
+            startActivity(intent)
+        }
         setupViews()
     }
 

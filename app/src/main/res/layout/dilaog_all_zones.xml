@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/surface"
+        android:background="@color/background"
         android:padding="16dp">
 
         <LinearLayout
@@ -30,9 +30,9 @@
 
             <ImageView
                 android:id="@+id/exportZone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/download"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/download_file"
                 android:layout_gravity="center"
                 app:tint="@color/textSecondary" />
 
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Close"
-            app:cornerRadius="10dp" />
+            app:cornerRadius="12dp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -4,26 +4,32 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="12dp"
-    android:layout_margin="4dp">
+    app:cardElevation="5dp"
+    android:layout_marginHorizontal="6dp"
+    android:layout_marginTop="6dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/surfaceLight"
-        android:padding="16dp">
+        android:background="@color/surface"
+        android:padding="12dp">
         <TextView
             android:id="@+id/hp_areazone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Zone 56 - Karol Bagh"
             android:textSize="16sp"
-            android:textColor="@color/textSecondary"/>
+            android:drawablePadding="5dp"
+            app:drawableStartCompat="@drawable/baseline_location_on_24"
+            app:drawableTint="@color/highSeverity"
+            android:textColor="@color/textPrimary"/>
         <TextView
             android:id="@+id/hp_cases"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10 Cases"
             android:textSize="14sp"
-            android:textColor="@color/textSecondary"/>
+            android:layout_marginTop="4dp"
+            android:textColor="@color/textSecondary" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

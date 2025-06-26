@@ -314,57 +314,93 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 for (doc in documents) {
                     val zone = doc.getString("zone")?.trim() ?: continue
                     val location = LocationData(
-                        lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double ?: 0.0,
-                        lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double ?: 0.0,
-                        area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String ?: ""
+                        lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double
+                            ?: 0.0,
+                        lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double
+                            ?: 0.0,
+                        area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String
+                            ?: ""
                     )
-                    val currentCount = zoneInfoMap[zone]?.first?:0
+                    val currentCount = zoneInfoMap[zone]?.first ?: 0
                     zoneInfoMap[zone] = Pair(currentCount + 1, location.area)
-                    val hotspotZones = zoneInfoMap.filter { it.value.first > 10 }.toMap()
-                    hp_count.text = hotspotZones.size.toString()
-
-
-                    val sortedHotspotList = hotspotZones.entries.sortedByDescending { it.value.first }
-
-
-
-                    sortedHotspotList.getOrNull(0)?.let { (zoneId, pair) ->
-                        val (count, area) = pair
-                        hp_zone1name.text = "$zoneId - $area"
-                        hp_zone1cases.text = "${count.toString()} cases"
-                        topHotspotZone1 = zoneId
-                    }
-
-                    sortedHotspotList.getOrNull(1)?.let { (zoneId, pair) ->
-                        val (count, area) = pair
-                        hp_zone2name.text = "$zoneId - $area"
-                        hp_zone2cases.text = "${count.toString()} cases"
-                        topHotspotZone2 = zoneId
-                    }
-
-                    hp_card1 = view?.findViewById(R.id.hp_card1)!!
-                    hp_card2 = view?.findViewById(R.id.hp_card2)!!
-
-                    hp_card1.setOnClickListener {
-                        topHotspotZone1?.let { zoneId ->
-                            focusOnZone(zoneId)
-                        }
-                    }
-                    hp_card2.setOnClickListener {
-                        topHotspotZone2?.let { zoneId ->
-                            focusOnZone(zoneId)
-                        }
-                    }
-
-                    viewAllZones.setOnClickListener {
-                        val zoneList = hotspotZones.map { (zoneId , pair) ->
-                            val (count, area) = pair
-                            ZoneData_hp(zoneId, area ,count.toString())
-                        }
-                        showAllZonesDailog(requireContext() ,zoneList)
-                    }
-
                 }
+                val hotspotZones = zoneInfoMap.filter { it.value.first > 10 }.toMap()
+                hp_count.text = hotspotZones.size.toString()
+
+                // Push hotspot data to Firestore under "hotspot_data" collection
+                for ((zoneId, pair) in hotspotZones) {
+                    val (count, area) = pair
+
+                    // 🔍 Find the location for this zone from the FIR data
+                    val matchingDoc = documents.find { it.getString("zone")?.trim() == zoneId }
+                    val locationMap = matchingDoc?.get("location") as? Map<String, Any>
+                    val lat = locationMap?.get("lat") as? Double ?: 0.0
+                    val lng = locationMap?.get("lng") as? Double ?: 0.0
+
+                    // 🌍 Hotspot data with coordinates
+                    val hotspotData = mapOf(
+                        "zoneId" to zoneId,
+                        "areaName" to area,
+                        "firCount" to count,
+                        "location" to mapOf(
+                            "lat" to lat,
+                            "lng" to lng
+                        )
+                    )
+
+                    db.collection("hotspot_data")
+                        .document(zoneId) // zoneId as document ID
+                        .set(hotspotData) // overwrite existing data
+                        .addOnSuccessListener {
+                            Log.d("HotspotUpdate", "Zone $zoneId updated with location")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("HotspotUpdate", "Failed to update $zoneId: ${e.message}")
+                        }
+                }
+
+
+
+                val sortedHotspotList = hotspotZones.entries.sortedByDescending { it.value.first }
+
+
+
+                sortedHotspotList.getOrNull(0)?.let { (zoneId, pair) ->
+                    val (count, area) = pair
+                    hp_zone1name.text = "$zoneId - $area"
+                    hp_zone1cases.text = "${count.toString()} cases"
+                    topHotspotZone1 = zoneId
+                }
+
+                sortedHotspotList.getOrNull(1)?.let { (zoneId, pair) ->
+                    val (count, area) = pair
+                    hp_zone2name.text = "$zoneId - $area"
+                    hp_zone2cases.text = "${count.toString()} cases"
+                    topHotspotZone2 = zoneId
+                }
+
+                hp_card1 = view?.findViewById(R.id.hp_card1)!!
+                hp_card2 = view?.findViewById(R.id.hp_card2)!!
+
+                hp_card1.setOnClickListener {
+                    topHotspotZone1?.let { zoneId ->
+                        focusOnZone(zoneId)
+                    }
+                }
+                hp_card2.setOnClickListener {
+                    topHotspotZone2?.let { zoneId ->
+                        focusOnZone(zoneId)
+                    }
+                }
+
+                viewAllZones.setOnClickListener {
+                    val zoneList = hotspotZones.map { (zoneId , pair) ->
+                        val (count, area) = pair
+                        ZoneData_hp(zoneId, area ,count.toString())
+                    }
+                    showAllZonesDailog(requireContext() ,zoneList)
+                }
+
             }
             .addOnFailureListener {
                 hp_count.text = "Failed to fetch FIRs"
@@ -564,7 +600,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
 
         val drawnPolygons = mutableListOf<Polygon>()
-        val toggle = view?.findViewById<SwitchCompat>(R.id.markerToggle)
+        toggle = view?.findViewById(R.id.markerToggle)!!
         toggle?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 drawnPolygons.clear()

@@ -21,7 +21,8 @@
         tools:targetApi="31">
         <activity
             android:name=".drawer_activities.newFIR.AddNewFIRBottomSheet"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".drawer_activities.AllZones"
             android:exported="false" />

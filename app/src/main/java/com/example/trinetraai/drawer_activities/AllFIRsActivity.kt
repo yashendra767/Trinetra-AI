@@ -7,17 +7,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.widget.*
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.trinetraai.R
 import com.example.trinetraai.drawer_activities.AllFIRsAdapter.AllFIRsAdapter
-import com.example.trinetraai.drawer_activities.newFIR.AddNewFIR
+import com.example.trinetraai.drawer_activities.newFIR.AddNewFIRBottomSheet
 import com.example.trinetraai.firdataclass.FIR
 import com.example.trinetraai.firdataclass.LocationData
 import com.example.trinetraai.presetData.CrimeTypesData
@@ -25,7 +21,6 @@ import com.example.trinetraai.presetData.DateRangeData
 import com.example.trinetraai.presetData.TimePeriodData
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,8 +56,8 @@ class AllFIRsActivity : AppCompatActivity() {
         }
         newFIR = findViewById(R.id.addNewFIR)
         newFIR.setOnClickListener {
-            val intent = Intent(this, AddNewFIR ::class.java)
-            startActivity(intent)
+            val bottomSheet = AddNewFIRBottomSheet()
+            bottomSheet.show(supportFragmentManager, "AddNewFIRBottomSheet")
         }
         setupViews()
     }

@@ -20,7 +20,7 @@
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
         <activity
-            android:name=".drawer_activities.newFIR.AddNewFIR"
+            android:name=".drawer_activities.newFIR.AddNewFIRBottomSheet"
             android:exported="false" />
         <activity
             android:name=".drawer_activities.AllZones"

@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: trinetra-api
+    name: trinetra-api 
     env: python
-    plan: free
+    rootDir: backend
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:10000
-    workingDir: backend
-    autoDeploy: true
-
+    startCommand: gunicorn app:app 
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13

@@ -8,6 +8,8 @@
 
     <item
         android:id="@+id/nav_zoneData"
+        android:icon="@drawable/zone_data"
+        android:iconTint="@color/textPrimary"
         android:title="Zone Data"/>
 
     <item

@@ -36,8 +36,7 @@
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/alert"
-                    app:tint="@color/textPrimary">
+                    android:src="@drawable/alertWomen">
                 </ImageView>
 
             </LinearLayout>

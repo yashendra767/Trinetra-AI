@@ -2,7 +2,8 @@
 # Core Web Framework and Server
 Flask==3.1.0
 Flask-Cors==5.0.0
-gunicorn==23.0.0 
+gunicorn==23.0.0
+uvicorn
 
 # Machine Learning & Data Processing
 cmdstanpy==1.2.5

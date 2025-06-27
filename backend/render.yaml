@@ -1,6 +1,9 @@
 services:
   - type: web
-    name: Trinetra_api
+    name: trinetra-api
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app -b 0.0.0.0:$PORT
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app:app --host 0.0.0.0 --port 10000"
+    workingDir: backend
+    autoDeploy: true

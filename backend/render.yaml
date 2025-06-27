@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: Trinetra_api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app -b 0.0.0.0:$PORT

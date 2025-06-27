@@ -3,7 +3,8 @@ services:
     name: trinetra-api
     env: python
     plan: free
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: gunicorn app:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:10000
-
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:10000
+    workingDir: backend
     autoDeploy: true
+

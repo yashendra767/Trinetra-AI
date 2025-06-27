@@ -7,7 +7,7 @@ from preprocessing import preprocess
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-model_dir = os.path.join(current_dir, 'model')
+model_dir = os.path.join(current_dir, 'backend','model')
 
 # Load models and label encoders once
 model_zone = xgb.Booster()

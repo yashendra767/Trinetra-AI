@@ -6,7 +6,7 @@ import os
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-data_dir = os.path.join(current_dir, 'model')
+data_dir = os.path.join(current_dir,'backend', 'model')
 
 
 with open(os.path.join(data_dir, 'scalar.pkl'), 'rb') as f:

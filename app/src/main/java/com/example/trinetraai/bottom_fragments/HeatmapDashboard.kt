@@ -488,13 +488,13 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 for ((zoneId, pair) in hotspotZones) {
                     val (count, area) = pair
 
-                    // 🔍 Find the location for this zone from the FIR data
+                    // Find the location for this zone from the FIR data
                     val matchingDoc = documents.find { it.getString("zone")?.trim() == zoneId }
                     val locationMap = matchingDoc?.get("location") as? Map<String, Any>
                     val lat = locationMap?.get("lat") as? Double ?: 0.0
                     val lng = locationMap?.get("lng") as? Double ?: 0.0
 
-                    // 🌍 Hotspot data with coordinates
+                    // Hotspot data with coordinates
                     val hotspotData = mapOf(
                         "zoneId" to zoneId,
                         "areaName" to area,
@@ -669,6 +669,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             }
 
     }
+
     // === FIR UPLOADER === this to be removed after full app get completed
     @RequiresApi(Build.VERSION_CODES.O)
     private fun uploadFIRDataOnce() {
@@ -741,23 +742,19 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
 
-        mGoogleMap?.uiSettings?.isZoomGesturesEnabled = true
-        mGoogleMap?.uiSettings?.isScrollGesturesEnabled = true
-        mGoogleMap?.uiSettings?.isTiltGesturesEnabled = true
-        mGoogleMap?.uiSettings?.isRotateGesturesEnabled = true
-        mGoogleMap?.uiSettings?.isMyLocationButtonEnabled = true
+
 
         val delhi = LatLng(28.6139, 77.2090)
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(delhi, 10f))
 
-        try {
-            val styled = mGoogleMap?.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style)
-            )
-            if (styled == false) Log.e("MapStyle", "Style parsing failed")
-        } catch (e: Resources.NotFoundException) {
-            Log.e("MapStyle", "Can't find style. Error: ", e)
-        }
+//        try {
+//            val styled = mGoogleMap?.setMapStyle(
+//                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style)
+//            )
+//            if (styled == false) Log.e("MapStyle", "Style parsing failed")
+//        } catch (e: Resources.NotFoundException) {
+//            Log.e("MapStyle", "Can't find style. Error: ", e)
+//        }
 
         googleMap.uiSettings.isZoomControlsEnabled = true
 

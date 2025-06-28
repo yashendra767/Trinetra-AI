@@ -1,5 +1,7 @@
 package com.example.trinetraai.bottom_fragments.patrolFragment
 
+import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
@@ -19,34 +22,36 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.example.trinetraai.HotspotZone
 import com.example.trinetraai.R
+import com.example.trinetraai.presetData.ZoneData.delhiZones
 import org.json.JSONObject
 
 class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
 
-    private lateinit var mapView: MapView
+    //private lateinit var mapView: MapView
     private var googleMap: GoogleMap? = null
     private val apiKey = "AIzaSyCtR6Ly2xen0veKWOsMa5__pcSkj_JOHeQ"
     private var groupedZoneRoutes: List<List<HotspotZone>> = emptyList()
     private var selectedCardIndex: Int = 0
 
+
+
+    private lateinit var toggle : SwitchCompat
+    private val zoneMarkers = mutableListOf<Marker>()
+    private val polygonZoneMap = mutableMapOf<Polygon, String>()
+    private val zoneCenterMap = mutableMapOf<String, LatLng>()
+    private var popupMarker: Marker? = null
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_history_based_patrol, container, false)
-        mapView = view.findViewById(R.id.mapViewPreviewPatrolHistory)
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
 
-        mapView.setOnTouchListener { v, event ->
-            v.parent?.requestDisallowInterceptTouchEvent(true)
-            if (event.action == android.view.MotionEvent.ACTION_UP) {
-                v.performClick()
-            }
-            false
-        }
-        
 
+        //Load Map
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         return view
     }
@@ -63,13 +68,123 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
         map.setMinZoomPreference(5f)
         map.setMaxZoomPreference(20f)
 
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(28.6139, 77.2090), 11f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(28.6139, 77.2090), 10f))
+
+//        try {
+//            val styled = map?.setMapStyle(
+//                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style)
+//            )
+//            if (styled == false) Log.e("MapStyle", "Style parsing failed")
+//        } catch (e: Resources.NotFoundException) {
+//            Log.e("MapStyle", "Can't find style. Error: ", e)
+//        }
+
+       googleMap?.uiSettings?.isZoomControlsEnabled = true
+
+        val drawnPolygons = mutableListOf<Polygon>()
+        toggle = view?.findViewById(R.id.markerToggle)!!
+        toggle?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                drawnPolygons.clear()
+                drawnPolygons.addAll(drawZoneBoxesOnMap(googleMap, false))
+
+                googleMap?.setOnPolygonClickListener { polygon ->
+                    val zoneId = polygonZoneMap[polygon] ?: "Unknown Zone"
+                    val center = getPolygonCenterPoint(polygon.points)
+
+                    popupMarker?.remove()
+
+                    popupMarker = googleMap?.addMarker(
+                        MarkerOptions()
+                            .position(center)
+                            .title(zoneId)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    )
+
+                    popupMarker?.showInfoWindow()
+                }
+
+            } else {
+                for (polygon in drawnPolygons) {
+                    polygon.remove()
+                }
+                drawnPolygons.clear()
+            }
+        }
+
+        fetchZonesFromFirestore { zones ->
+            // use the list of HotspotZone objects
+            for (zone in zones) {
+                Log.d("Zone", "${zone.areaName} has ${zone.firCount} location ${zone.lng} ${zone.lat}FIRs")
+
+            }
+        }
 
         fetchZonesFromFirestore { zones ->
             val grouped = groupZones(zones)
-            drawGroupedPatrolRoutes(grouped)
             updateRouteListUI(grouped)
         }
+
+    }
+
+     private fun getPolygonCenterPoint(polygonPoints: List<LatLng>): LatLng {
+        var lat = 0.0
+        var lng = 0.0
+        for (point in polygonPoints) {
+            lat += point.latitude
+            lng += point.longitude
+        }
+        val size = polygonPoints.size
+        return LatLng(lat / size, lng / size)
+    }
+
+    private fun drawZoneBoxesOnMap(googleMap: GoogleMap?, showMarkers: Boolean): List<Polygon> {
+        val boxSize = 0.011
+        val polygons = mutableListOf<Polygon>()
+        zoneMarkers.clear()
+
+        delhiZones.forEach { zone ->
+            val lat = zone.lat
+            val lng = zone.lng
+            val box = listOf(
+                LatLng(lat, lng),
+                LatLng(lat, lng + boxSize),
+                LatLng(lat - boxSize, lng + boxSize),
+                LatLng(lat - boxSize, lng)
+            )
+
+            val polygon = googleMap?.addPolygon(
+                PolygonOptions()
+                    .addAll(box)
+                    .strokeColor(Color.GRAY)
+                    .fillColor(0x3300FF00)
+                    .strokeWidth(2f)
+                    .clickable(true)
+            )
+
+            polygon?.let { polygons.add(it)
+                polygonZoneMap[it] = "Zone ${zone.id}"
+            }
+
+            zoneCenterMap["Zone ${zone.id}"] = LatLng(lat - boxSize / 2, lng + boxSize / 2)
+
+            if (showMarkers) {
+                val marker = googleMap?.addMarker(
+                    MarkerOptions()
+                        .position(zoneCenterMap["Zone ${zone.id}"]!!)
+                        .title("Zone ${zone.id}")
+                        .snippet(zone.name)
+                )
+                marker?.let { zoneMarkers.add(it) }
+            }
+        }
+
+        googleMap?.setOnMarkerClickListener { marker ->
+            marker.showInfoWindow()
+            true
+        }
+
+        return polygons
     }
 
     private fun fetchZonesFromFirestore(onResult: (List<HotspotZone>) -> Unit) {
@@ -80,7 +195,7 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
                     try {
                         val location = doc.get("location") as? Map<*, *>
                         val lat = location?.get("lat") as? Double ?: 0.0
-                        val lng = location?.get("long") as? Double ?: 0.0
+                        val lng = location?.get("lng") as? Double ?: 0.0
 
                         HotspotZone(
                             zoneId = doc.getString("zoneId") ?: "",
@@ -167,7 +282,7 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
                         PolylineOptions()
                             .addAll(pathPoints)
                             .color(Color.BLUE)
-                            .width(7f)
+                            .width(5f)
                     )
 
                 } catch (e: Exception) {
@@ -206,7 +321,10 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
             val cardView = card as com.google.android.material.card.MaterialCardView
 
             routeId.text = "#PR${index + 1}"
-            routePath.text = group.joinToString(" -> ") { it.areaName }
+
+            val fullRouteNames = group.map { it.areaName }
+            routePath.text = fullRouteNames.joinToString(" -> ")
+
             if (index == selectedCardIndex) {
                 cardView.strokeColor = requireContext().getColor(R.color.textSecondary)
                 cardView.strokeWidth = 1
@@ -225,23 +343,5 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        mapView.onResume()
-    }
 
-    override fun onPause() {
-        super.onPause()
-        mapView.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView.onDestroy()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
-    }
 }

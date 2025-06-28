@@ -322,7 +322,7 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
 
             routeId.text = "#PR${index + 1}"
 
-            val fullRouteNames = group.map { it.areaName }
+            val fullRouteNames = group.map {"${it.areaName} (${it.zoneId})"}
             routePath.text = fullRouteNames.joinToString(" -> ")
 
             if (index == selectedCardIndex) {

@@ -48,10 +48,14 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.gson.Gson
+import com.google.maps.android.heatmaps.HeatmapTileProvider
+import com.google.maps.android.heatmaps.WeightedLatLng
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class HeatmapDashboard : Fragment(), OnMapReadyCallback {
@@ -112,6 +116,8 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("MissingInflatedId")
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -130,6 +136,10 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         timePeriodSpinner = view.findViewById(R.id.timePeriodSpinner)
         applyFilterButton = view.findViewById(R.id.btnApplyFilter)
 
+        applyFilterButton.setOnClickListener {
+            applyFiltersAndDrawHeatmap()
+        }
+
         val crimeList = CrimeTypesData.crimeTypeMap
         val dateRangeList = DateRangeData.dateRanges
         val timePeriodList = TimePeriodData.timePeriods
@@ -144,6 +154,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
         // Expand map click
         expandMap = view.findViewById(R.id.ExpandMapHotspot)
+
         expandMap.setOnClickListener {
             val currentPosition = mGoogleMap?.cameraPosition
             val dialog = FullScreenMap()
@@ -207,6 +218,152 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
         return view
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun applyFiltersAndDrawHeatmap() {
+        val selectedCrime = crimeTypeSpinner.selectedItem.toString()
+        val selectedDateRange = dateRangeSpinner.selectedItem.toString()
+        val selectedTimePeriod = timePeriodSpinner.selectedItem.toString()
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("FIR_Records").get().addOnSuccessListener { result ->
+            val zoneFIRMap = mutableMapOf<String, Int>()
+            val zoneLatLngMap = mutableMapOf<String, LatLng>()
+
+            for (doc in result) {
+                val crimeType = doc.getString("crime_type")?.trim() ?: continue
+                val zone = doc.getString("zone")?.trim() ?: continue
+                val timestampStr = doc.getString("timestamp")?.trim() ?: continue
+
+                //  Parse nested location map
+                val locationMap = doc.get("location") as? Map<*, *> ?: continue
+                val lat = (locationMap["lat"] as? Number)?.toDouble() ?: continue
+                val lng = (locationMap["lng"] as? Number)?.toDouble() ?: continue
+
+                // Parse date from timestamp string
+                val firTime = parseStringToDate(timestampStr)
+                if (firTime == null) {
+                    Log.d("FILTER", "Invalid date format for: $timestampStr")
+                    continue
+                }
+                val firTimestamp = firTime.time  // firTime is your parsed Date object
+                val now = System.currentTimeMillis()
+                val matchDate = when (selectedDateRange) {
+                    "Last 7 Days" -> now - firTimestamp <= 7L * 24 * 60 * 60 * 1000
+                    "Last 15 Days" -> now - firTimestamp <= 15L * 24 * 60 * 60 * 1000
+                    "Last 3 Months" -> now - firTimestamp <= 90L * 24 * 60 * 60 * 1000
+                    "Last Year" -> now - firTimestamp <= 365L * 24 * 60 * 60 * 1000
+                    "All Time" -> true
+                    else -> true
+                }
+                val hour = Calendar.getInstance().apply { timeInMillis = firTimestamp }.get(Calendar.HOUR_OF_DAY)
+                val matchTime = when (selectedTimePeriod) {
+                    "All Hours" -> true
+                    "00:00 – 03:00" -> hour in 0..2
+                    "03:00 – 09:00" -> hour in 3..8
+                    "09:00 – 12:00" -> hour in 9..11
+                    "12:00 – 18:00" -> hour in 12..17
+                    "18:00 – 00:00" -> hour in 18..23
+                    else -> true
+                }
+                if (!matchDate || !matchTime) continue
+
+                //Apply Filters
+                if (selectedCrime != "All") {
+                    val allowedCrimeTypes = CrimeTypesData.crimeTypeMap[selectedCrime]
+                    if (allowedCrimeTypes == null) {
+                    } else if (!allowedCrimeTypes.contains(crimeType)) {
+                        continue
+                    } else {
+                    }
+                } else {
+
+                }
+
+                //Count and map
+                zoneFIRMap[zone] = (zoneFIRMap[zone] ?: 0) + 1
+                if (!zoneLatLngMap.containsKey(zone)) {
+                    zoneLatLngMap[zone] = LatLng(lat, lng)
+                }
+            }
+            // Proceed if FIRs found
+            if (zoneFIRMap.isEmpty()) {
+                Toast.makeText(requireContext(), "No FIRs found for selected filters", Toast.LENGTH_SHORT).show()
+                mGoogleMap?.clear()
+            } else {
+                drawHeatMap(zoneFIRMap, zoneLatLngMap)
+            }
+        }
+
+    }
+
+    private fun parseStringToDate(timestampStr: String): Date? {
+        return try {
+            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            formatter.parse(timestampStr)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+
+    private fun drawHeatMap(
+        zoneFIRMap: Map<String, Int>,
+        zoneLatLngMap: Map<String, LatLng>
+    ) {
+        val maxCount = zoneFIRMap.values.maxOrNull() ?: 1
+        val weightedPoints = mutableListOf<WeightedLatLng>()
+
+        for ((zone, count) in zoneFIRMap) {
+            val latLng = zoneLatLngMap[zone] ?: continue
+            val normalizedIntensity = count.toDouble() / maxCount
+            weightedPoints.add(WeightedLatLng(latLng, normalizedIntensity))
+        }
+
+        if (weightedPoints.isEmpty()) {
+            Toast.makeText(requireContext(), "No data matched your filters.", Toast.LENGTH_SHORT).show()
+            mGoogleMap?.clear()
+            return
+        }
+
+        val heatmapProvider = HeatmapTileProvider.Builder()
+            .weightedData(weightedPoints)
+            .radius(50)
+            .opacity(0.7)
+            .build()
+
+        mGoogleMap?.clear()
+        mGoogleMap?.addTileOverlay(TileOverlayOptions().tileProvider(heatmapProvider))
+    }
+
+
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun isDateInRange(selectedRange: String, firDate: Date): Boolean {
+        val now = Calendar.getInstance().time
+        val diffInMillis = now.time - firDate.time
+        val diffInDays = diffInMillis / (1000 * 60 * 60 * 24)
+
+        return when (selectedRange) {
+            "All" -> true
+            "Last 7 Days" -> diffInDays <= 7
+            "Last 30 Days" -> diffInDays <= 30
+            "This Year" -> {
+                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+                val firYear = Calendar.getInstance().apply { time = firDate }.get(Calendar.YEAR)
+                firYear == currentYear
+            }
+            else -> true
+        }
+    }
+
+
+
+
     private fun focusOnZone(zoneId: String) {
         val center = zoneCenterMap[zoneId] ?: return
         mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 12f))
@@ -583,6 +740,12 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap = googleMap
+
+        mGoogleMap?.uiSettings?.isZoomGesturesEnabled = true
+        mGoogleMap?.uiSettings?.isScrollGesturesEnabled = true
+        mGoogleMap?.uiSettings?.isTiltGesturesEnabled = true
+        mGoogleMap?.uiSettings?.isRotateGesturesEnabled = true
+        mGoogleMap?.uiSettings?.isMyLocationButtonEnabled = true
 
         val delhi = LatLng(28.6139, 77.2090)
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(delhi, 10f))

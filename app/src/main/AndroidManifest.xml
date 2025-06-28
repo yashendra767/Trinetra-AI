@@ -20,6 +20,9 @@
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
         <activity
+            android:name=".bottom_fragments.expandMap.FullScreenMapActivity"
+            android:exported="false" />
+        <activity
             android:name=".drawer_activities.newFIR.AddNewFIRBottomSheet"
             android:exported="false"
             tools:ignore="Instantiatable" />

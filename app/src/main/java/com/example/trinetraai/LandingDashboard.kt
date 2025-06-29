@@ -18,6 +18,7 @@ import com.example.trinetraai.bottom_fragments.HeatmapDashboard
 import com.example.trinetraai.bottom_fragments.PatrolRoutes
 import com.example.trinetraai.bottom_fragments.TrendAnalyser
 import com.example.trinetraai.bottom_fragments.WomenSafety
+import com.example.trinetraai.drawer_activities.about.About
 import com.example.trinetraai.drawer_activities.AllFIRsActivity
 import com.example.trinetraai.drawer_activities.AllZones
 import com.example.trinetraai.drawer_activities.Notifications
@@ -74,6 +75,7 @@ class LandingDashboard : AppCompatActivity() {
                 R.id.nav_Settings -> startActivity(Intent(this, Settings::class.java))
                 R.id.nav_allFirs -> startActivity(Intent(this, AllFIRsActivity::class.java))
                 R.id.nav_zoneData -> startActivity(Intent(this, AllZones::class.java))
+                R.id.nav_about -> startActivity(Intent(this, About::class.java))
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true

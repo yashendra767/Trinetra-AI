@@ -23,6 +23,13 @@
         android:title="Settings"/>
 
     <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/about"
+        android:title="About">
+
+    </item>
+
+    <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/logout"
         android:title="Logout"/>

@@ -481,8 +481,40 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                     val currentCount = zoneInfoMap[zone]?.first ?: 0
                     zoneInfoMap[zone] = Pair(currentCount + 1, location.area)
                 }
+                val allzonedata = zoneInfoMap
                 val hotspotZones = zoneInfoMap.filter { it.value.first > 10 }.toMap()
                 hp_count.text = hotspotZones.size.toString()
+
+                //push allzone the data to Firbase under "zone data collection"
+                for ((zoneId, pair) in allzonedata) {
+                    val (count, area) = pair
+
+                    val matchingDoc = documents.find { it.getString("zone")?.trim() == zoneId }
+                    val locationMap = matchingDoc?.get("location") as? Map<String, Any>
+                    val lat = locationMap?.get("lat") as? Double ?: 0.0
+                    val lng = locationMap?.get("lng") as? Double ?: 0.0
+
+                    val zoneData = mapOf(
+                        "zoneId" to zoneId,
+                        "areaName" to area,
+                        "firCount" to count,
+                        "location" to mapOf(
+                            "lat" to lat,
+                            "lng" to lng
+                        )
+                    )
+
+                    db.collection("zone_data")
+                        .document(zoneId)
+                        .set(zoneData)
+                        .addOnSuccessListener {
+                            Log.d("ZoneDataUpdate", "$zoneId updated with location")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("ZonedataUpdate", "Failed to update $zoneId: ${e.message}")
+                        }
+                }
+
 
                 // Push hotspot data to Firestore under "hotspot_data" collection
                 for ((zoneId, pair) in hotspotZones) {

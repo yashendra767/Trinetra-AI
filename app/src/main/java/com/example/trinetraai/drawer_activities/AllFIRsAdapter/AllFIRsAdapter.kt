@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trinetraai.R
 import com.example.trinetraai.firdataclass.FIR
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AllFIRsAdapter(
     private var firList: List<FIR>,
@@ -36,7 +38,7 @@ class AllFIRsAdapter(
 
         holder.firId.text = "${fir.fir_id}"
         holder.crimeType.text = "${fir.crime_type}"
-        holder.timestamp.text = "${fir.timestamp}"
+        holder.timestamp.text = "${formatTimestampReadable(fir.timestamp)}"
         holder.areaZone.text = "${fir.location.area} - ${fir.zone}"
         holder.firStatus.text = "${fir.status}"
         holder.reportingStation.text = "${fir.reporting_station}"
@@ -54,8 +56,19 @@ class AllFIRsAdapter(
         notifyDataSetChanged()
     }
 
+    private fun formatTimestampReadable(rawTimestamp: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd MMMM yyyy, hh:mm a", Locale.getDefault())
+            val date = inputFormat.parse(rawTimestamp)
+            if (date != null) outputFormat.format(date) else rawTimestamp
+        } catch (e: Exception) {
+            rawTimestamp
+        }
+    }
+
 //    private fun showDetailsDialog(fir: FIR) {
-//        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_fir_details, null)
+       // val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_fir_details, null)
 //
 //        dialogView.findViewById<TextView>(R.id.detailFirId).text = "FIR ID: ${fir.fir_id}"
 //        dialogView.findViewById<TextView>(R.id.detailCrimeType).text = "Crime Type: ${fir.crime_type}"

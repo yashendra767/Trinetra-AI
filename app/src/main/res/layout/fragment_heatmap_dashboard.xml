@@ -362,8 +362,7 @@
                             android:id="@+id/map_fragment"
                             class="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            />
+                            android:layout_height="match_parent" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"

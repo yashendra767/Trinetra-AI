@@ -7,10 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.example.trinetraai.R
 import com.example.trinetraai.firdataclass.LocationData
+import com.example.trinetraai.presetData.CrimeTypesData
+import com.example.trinetraai.presetData.DateRangeData
 import com.example.trinetraai.presetData.WomenCrime
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.collections.component1
@@ -20,6 +24,14 @@ class WomenSafety : Fragment() {
 
     private lateinit var activeFIRwomen : TextView
     private lateinit var highRiskZone : TextView
+
+    private lateinit var zoneName_1 : TextView
+    private lateinit var zoneName_2 : TextView
+    private lateinit var zone1_cases : TextView
+    private lateinit var zone2_cases : TextView
+
+    private lateinit var crimeSpinner: Spinner
+    private lateinit var dateRangeSpinner: Spinner
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,10 +53,32 @@ class WomenSafety : Fragment() {
         highRiskZone = view.findViewById(R.id.tVHighRiskZoneWomen)
         gethighRiskZone(highRiskZone)
 
+        crimeSpinner = view.findViewById(R.id.crimeTypeSpinnerWomen)
+        setCrimeTypeSpinner(CrimeTypesData.crimeTypeMap,crimeSpinner)
+
+        dateRangeSpinner = view.findViewById(R.id.dateRangeSpinnerWomen)
+        setDateSpinner(DateRangeData.dateRanges , dateRangeSpinner)
+
+
+
 
 
         return view
     }
+
+    private fun setDateSpinner(dateList: List<String>, spinner: Spinner) {
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dateList)
+        adapter.setDropDownViewResource(R.layout.spinner_item_white)
+        spinner.adapter = adapter
+    }
+
+    private fun setCrimeTypeSpinner(crimeList: Map<String, List<String>>, spinner: Spinner) {
+        val crimeTypes = listOf("All Crimes") + crimeList.keys.sorted()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, crimeTypes)
+        adapter.setDropDownViewResource(R.layout.spinner_item_white)
+        spinner.adapter = adapter
+    }
+
 
     private fun gethighRiskZone(highRiskZone: TextView) {
         val db = FirebaseFirestore.getInstance()
@@ -123,8 +157,23 @@ class WomenSafety : Fragment() {
                         .addOnSuccessListener {  }
                         .addOnFailureListener {  }
                 }
-                // TODO for showing the risk zone
+
                 val sortedRiskList = riskZone.entries.sortedByDescending { it.value.first }
+
+                sortedRiskList.getOrNull(0)?.let{(zoneId, pair) ->
+                    val (count, area) = pair
+                    zoneName_1 = view?.findViewById(R.id.zoneName_1)!!
+                    zone1_cases = view?.findViewById(R.id.zone1_cases)!!
+                    zoneName_1.text = "${zoneId} - ${area}"
+                    zone1_cases.text = "${count} FIRs"
+                }
+                sortedRiskList.getOrNull(1)?.let{(zoneId, pair) ->
+                    val (count, area) = pair
+                    zoneName_2 = view?.findViewById(R.id.zoneName_2)!!
+                    zone2_cases = view?.findViewById(R.id.zone2_cases)!!
+                    zoneName_2.text = "${zoneId} - ${area}"
+                    zone2_cases.text = "${count} FIRs"
+                }
 
 
             }

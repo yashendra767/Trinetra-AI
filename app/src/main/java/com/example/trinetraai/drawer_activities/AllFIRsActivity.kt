@@ -113,11 +113,12 @@ class AllFIRsActivity : AppCompatActivity() {
                                 lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double ?: 0.0,
                                 area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String ?: ""
                             ),
-                            timestamp = doc.getString("timestamp") ?: "",
+                            timestamp =doc.getString("timestamp") ?: "",
                             zone = doc.getString("zone") ?: "",
                             status = doc.getString("status") ?: "",
                             reporting_station = doc.getString("reporting_station") ?: ""
                         )
+
                         allFIRs.add(fir)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -182,6 +183,17 @@ class AllFIRsActivity : AppCompatActivity() {
         matchedFIRs.visibility = View.VISIBLE
         matchedFIRs.animate().alpha(1f).setDuration(400).start()
         noFIRsImageView.animate().alpha(1f).setDuration(400).start()
+    }
+
+    private fun formatTimestampReadable(rawTimestamp: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd MMMM yyyy, hh:mm a", Locale.getDefault())
+            val date = inputFormat.parse(rawTimestamp)
+            if (date != null) outputFormat.format(date) else rawTimestamp
+        } catch (e: Exception) {
+            rawTimestamp
+        }
     }
 
     private fun extractTimestamp(fir: FIR): Long? {

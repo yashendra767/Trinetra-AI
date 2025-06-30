@@ -30,64 +30,69 @@ class TrendAnalyser : Fragment(), PredictionCallback {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_trend_analyser, container, false)
-        db = FirebaseFirestore.getInstance()
-
-        Zonetv = view.findViewById(R.id.tvZone)
-        CrimeTypetv=view.findViewById(R.id.tvCrimeType)
-        recyclerView = view.findViewById(R.id.recyclerViewFIR)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        adapter = TrendAnalyserAdapter(
-            firList = filteredFIRs,
-            coroutineScope = viewLifecycleOwner.lifecycleScope,
-            predictionCallback = this,
-            context = requireContext()
-        )
-
-        recyclerView.adapter = adapter
-        fetchAndFilterFIRs()
-        return view
+//        db = FirebaseFirestore.getInstance()
+//
+//        Zonetv = view.findViewById(R.id.tvZone)
+//        CrimeTypetv=view.findViewById(R.id.tvCrimeType)
+//        recyclerView = view.findViewById(R.id.recyclerViewFIR)
+//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//
+//        adapter = TrendAnalyserAdapter(
+//            firList = filteredFIRs,
+//            coroutineScope = viewLifecycleOwner.lifecycleScope,
+//            predictionCallback = this,
+//            context = requireContext()
+//        )
+//
+//        recyclerView.adapter = adapter
+//        fetchAndFilterFIRs()
+//        return view
+//    }
+//
+//    private fun fetchAndFilterFIRs() {
+//        db.collection("FIR_Records")
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                allFIRs.clear()
+//                filteredFIRs.clear()
+//                Toast.makeText(requireContext(), "FIR data loaded", Toast.LENGTH_SHORT).show()
+//                for (doc in documents) {
+//                    try {
+//                        val fir = FIR(
+//                            fir_id = doc.getString("fir_id") ?: "",
+//                            crime_type = doc.getString("crime_type") ?: "",
+//                            ipc_sections = doc.get("ipc_sections") as? List<String> ?: listOf(),
+//                            act_category = doc.getString("act_category") ?: "",
+//                            location = LocationData(
+//                                lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double ?: 0.0,
+//                                lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double ?: 0.0,
+//                                area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String ?: ""
+//                            ),
+//                            timestamp = doc.getString("timestamp") ?: "",
+//                            zone = doc.getString("zone") ?: "",
+//                            status = doc.getString("status") ?: "",
+//                            reporting_station = doc.getString("reporting_station") ?: ""
+//                        )
+//                        allFIRs.add(fir)
+//                        filteredFIRs.add(fir)
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//                adapter.notifyDataSetChanged()
+//            }
+//            .addOnFailureListener { it.printStackTrace() }
+//    }
+//
+//
+//
+//    override fun onPredictionResult(Zone: String, Type: String) {
+//       CrimeTypetv.text=Type
+//        Zonetv.text =Zone
+//    }
+        return TODO("Provide the return value")
     }
-
-    private fun fetchAndFilterFIRs() {
-        db.collection("FIR_Records")
-            .get()
-            .addOnSuccessListener { documents ->
-                allFIRs.clear()
-                filteredFIRs.clear()
-                Toast.makeText(requireContext(), "FIR data loaded", Toast.LENGTH_SHORT).show()
-                for (doc in documents) {
-                    try {
-                        val fir = FIR(
-                            fir_id = doc.getString("fir_id") ?: "",
-                            crime_type = doc.getString("crime_type") ?: "",
-                            ipc_sections = doc.get("ipc_sections") as? List<String> ?: listOf(),
-                            act_category = doc.getString("act_category") ?: "",
-                            location = LocationData(
-                                lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double ?: 0.0,
-                                lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double ?: 0.0,
-                                area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String ?: ""
-                            ),
-                            timestamp = doc.getString("timestamp") ?: "",
-                            zone = doc.getString("zone") ?: "",
-                            status = doc.getString("status") ?: "",
-                            reporting_station = doc.getString("reporting_station") ?: ""
-                        )
-                        allFIRs.add(fir)
-                        filteredFIRs.add(fir)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                adapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { it.printStackTrace() }
-    }
-
-
-
     override fun onPredictionResult(Zone: String, Type: String) {
-       CrimeTypetv.text=Type
-        Zonetv.text =Zone
-    }
-}
+        TODO("Not yet implemented")
+    }}
+

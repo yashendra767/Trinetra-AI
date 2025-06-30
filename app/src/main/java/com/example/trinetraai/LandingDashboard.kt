@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ import com.example.trinetraai.drawer_activities.AllZones
 import com.example.trinetraai.drawer_activities.Notifications
 import com.example.trinetraai.drawer_activities.Settings
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LandingDashboard : AppCompatActivity() {
 
@@ -47,6 +50,35 @@ class LandingDashboard : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         navView = findViewById(R.id.adminNavView)
         val bottomNav = findViewById<me.ibrahimsn.lib.SmoothBottomBar>(R.id.adminBottomNav)
+
+        val auth = FirebaseAuth.getInstance()
+        val firestore = FirebaseFirestore.getInstance()
+
+        val headerView: View = navView.getHeaderView(0)
+        val navName = headerView.findViewById<TextView>(R.id.navName)
+        val navEmail = headerView.findViewById<TextView>(R.id.navEmail)
+        val navPost = headerView.findViewById<TextView>(R.id.navPost)
+        val navArea = headerView.findViewById<TextView>(R.id.navArea)
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            navEmail.text = currentUser.email ?: "No Email"
+
+            firestore.collection("users").document(currentUser.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        navName.text = document.getString("name") ?: "No Name"
+                        navPost.text = "Post: ${document.getString("post") ?: "N/A"}"
+                        navArea.text = "Assigned Area: ${document.getString("assignedArea") ?: "N/A"}"
+                    }
+                }
+                .addOnFailureListener {
+                    navName.text = "Error"
+                    navPost.text = ""
+                    navArea.text = ""
+                }
+        }
+
 
         setSupportActionBar(toolbar)
 

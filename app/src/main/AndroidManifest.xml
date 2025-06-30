@@ -23,9 +23,6 @@
             android:name=".drawer_activities.about.About"
             android:exported="false" />
         <activity
-            android:name=".bottom_fragments.expandMap.FullScreenMapActivity"
-            android:exported="false" />
-        <activity
             android:name=".drawer_activities.newFIR.AddNewFIRBottomSheet"
             android:exported="false"
             tools:ignore="Instantiatable" />
@@ -44,11 +41,7 @@
         <activity
             android:name=".LandingDashboard"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".navigationScreen.Nav_PatrolRoute"
@@ -61,7 +54,13 @@
             android:exported="false" />
         <activity
             android:name=".authentication.Login"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".authentication.SignUp"
             android:exported="false" />

@@ -16,7 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.trinetraai.bottom_fragments.HeatmapDashboard
 import com.example.trinetraai.bottom_fragments.PatrolRoutes
-import com.example.trinetraai.bottom_fragments.TrendAnalyser
+import com.example.trinetraai.bottom_fragments.TrendAnalyser.TrendAnalyser
 import com.example.trinetraai.bottom_fragments.WomenSafety
 import com.example.trinetraai.drawer_activities.about.About
 import com.example.trinetraai.drawer_activities.AllFIRsActivity

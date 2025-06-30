@@ -1,14 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bottom_fragments.TrendAnalyser">
+    android:orientation="vertical"
+    android:background="#141414"
+    android:padding="16dp"
+    tools:context=".bottom_fragments.TrendAnalyser.TrendAnalyser">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Title -->
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="FIR Predictor"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:paddingBottom="8dp" />
 
-</FrameLayout>
+    <!-- Crime Type -->
+    <TextView
+        android:id="@+id/tvCrimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Crime Type"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvCrimeType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Assault"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Zone -->
+    <TextView
+        android:id="@+id/tvZoneLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zone"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvZone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="North"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFIR"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/item_fir_number"
+        android:paddingTop="8dp" />
+
+</LinearLayout>

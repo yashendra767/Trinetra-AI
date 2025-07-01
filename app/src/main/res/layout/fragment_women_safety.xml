@@ -185,7 +185,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="12dp">
+                   >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="12dp"
+                        android:paddingTop="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -193,97 +199,12 @@
                         android:text="Crime Intensity Matrix"
                         android:textSize="18sp"
                         android:textStyle="bold"
+                        android:layout_marginBottom="2dp"
                         android:layout_weight="1"
                         android:textColor="@color/accentSaffron">
                     </TextView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Crime Type"
-                        android:textSize="15sp"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/textSecondary">
-                    </TextView>
-
-                    <Spinner
-                        android:id="@+id/crimeTypeSpinnerWomen"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/spinner_bg_dashboard"
-                        android:padding="8dp">
-                    </Spinner>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="1">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Date Range"
-                                android:textSize="15sp"
-                                android:layout_marginTop="10dp"
-                                android:textColor="@color/textSecondary">
-                            </TextView>
-
-                            <Spinner
-                                android:id="@+id/dateRangeSpinnerWomen"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/spinner_bg_dashboard"
-                                android:padding="8dp">
-                            </Spinner>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Time Period"
-                                android:textSize="15sp"
-                                android:layout_marginTop="10dp"
-                                android:textColor="@color/textSecondary">
-                            </TextView>
-                            <Spinner
-                                android:id="@+id/timePeriodSpinnerWomen"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginStart="8dp"
-                                android:background="@drawable/spinner_bg_dashboard"
-                                android:layout_weight="1"
-                                android:padding="8dp">
-                            </Spinner>
-                        </LinearLayout>
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnApplyFilterWomen"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Apply Filter"
-                        android:textColor="@color/textPrimary"
-                        android:textStyle="bold"
-                        app:cornerRadius="12dp"
-                        android:backgroundTint="@color/primary">
-                    </com.google.android.material.button.MaterialButton>
 
                     <View
                         android:layout_width="match_parent"
@@ -292,17 +213,39 @@
                         android:background="@color/surfaceLight">
                     </View>
 
-                    <GridLayout
-                        android:id="@+id/crimeIntensityGrid"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:columnCount="10"
-                        android:rowCount="6"
-                        android:padding="8dp"
+                        android:gravity="center"
                         android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
-                        android:alignmentMode="alignMargins"
-                        android:useDefaultMargins="true"/>
+                        android:paddingBottom="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <GridLayout
+                            android:id="@+id/crimeIntensityGrid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:useDefaultMargins="true"
+                            android:columnCount="6"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fir Count : Zone"
+                        android:layout_gravity="end"
+                        android:textSize="18sp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/textSecondary"/>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

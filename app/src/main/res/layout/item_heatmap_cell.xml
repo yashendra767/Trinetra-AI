@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="4dp"
+    android:layout_margin="2dp">
+
+    <TextView
+        android:id="@+id/firCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/zoneLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zone 1"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:gravity="center"/>
+</LinearLayout>

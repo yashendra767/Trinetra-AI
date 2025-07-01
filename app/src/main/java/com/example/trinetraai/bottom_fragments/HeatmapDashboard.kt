@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trinetraai.R
@@ -50,6 +51,7 @@ import com.google.firebase.firestore.Query
 import com.google.gson.Gson
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -461,139 +463,141 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         hp_zone2cases: TextView,
         viewAllZones: MaterialButton,
     ) {
-        val db = FirebaseFirestore.getInstance()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val db = FirebaseFirestore.getInstance()
 
-        db.collection("FIR_Records")
-            .get()
-            .addOnSuccessListener { documents ->
-                val zoneInfoMap = mutableMapOf<String, Pair<Int, String>>()
+            db.collection("FIR_Records")
+                .get()
+                .addOnSuccessListener { documents ->
+                    val zoneInfoMap = mutableMapOf<String, Pair<Int, String>>()
 
-                for (doc in documents) {
-                    val zone = doc.getString("zone")?.trim() ?: continue
-                    val location = LocationData(
-                        lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double
-                            ?: 0.0,
-                        lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double
-                            ?: 0.0,
-                        area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String
-                            ?: ""
-                    )
-                    val currentCount = zoneInfoMap[zone]?.first ?: 0
-                    zoneInfoMap[zone] = Pair(currentCount + 1, location.area)
-                }
-                val allzonedata = zoneInfoMap
-                val hotspotZones = zoneInfoMap.filter { it.value.first > 10 }.toMap()
-                hp_count.text = hotspotZones.size.toString()
-
-                //push allzone the data to Firbase under "zone data collection"
-                for ((zoneId, pair) in allzonedata) {
-                    val (count, area) = pair
-
-                    val matchingDoc = documents.find { it.getString("zone")?.trim() == zoneId }
-                    val locationMap = matchingDoc?.get("location") as? Map<String, Any>
-                    val lat = locationMap?.get("lat") as? Double ?: 0.0
-                    val lng = locationMap?.get("lng") as? Double ?: 0.0
-
-                    val zoneData = mapOf(
-                        "zoneId" to zoneId,
-                        "areaName" to area,
-                        "firCount" to count,
-                        "location" to mapOf(
-                            "lat" to lat,
-                            "lng" to lng
+                    for (doc in documents) {
+                        val zone = doc.getString("zone")?.trim() ?: continue
+                        val location = LocationData(
+                            lat = (doc.get("location") as? Map<String, Any>)?.get("lat") as? Double
+                                ?: 0.0,
+                            lng = (doc.get("location") as? Map<String, Any>)?.get("lng") as? Double
+                                ?: 0.0,
+                            area = (doc.get("location") as? Map<String, Any>)?.get("area") as? String
+                                ?: ""
                         )
-                    )
-
-                    db.collection("zone_data")
-                        .document(zoneId)
-                        .set(zoneData)
-                        .addOnSuccessListener {
-                            Log.d("ZoneDataUpdate", "$zoneId updated with location")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("ZonedataUpdate", "Failed to update $zoneId: ${e.message}")
-                        }
-                }
-
-
-                // Push hotspot data to Firestore under "hotspot_data" collection
-                for ((zoneId, pair) in hotspotZones) {
-                    val (count, area) = pair
-
-                    // Find the location for this zone from the FIR data
-                    val matchingDoc = documents.find { it.getString("zone")?.trim() == zoneId }
-                    val locationMap = matchingDoc?.get("location") as? Map<String, Any>
-                    val lat = locationMap?.get("lat") as? Double ?: 0.0
-                    val lng = locationMap?.get("lng") as? Double ?: 0.0
-
-                    // Hotspot data with coordinates
-                    val hotspotData = mapOf(
-                        "zoneId" to zoneId,
-                        "areaName" to area,
-                        "firCount" to count,
-                        "location" to mapOf(
-                            "lat" to lat,
-                            "lng" to lng
-                        )
-                    )
-
-                    db.collection("hotspot_data")
-                        .document(zoneId) // zoneId as document ID
-                        .set(hotspotData) // overwrite existing data
-                        .addOnSuccessListener {
-                            Log.d("HotspotUpdate", "Zone $zoneId updated with location")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("HotspotUpdate", "Failed to update $zoneId: ${e.message}")
-                        }
-                }
-
-
-
-                val sortedHotspotList = hotspotZones.entries.sortedByDescending { it.value.first }
-
-
-
-                sortedHotspotList.getOrNull(0)?.let { (zoneId, pair) ->
-                    val (count, area) = pair
-                    hp_zone1name.text = "$zoneId - $area"
-                    hp_zone1cases.text = "${count.toString()} cases"
-                    topHotspotZone1 = zoneId
-                }
-
-                sortedHotspotList.getOrNull(1)?.let { (zoneId, pair) ->
-                    val (count, area) = pair
-                    hp_zone2name.text = "$zoneId - $area"
-                    hp_zone2cases.text = "${count.toString()} cases"
-                    topHotspotZone2 = zoneId
-                }
-
-                hp_card1 = view?.findViewById(R.id.hp_card1)!!
-                hp_card2 = view?.findViewById(R.id.hp_card2)!!
-
-                hp_card1.setOnClickListener {
-                    topHotspotZone1?.let { zoneId ->
-                        focusOnZone(zoneId)
+                        val currentCount = zoneInfoMap[zone]?.first ?: 0
+                        zoneInfoMap[zone] = Pair(currentCount + 1, location.area)
                     }
-                }
-                hp_card2.setOnClickListener {
-                    topHotspotZone2?.let { zoneId ->
-                        focusOnZone(zoneId)
-                    }
-                }
+                    val allzonedata = zoneInfoMap
+                    val hotspotZones = zoneInfoMap.filter { it.value.first > 10 }.toMap()
+                    hp_count.text = hotspotZones.size.toString()
 
-                viewAllZones.setOnClickListener {
-                    val zoneList = hotspotZones.map { (zoneId , pair) ->
+                    //push allzone the data to Firbase under "zone data collection"
+                    for ((zoneId, pair) in allzonedata) {
                         val (count, area) = pair
-                        ZoneData_hp(zoneId, area ,count.toString())
-                    }
-                    showAllZonesDailog(requireContext() ,zoneList)
-                }
 
-            }
-            .addOnFailureListener {
-                hp_count.text = "Failed to fetch FIRs"
-            }
+                        val matchingDoc = documents.find { it.getString("zone")?.trim() == zoneId }
+                        val locationMap = matchingDoc?.get("location") as? Map<String, Any>
+                        val lat = locationMap?.get("lat") as? Double ?: 0.0
+                        val lng = locationMap?.get("lng") as? Double ?: 0.0
+
+                        val zoneData = mapOf(
+                            "zoneId" to zoneId,
+                            "areaName" to area,
+                            "firCount" to count,
+                            "location" to mapOf(
+                                "lat" to lat,
+                                "lng" to lng
+                            )
+                        )
+
+                        db.collection("zone_data")
+                            .document(zoneId)
+                            .set(zoneData)
+                            .addOnSuccessListener {
+                                Log.d("ZoneDataUpdate", "$zoneId updated with location")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("ZonedataUpdate", "Failed to update $zoneId: ${e.message}")
+                            }
+                    }
+
+
+                    // Push hotspot data to Firestore under "hotspot_data" collection
+                    for ((zoneId, pair) in hotspotZones) {
+                        val (count, area) = pair
+
+                        // Find the location for this zone from the FIR data
+                        val matchingDoc = documents.find { it.getString("zone")?.trim() == zoneId }
+                        val locationMap = matchingDoc?.get("location") as? Map<String, Any>
+                        val lat = locationMap?.get("lat") as? Double ?: 0.0
+                        val lng = locationMap?.get("lng") as? Double ?: 0.0
+
+                        // Hotspot data with coordinates
+                        val hotspotData = mapOf(
+                            "zoneId" to zoneId,
+                            "areaName" to area,
+                            "firCount" to count,
+                            "location" to mapOf(
+                                "lat" to lat,
+                                "lng" to lng
+                            )
+                        )
+
+                        db.collection("hotspot_data")
+                            .document(zoneId) // zoneId as document ID
+                            .set(hotspotData) // overwrite existing data
+                            .addOnSuccessListener {
+                                Log.d("HotspotUpdate", "Zone $zoneId updated with location")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("HotspotUpdate", "Failed to update $zoneId: ${e.message}")
+                            }
+                    }
+
+
+                    val sortedHotspotList =
+                        hotspotZones.entries.sortedByDescending { it.value.first }
+
+
+
+                    sortedHotspotList.getOrNull(0)?.let { (zoneId, pair) ->
+                        val (count, area) = pair
+                        hp_zone1name.text = "$zoneId - $area"
+                        hp_zone1cases.text = "${count.toString()} cases"
+                        topHotspotZone1 = zoneId
+                    }
+
+                    sortedHotspotList.getOrNull(1)?.let { (zoneId, pair) ->
+                        val (count, area) = pair
+                        hp_zone2name.text = "$zoneId - $area"
+                        hp_zone2cases.text = "${count.toString()} cases"
+                        topHotspotZone2 = zoneId
+                    }
+
+                    hp_card1 = view?.findViewById(R.id.hp_card1)!!
+                    hp_card2 = view?.findViewById(R.id.hp_card2)!!
+
+                    hp_card1.setOnClickListener {
+                        topHotspotZone1?.let { zoneId ->
+                            focusOnZone(zoneId)
+                        }
+                    }
+                    hp_card2.setOnClickListener {
+                        topHotspotZone2?.let { zoneId ->
+                            focusOnZone(zoneId)
+                        }
+                    }
+
+                    viewAllZones.setOnClickListener {
+                        val zoneList = hotspotZones.map { (zoneId, pair) ->
+                            val (count, area) = pair
+                            ZoneData_hp(zoneId, area, count.toString())
+                        }
+                        showAllZonesDailog(requireContext(), zoneList)
+                    }
+
+                }
+                .addOnFailureListener {
+                    hp_count.text = "Failed to fetch FIRs"
+                }
+        }
     }
 
     private fun showAllZonesDailog(context: Context, zoneStats: List<ZoneData_hp>) {
@@ -705,50 +709,63 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     // === FIR UPLOADER === this to be removed after full app get completed
     @RequiresApi(Build.VERSION_CODES.O)
     private fun uploadFIRDataOnce() {
-        val prefs = requireContext().getSharedPreferences("fir_upload_status", Context.MODE_PRIVATE)
-        val alreadyUploaded = prefs.getBoolean("is_uploaded", false)
 
-        if (alreadyUploaded) {
-            Log.d("FIRUploader", "Already uploaded FIR data. Skipping.")
-            return
-        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            val prefs =
+                requireContext().getSharedPreferences("fir_upload_status", Context.MODE_PRIVATE)
+            val alreadyUploaded = prefs.getBoolean("is_uploaded", false)
 
-        val json = requireContext().assets.open("fir_data.json").bufferedReader().use { it.readText() }
-        val gson = Gson()
-        val firList: List<FIR> = gson.fromJson(json, object : TypeToken<List<FIR>>() {}.type)
+            if (alreadyUploaded) {
+                Log.d("FIRUploader", "Already uploaded FIR data. Skipping.")
+                return@launch
+            }
 
-        var successCount = 0
+            val json =
+                requireContext().assets.open("fir_data.json").bufferedReader().use { it.readText() }
+            val gson = Gson()
+            val firList: List<FIR> = gson.fromJson(json, object : TypeToken<List<FIR>>() {}.type)
 
-        for (fir in firList) {
-            val firMap = hashMapOf(
-                "fir_id" to fir.fir_id,
-                "crime_type" to fir.crime_type,
-                "ipc_sections" to fir.ipc_sections,
-                "act_category" to fir.act_category,
-                "location" to hashMapOf(
-                    "lat" to fir.location.lat,
-                    "lng" to fir.location.lng,
-                    "area" to fir.location.area
-                ),
-                "timestamp" to fir.timestamp.toString(),
-                "zone" to fir.zone,
-                "status" to fir.status,
-                "reporting_station" to fir.reporting_station
-            )
+            var successCount = 0
 
-            db.collection("FIR_Records").document(fir.fir_id)
-                .set(firMap)
-                .addOnSuccessListener {
-                    successCount++
-                    Log.d("FIRUploader", "Uploaded FIR: ${fir.fir_id}")
-                    if (successCount == firList.size) {
-                        prefs.edit().putBoolean("is_uploaded", true).apply()
-                        Toast.makeText(requireContext(), "✅ All FIRs uploaded successfully", Toast.LENGTH_SHORT).show()
+            for (fir in firList) {
+                val firMap = hashMapOf(
+                    "fir_id" to fir.fir_id,
+                    "crime_type" to fir.crime_type,
+                    "ipc_sections" to fir.ipc_sections,
+                    "act_category" to fir.act_category,
+                    "location" to hashMapOf(
+                        "lat" to fir.location.lat,
+                        "lng" to fir.location.lng,
+                        "area" to fir.location.area
+                    ),
+                    "timestamp" to fir.timestamp.toString(),
+                    "zone" to fir.zone,
+                    "status" to fir.status,
+                    "reporting_station" to fir.reporting_station
+                )
+
+                db.collection("FIR_Records").document(fir.fir_id)
+                    .set(firMap)
+                    .addOnSuccessListener {
+                        successCount++
+                        Log.d("FIRUploader", "Uploaded FIR: ${fir.fir_id}")
+                        if (successCount == firList.size) {
+                            prefs.edit().putBoolean("is_uploaded", true).apply()
+                            if (isAdded) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "✅ All FIRs uploaded successfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+
+                            }
+                        }
                     }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("FIRUploader", "❌ Failed to upload FIR: ${fir.fir_id}", e)
-                }
+                    .addOnFailureListener { e ->
+                        Log.e("FIRUploader", "❌ Failed to upload FIR: ${fir.fir_id}", e)
+                    }
+            }
         }
     }
 

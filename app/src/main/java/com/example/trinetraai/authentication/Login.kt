@@ -3,7 +3,8 @@ package com.example.trinetraai.authentication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trinetraai.LandingDashboard
 import com.example.trinetraai.R
@@ -28,6 +29,11 @@ class Login : AppCompatActivity() {
         val passEditText = findViewById<TextInputEditText>(R.id.loginPass)
         val loginButton = findViewById<MaterialButton>(R.id.buttonLogin)
         val signUpText = findViewById<TextView>(R.id.tVSignUpDirect)
+        val forgotText = findViewById<TextView>(R.id.tVForgotPass)
+
+        forgotText.setOnClickListener {
+            startActivity(Intent(this, ForgotPass::class.java))
+        }
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
@@ -54,7 +60,7 @@ class Login : AppCompatActivity() {
                             if (doc.exists()) {
                                 Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
                                 startActivity(Intent(this, LandingDashboard::class.java))
-                                finish()
+                                finishAffinity()
                             } else {
                                 Toast.makeText(this, "User profile not found in Firestore.", Toast.LENGTH_SHORT).show()
                                 loginButton.isEnabled = true
@@ -69,6 +75,15 @@ class Login : AppCompatActivity() {
 
         signUpText.setOnClickListener {
             startActivity(Intent(this, SignUp::class.java))
+            finish()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            startActivity(Intent(this, LandingDashboard::class.java))
             finish()
         }
     }

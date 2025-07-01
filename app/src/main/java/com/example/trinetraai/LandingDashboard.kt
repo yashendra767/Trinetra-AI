@@ -140,10 +140,11 @@ class LandingDashboard : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            moveTaskToBack(true)
         }
     }
     private fun replaceTheFragment(fragment: Fragment) {

@@ -10,19 +10,22 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.trinetraai.R
+import com.google.android.material.imageview.ShapeableImageView
 
 class Nav_PatrolRoute : AppCompatActivity() {
     private lateinit var gestureDetector: GestureDetectorCompat
+    private lateinit var patrolNxt : ShapeableImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_nav_patrol_route)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
+
+        patrolNxt = findViewById(R.id.patrol_nextbtn)
+        patrolNxt.setOnClickListener {
+            startActivity(Intent(this, Nav_WomenSafety::class.java))
+        }
     }
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
@@ -63,13 +66,12 @@ class Nav_PatrolRoute : AppCompatActivity() {
     private fun onSwipeRight() {
         val intent = Intent(this, Nav_Heatmap::class.java)
         startActivity(intent)
-
-
+        finish()
     }
 
     private fun onSwipeLeft() {
         val intent = Intent(this, Nav_WomenSafety::class.java)
         startActivity(intent)
-
+        finish()
     }
 }

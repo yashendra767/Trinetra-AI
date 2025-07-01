@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.core.content.edit
 
 class Profile : AppCompatActivity() {
 
@@ -18,6 +19,7 @@ class Profile : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_profile)
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -65,8 +67,11 @@ class Profile : AppCompatActivity() {
         logoutBtn.setOnClickListener {
             auth.signOut()
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, Login::class.java))
-            finish()
+
+            val prefs = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE)
+            prefs.edit { putBoolean("onboarding_shown", false) }
+            startActivity(Intent(this, MainActivity::class.java))
+            finishAffinity()
         }
 
         editProfileBtn.setOnClickListener {

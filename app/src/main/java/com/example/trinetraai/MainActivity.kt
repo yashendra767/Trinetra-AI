@@ -10,11 +10,23 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.trinetraai.authentication.Login
+import com.example.trinetraai.navigationScreen.Nav_Heatmap
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        auth = FirebaseAuth.getInstance()
+        if (auth.currentUser != null) {
+            startActivity(Intent(this, LandingDashboard::class.java))
+            finish()
+            return
+        }
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -29,8 +41,16 @@ class MainActivity : AppCompatActivity() {
         }
         videoView.start()
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, WelcomeScreen::class.java))
+            val prefs = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE)
+            val onboardingShown = prefs.getBoolean("onboarding_shown", false)
+
+            if (onboardingShown) {
+                startActivity(Intent(this, Login::class.java))
+            } else {
+                startActivity(Intent(this, Nav_Heatmap::class.java))
+            }
             finish()
-        },2000)
+        }, 2000)
+
     }
 }

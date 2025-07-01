@@ -10,18 +10,29 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.trinetraai.R
+import com.example.trinetraai.authentication.Login
+import com.google.android.material.imageview.ShapeableImageView
+import androidx.core.content.edit
 
 class Nav_WomenSafety : AppCompatActivity() {
     private lateinit var gestureDetector: GestureDetectorCompat
+    private lateinit var womenSafetyNxt : ShapeableImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_nav_women_safety)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        womenSafetyNxt = findViewById(R.id.women_nextbtn)
+
+        womenSafetyNxt.setOnClickListener {
+            val prefs = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE)
+            prefs.edit { putBoolean("onboarding_shown", true) }
+
+            startActivity(Intent(this, Login::class.java))
+            finish()
+
         }
+
 
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
     }
@@ -38,7 +49,7 @@ class Nav_WomenSafety : AppCompatActivity() {
             e1: MotionEvent?,
             e2: MotionEvent,
             velocityX: Float,
-            velocityY: Float
+            velocityY: Float,
         ): Boolean {
             if (e1 == null || e2 == null) return false
             val diffX = e2.x - e1.x
@@ -67,7 +78,10 @@ class Nav_WomenSafety : AppCompatActivity() {
     }
 
     private fun onSwipeLeft() {
-
+        val prefs = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE)
+        prefs.edit { putBoolean("onboarding_shown", true) }
+        startActivity(Intent(this, Login::class.java))
+        finish()
 
     }
 }

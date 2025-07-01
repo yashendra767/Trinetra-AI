@@ -4,30 +4,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.trinetraai.R
+import com.google.android.material.imageview.ShapeableImageView
 
 class Nav_Heatmap : AppCompatActivity() {
 
     private lateinit var gestureDetector: GestureDetectorCompat
+    private lateinit var heatMapNxt : ShapeableImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_nav_heatmap)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
+
+        heatMapNxt = findViewById(R.id.heatmap_nextBtn)
+        heatMapNxt.setOnClickListener {
+            startActivity(Intent(this, Nav_PatrolRoute::class.java))
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -75,6 +76,7 @@ class Nav_Heatmap : AppCompatActivity() {
     private fun onSwipeLeft() {
         val intent = Intent(this, Nav_PatrolRoute::class.java)
         startActivity(intent)
+        finish()
 
     }
 }

@@ -227,7 +227,7 @@
                             android:id="@+id/crimeIntensityGrid"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center_horizontal"
                             android:useDefaultMargins="true"
                             android:columnCount="6"
                             app:layout_constraintBottom_toBottomOf="parent"

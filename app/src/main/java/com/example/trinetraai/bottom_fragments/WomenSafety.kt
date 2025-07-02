@@ -34,9 +34,7 @@ class WomenSafety : Fragment() {
     private lateinit var zone1_cases : TextView
     private lateinit var zone2_cases : TextView
 
-
     private lateinit var grid: GridLayout
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,24 +48,17 @@ class WomenSafety : Fragment() {
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_women_safety, container, false)
 
-
         activeFIRwomen = view.findViewById(R.id.tVActiveFirWomen)
         getFIRCountWomen(activeFIRwomen)
 
         highRiskZone = view.findViewById(R.id.tVHighRiskZoneWomen)
         gethighRiskZone(highRiskZone)
 
-
-        
-
         grid = view.findViewById(R.id.crimeIntensityGrid)
         
         fetchWomenFIRPerZone { firMap ->
             populateZoneHeatmap(grid,firMap)
         }
-        
-
-
         return view
     }
 
@@ -79,7 +70,7 @@ class WomenSafety : Fragment() {
 
         val maxFir = firMap.values.maxOrNull() ?: 1
 
-        val columns = 5
+        val columns = 4
         val rows = (totalZones  + columns - 1) / columns
 
         grid.columnCount = columns
@@ -132,10 +123,6 @@ class WomenSafety : Fragment() {
                 onResult(emptyMap())
             }
     }
-
-
-
-
 
     private fun gethighRiskZone(highRiskZone: TextView) {
         val db = FirebaseFirestore.getInstance()

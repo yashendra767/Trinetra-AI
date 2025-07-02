@@ -21,6 +21,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
+import androidx.cardview.widget.CardView
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -88,8 +89,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     private lateinit var hp_zone2name : TextView
     private lateinit var hp_zone2cases : TextView
 
-    private lateinit var hp_card1 : MaterialCardView
-    private lateinit var hp_card2 : MaterialCardView
+
 
 
 
@@ -571,15 +571,15 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                         topHotspotZone2 = zoneId
                     }
 
-                    hp_card1 = view?.findViewById(R.id.hp_card1)!!
-                    hp_card2 = view?.findViewById(R.id.hp_card2)!!
+                    val hp_card1 = view?.findViewById<MaterialCardView>(R.id.hp_card1)
+                    val hp_card2 = view?.findViewById<MaterialCardView>(R.id.hp_card2)
 
-                    hp_card1.setOnClickListener {
+                    hp_card1?.setOnClickListener {
                         topHotspotZone1?.let { zoneId ->
                             focusOnZone(zoneId)
                         }
                     }
-                    hp_card2.setOnClickListener {
+                    hp_card2?.setOnClickListener {
                         topHotspotZone2?.let { zoneId ->
                             focusOnZone(zoneId)
                         }

@@ -89,10 +89,13 @@ class TrendAnalyser : Fragment(), PredictionCallback {
 //    override fun onPredictionResult(Zone: String, Type: String) {
 //       CrimeTypetv.text=Type
 //        Zonetv.text =Zone
-//    }
-        return TODO("Provide the return value")
+//
+        return view
     }
+
     override fun onPredictionResult(Zone: String, Type: String) {
-        TODO("Not yet implemented")
-    }}
+
+    }
+}
+
 

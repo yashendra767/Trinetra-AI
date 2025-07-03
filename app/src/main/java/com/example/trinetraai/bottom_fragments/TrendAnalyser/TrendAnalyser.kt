@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,7 +62,7 @@ class TrendAnalyser : Fragment() {
         val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
 
         dialogProgressText = dialogView.findViewById(R.id.dailogprogressText)
-        val cancelButton = dialogView.findViewById<Button>(R.id.cancelButton)
+        val cancelButton = dialogView.findViewById<MaterialButton>(R.id.cancelButton)
         cancelButton.setOnClickListener {
             cancelRequested = true
             dismissGifProgressDialog()

@@ -46,14 +46,4 @@
             app:menu="@menu/bottom_nav"/>
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/adminNavView"
-        android:layout_width="wrap_content"
-        android:background="@color/surface"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:itemIconTint="@color/textPrimary"
-        app:itemTextColor="@color/textPrimary"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu"/>
 </androidx.drawerlayout.widget.DrawerLayout>

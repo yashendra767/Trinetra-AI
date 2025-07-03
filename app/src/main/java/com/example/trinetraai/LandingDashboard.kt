@@ -7,9 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -32,8 +34,8 @@ class LandingDashboard : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
-    private lateinit var navView: NavigationView
-    private lateinit var toggle: ActionBarDrawerToggle
+    private var profileDialog: AlertDialog? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,47 +50,10 @@ class LandingDashboard : AppCompatActivity() {
         }
         drawerLayout = findViewById(R.id.drawer_layout)
         toolbar = findViewById(R.id.toolbar)
-        navView = findViewById(R.id.adminNavView)
         val bottomNav = findViewById<me.ibrahimsn.lib.SmoothBottomBar>(R.id.adminBottomNav)
-
-        val auth = FirebaseAuth.getInstance()
-        val firestore = FirebaseFirestore.getInstance()
-
-        val headerView: View = navView.getHeaderView(0)
-        val navName = headerView.findViewById<TextView>(R.id.navName)
-        val navEmail = headerView.findViewById<TextView>(R.id.navEmail)
-        val navPost = headerView.findViewById<TextView>(R.id.navPost)
-        val navArea = headerView.findViewById<TextView>(R.id.navArea)
-
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            navEmail.text = currentUser.email ?: "No Email"
-
-            firestore.collection("users").document(currentUser.uid).get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        navName.text = document.getString("name") ?: "No Name"
-                        navPost.text = "Post: ${document.getString("post") ?: "N/A"}"
-                        navArea.text = "Assigned Area: ${document.getString("assignedArea") ?: "N/A"}"
-                    }
-                }
-                .addOnFailureListener {
-                    navName.text = "Error"
-                    navPost.text = ""
-                    navArea.text = ""
-                }
-        }
 
 
         setSupportActionBar(toolbar)
-
-        toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
 
         replaceTheFragment(HeatmapDashboard())
 
@@ -101,28 +66,8 @@ class LandingDashboard : AppCompatActivity() {
             }
         }
 
-        navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_notification -> startActivity(Intent(this, Notifications::class.java))
-                R.id.nav_Settings -> startActivity(Intent(this, Settings::class.java))
-                R.id.nav_allFirs -> startActivity(Intent(this, AllFIRsActivity::class.java))
-                R.id.nav_zoneData -> startActivity(Intent(this, AllZones::class.java))
-                R.id.nav_about -> startActivity(Intent(this, About::class.java))
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
-
-
-
     }
 
-    fun hideBottomNav() {
-        findViewById<View>(R.id.adminBottomNav)?.visibility = View.GONE
-    }
-    fun showBottomNav() {
-        findViewById<View>(R.id.adminBottomNav)?.visibility = View.VISIBLE
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
@@ -132,21 +77,90 @@ class LandingDashboard : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_profile -> {
-                startActivity(Intent(this, Profile::class.java))
+                showProfileDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    private fun showProfileDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_profile, null)
+
+        val dialogName = dialogView.findViewById<TextView>(R.id.dialogName)
+        val dialogEmail = dialogView.findViewById<TextView>(R.id.dialogEmail)
+        val dialogProfileButton = dialogView.findViewById<TextView>(R.id.dialogProfileButton)
+
+        val dialogNotifications = dialogView.findViewById<LinearLayout>(R.id.dialogNotifications)
+        val dialogSettings = dialogView.findViewById<LinearLayout>(R.id.dialogSettings)
+        val dialogAllFIRs = dialogView.findViewById<LinearLayout>(R.id.dialogAllFIRs)
+        val dialogAllZones = dialogView.findViewById<LinearLayout>(R.id.dialogAllZones)
+        val dialogAbout = dialogView.findViewById<LinearLayout>(R.id.dialogAbout)
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            dialogEmail.text = currentUser.email ?: "No Email"
+            FirebaseFirestore.getInstance().collection("users").document(currentUser.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        dialogName.text = document.getString("name") ?: "No Name"
+                    }
+                }
+        }
+
+        profileDialog = AlertDialog.Builder(this, com.google.android.material.R.style.ThemeOverlay_Material3_Dialog)
+            .setView(dialogView)
+            .create()
+        profileDialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+        profileDialog?.window?.setDimAmount(0.7f)
+        profileDialog?.window?.decorView?.elevation = 8f
+
+        dialogProfileButton.setOnClickListener {
+            startActivity(Intent(this, Profile::class.java))
+            profileDialog?.dismiss()
+        }
+
+        dialogNotifications.setOnClickListener {
+            startActivity(Intent(this, Notifications::class.java))
+            profileDialog?.dismiss()
+        }
+
+        dialogSettings.setOnClickListener {
+            startActivity(Intent(this, Settings::class.java))
+            profileDialog?.dismiss()
+        }
+
+        dialogAllFIRs.setOnClickListener {
+            startActivity(Intent(this, AllFIRsActivity::class.java))
+            profileDialog?.dismiss()
+        }
+
+        dialogAllZones.setOnClickListener {
+            startActivity(Intent(this, AllZones::class.java))
+            profileDialog?.dismiss()
+        }
+
+        dialogAbout.setOnClickListener {
+            startActivity(Intent(this, About::class.java))
+            profileDialog?.dismiss()
+        }
+
+        profileDialog?.show()
+    }
+
+
+
     override fun onBackPressed() {
         super.onBackPressed()
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
+        if (profileDialog?.isShowing == true) {
+            profileDialog?.dismiss()
         } else {
             moveTaskToBack(true)
         }
     }
+
+
+
     private fun replaceTheFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.adminFragmentContainer, fragment)

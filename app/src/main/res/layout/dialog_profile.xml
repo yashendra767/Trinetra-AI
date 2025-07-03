@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialogLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/profile_dialog_bg"
+    android:orientation="vertical"
+    android:padding="22dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="12dp">
+            <TextView
+                android:id="@+id/dialogName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/textPrimary"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/dialogEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
+                android:textColor="@color/textSecondary" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dialogProfileButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Profile"
+            app:strokeColor="@color/primary_light"
+            app:strokeWidth="1.5dp"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:cornerRadius="12dp"
+            android:textColor="@color/primary_light"
+            android:paddingTop="8dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/surfaceLight"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:id="@+id/dialogAllFIRs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/firs"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/textSecondary">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="All FIRs"
+            android:textColor="@color/textPrimary"
+            android:paddingVertical="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialogAllZones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/zone_data"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/textSecondary">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zone Data"
+            android:textColor="@color/textPrimary"
+            android:paddingVertical="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialogNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/notify"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/textSecondary">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notifications"
+            android:textColor="@color/textPrimary"
+            android:paddingVertical="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialogSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/customize"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/textSecondary">
+        </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="@color/textPrimary"
+            android:paddingVertical="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialogAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/about"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            app:tint="@color/textSecondary">
+        </ImageView>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:textColor="@color/textPrimary"
+            android:paddingVertical="8dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

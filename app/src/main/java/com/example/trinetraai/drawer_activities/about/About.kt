@@ -71,7 +71,14 @@ class About : AppCompatActivity() {
                 "Backend Engineer",
                 "Handled Auth, data preprocessing and ML backend.",
                 R.drawable.aayush
+            ),
+            TeamMember(
+                "Happy Saxena",
+                "ML Specialist",
+                "Trained whole model from the dataset.",
+                R.drawable.happy
             )
+
         )
 
         viewPager.adapter = TeamPagerAdapter(teamMembers)

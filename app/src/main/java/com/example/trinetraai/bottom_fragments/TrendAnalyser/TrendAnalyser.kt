@@ -1,10 +1,12 @@
 package com.example.trinetraai.bottom_fragments.TrendAnalyser
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,7 +21,6 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,8 +34,9 @@ data class predictionresult(val type: String, val zone: String)
 class TrendAnalyser : Fragment() {
 
     private lateinit var chart: BarChart
-    private lateinit var progressBar: LinearProgressIndicator
-    private lateinit var progressText: TextView
+    private var gifProgressDialog: AlertDialog? = null
+    private lateinit var dialogProgressText: TextView
+    private var cancelRequested = false
 
     private var zoneCrimeMap = mutableMapOf<String, MutableMap<String, Int>>()
 
@@ -44,19 +46,44 @@ class TrendAnalyser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_trend_analyser, container, false)
-
         chart = view.findViewById(R.id.trendChart)
-        progressBar = view.findViewById(R.id.progressBar)
-        progressText = view.findViewById(R.id.progressText)
-
         simulatePredictionFromFirestore()
-
         return view
     }
 
     private fun getCurrentTimestamp(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         return sdf.format(Date())
+    }
+
+    private fun showGifProgressDialog() {
+        cancelRequested = false
+        val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
+
+        dialogProgressText = dialogView.findViewById(R.id.dailogprogressText)
+        val cancelButton = dialogView.findViewById<Button>(R.id.cancelButton)
+        cancelButton.setOnClickListener {
+            cancelRequested = true
+            dismissGifProgressDialog()
+            Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT).show()
+        }
+
+        val builder = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+
+        gifProgressDialog = builder.create()
+        gifProgressDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        gifProgressDialog?.show()
+    }
+
+    private fun updateGifProgressText(progress: Int) {
+        dialogProgressText.text = "$progress% done"
+    }
+
+    private fun dismissGifProgressDialog() {
+        gifProgressDialog?.dismiss()
+        gifProgressDialog = null
     }
 
     private fun simulatePredictionFromFirestore() {
@@ -95,15 +122,13 @@ class TrendAnalyser : Fragment() {
                 }
 
                 val total = firList.size
-                progressBar.max = total
-                progressBar.progress = 0
-                progressBar.visibility = View.VISIBLE
-                progressText.visibility = View.VISIBLE
-                progressText.text = "0% done"
+                showGifProgressDialog()
 
                 lifecycleScope.launch {
                     var completed = 0
                     for (request in firList) {
+                        if (cancelRequested) break
+
                         val result = predictAndGet(request)
                         if (result != null) {
                             predictionList.add(result)
@@ -111,15 +136,15 @@ class TrendAnalyser : Fragment() {
                         completed++
                         val percentage = (completed * 100) / total
                         withContext(Dispatchers.Main) {
-                            progressBar.progress = completed
-                            progressText.text = "$percentage% done"
+                            updateGifProgressText(percentage)
                         }
                     }
 
                     withContext(Dispatchers.Main) {
-                        progressBar.visibility = View.GONE
-                        progressText.visibility = View.GONE
-                        updateChartFromPredictionList(predictionList)
+                        dismissGifProgressDialog()
+                        if (!cancelRequested) {
+                            updateChartFromPredictionList(predictionList)
+                        }
                     }
                 }
             }
@@ -170,7 +195,9 @@ class TrendAnalyser : Fragment() {
             "#67B7A4", "#F5B041", "#E74C3C", "#A569BD",
             "#2980B9", "#D35400", "#16A085", "#7D3C98"
         )
-        dataSet.setColors((0 until allCrimeTypes.size).map { android.graphics.Color.parseColor(colors[it % colors.size]) })
+        dataSet.setColors((0 until allCrimeTypes.size).map {
+            android.graphics.Color.parseColor(colors[it % colors.size])
+        })
         dataSet.stackLabels = allCrimeTypes.toTypedArray()
 
         val barData = BarData(dataSet)

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+
+    android:background="@drawable/dialog_rounded_bg"
+    android:gravity="center"
+    android:elevation="8dp">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImage"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/loading" />
+
+    <TextView
+        android:id="@+id/dailogprogressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0% done"
+        android:textSize="18sp"
+        android:textColor="@color/textPrimary"
+        android:layout_marginTop="12dp" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/primary"
+        android:textColor="@android:color/white" />
+</LinearLayout>

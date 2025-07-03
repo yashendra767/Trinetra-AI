@@ -69,28 +69,7 @@
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
-                    <com.google.android.material.progressindicator.LinearProgressIndicator
-                        android:id="@+id/progressBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:visibility="visible"
 
-                        app:trackColor="@color/surfaceLight"
-                        app:indicatorColor="@color/primary"
-
-                        />
-
-                    <TextView
-                        android:id="@+id/progressText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="0% done"
-                        android:textColor="@color/textSecondary"
-                        android:textSize="14sp"
-                        android:visibility="visible" />
 
                 </LinearLayout>
 

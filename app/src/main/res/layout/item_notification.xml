@@ -1,0 +1,53 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="22dp"
+    android:layout_marginTop="40dp"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="@color/surface"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/stroke_color"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.05"
+            android:lineSpacingExtra="4dp"
+            android:text="Notification Title"
+            android:textColor="@color/textPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/messageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            android:lineSpacingExtra="3dp"
+            android:text="This is your notification message."
+            android:textColor="@color/textSecondary"
+            android:textSize="15sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Clear"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trinetraai.R
 import com.example.trinetraai.drawer_activities.AllZoneWork.ZoneData
 import com.example.trinetraai.drawer_activities.AllZoneWork.ZoneDataAdapter
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
 import java.io.FileOutputStream
@@ -173,6 +174,10 @@ class AllZones : AppCompatActivity() {
             pdfDocument.writeTo(FileOutputStream(file))
             Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_LONG).show()
             showDownloadNotification(context, file)
+            saveNotificationToFirestore(
+                title = "Zone Report Downloaded",
+                message = "Your PDF report was successfully downloaded.",
+            )
         } catch (e: IOException) {
             e.printStackTrace()
             Toast.makeText(context, "Error saving PDF", Toast.LENGTH_SHORT).show()
@@ -197,6 +202,29 @@ class AllZones : AppCompatActivity() {
                 Toast.makeText(this, "Failed to load data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    private fun saveNotificationToFirestore(title: String, message: String) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val db = FirebaseFirestore.getInstance()
+
+        val notification = hashMapOf(
+            "title" to title,
+            "message" to message,
+            "timestamp" to System.currentTimeMillis(),
+            "isRead" to false
+        )
+
+        db.collection("UserNotifications")
+            .document(userId)
+            .collection("notifications")
+            .add(notification)
+            .addOnSuccessListener {
+
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to save notification: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
     private fun sortAndDisplayData() {
         when (currentSortOption) {

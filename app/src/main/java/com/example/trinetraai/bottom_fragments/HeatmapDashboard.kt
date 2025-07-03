@@ -47,6 +47,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.common.reflect.TypeToken
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.gson.Gson
@@ -651,6 +652,10 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             pdfDocument.writeTo(FileOutputStream(file))
             Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_LONG).show()
             showDownloadNotification(context, file)
+            saveNotificationToFirestore(
+                title = "Hotspot Zone Report Downloaded",
+                message = "Your PDF report was successfully downloaded.",
+            )
         } catch (e: IOException) {
             e.printStackTrace()
             Toast.makeText(context, "Error saving PDF", Toast.LENGTH_SHORT).show()
@@ -658,6 +663,30 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
         pdfDocument.close()
     }
+
+    private fun saveNotificationToFirestore(title: String, message: String) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val db = FirebaseFirestore.getInstance()
+
+        val notification = hashMapOf(
+            "title" to title,
+            "message" to message,
+            "timestamp" to System.currentTimeMillis(),
+            "isRead" to false
+        )
+
+        db.collection("UserNotifications")
+            .document(userId)
+            .collection("notifications")
+            .add(notification)
+            .addOnSuccessListener {
+                // Optional: Log or toast
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Failed to save notification: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
     private fun showDownloadNotification(context: Context, file: File) {
         val channelId = "trinetra_pdf_download"

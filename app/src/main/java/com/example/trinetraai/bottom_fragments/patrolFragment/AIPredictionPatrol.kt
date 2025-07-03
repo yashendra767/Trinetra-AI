@@ -7,11 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.trinetraai.R
 
-/**
- * A simple [androidx.fragment.app.Fragment] subclass.
- * Use the [AIPredictionPatrol.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class AIPredictionPatrol : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null

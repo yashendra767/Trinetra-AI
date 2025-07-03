@@ -646,7 +646,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         pdfDocument.finishPage(page)
 
         // Save to Downloads
-        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Zone_FIR_Report.pdf")
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "HotspotZone_FIR_Report.pdf")
         try {
             pdfDocument.writeTo(FileOutputStream(file))
             Toast.makeText(context, "PDF saved to Downloads", Toast.LENGTH_LONG).show()

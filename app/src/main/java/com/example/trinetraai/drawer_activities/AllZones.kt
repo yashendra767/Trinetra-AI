@@ -42,8 +42,6 @@ class AllZones : AppCompatActivity() {
     private lateinit var sortSpinner: Spinner
     private var currentSortOption = 0
 
-
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var zoneAdapter: ZoneDataAdapter
     private val zoneList = mutableListOf<ZoneData>()
@@ -116,21 +114,26 @@ class AllZones : AppCompatActivity() {
     @SuppressLint("ServiceCast")
     private fun showDownloadNotification(context: Context, file: File) {
         val channelId = "zone_pdf_download_channel"
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        // Create notification channel for Android O and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Downloads",
+                "Zone PDF Downloads",
                 NotificationManager.IMPORTANCE_DEFAULT
-            )
+            ).apply {
+                description = "Notifications for completed zone FIR PDF downloads"
+            }
             notificationManager.createNotificationChannel(channel)
         }
 
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle("Download complete")
             .setContentText("Zone FIR Report saved to Downloads")
-            .setSmallIcon(R.drawable.logo)
+            .setSmallIcon(R.drawable.logo) // Replace with valid small icon
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
             .build()
 
@@ -138,9 +141,10 @@ class AllZones : AppCompatActivity() {
     }
 
 
+
     private fun exportZoneListToPDF(zoneList: List<ZoneData>, context: Context) {
         val pdfDocument = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
+        val pageInfo = PdfDocument.PageInfo.Builder(300, 1800, 1).create()
         val page = pdfDocument.startPage(pageInfo)
         val canvas = page.canvas
         val paint = Paint()
@@ -163,7 +167,7 @@ class AllZones : AppCompatActivity() {
         // Save to Downloads
         val file = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "Zone_FIR_Report.pdf"
+            "AllZone_Data.pdf"
         )
         try {
             pdfDocument.writeTo(FileOutputStream(file))

@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, Nav_Heatmap::class.java))
             }
             finish()
-        }, 2000)
+        }, 4000)
 
     }
 }

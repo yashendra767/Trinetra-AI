@@ -13,17 +13,8 @@
         android:layout_gravity="center"
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="630dp">
+        android:layout_height="match_parent">
     </VideoView>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:backgroundTint="@color/primary"
-        android:layout_margin="10dp"
-        android:layout_gravity="center"
-        android:text="Proceed">
-    </Button>
+
 
 </LinearLayout>

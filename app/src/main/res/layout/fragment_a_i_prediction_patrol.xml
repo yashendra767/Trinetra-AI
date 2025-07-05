@@ -1,191 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="12dp"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
 
+        <!-- Title Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:elevation="6dp"
-            app:cardCornerRadius="12dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp"
+            android:layout_marginBottom="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="12dp"
-                    android:paddingHorizontal="12dp"
-                    android:paddingBottom="4dp">
+                    android:text="AI Predicted Patrol Routes"
+                    android:textColor="@color/accentSaffron"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+        <!-- MapView Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textStyle="bold"
-                            android:textSize="18sp"
-                            android:textColor="@color/accentSaffron"
-                            android:text="Patrolling Route Map" />
-
-                        <ImageView
-                            android:id="@+id/iVExpandMapPatrolAI"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/expand"
-                            app:tint="@color/textPrimary" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/surfaceLight"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="8dp">
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mapViewPreviewPatrolAI"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="0dp"
-                    android:apiKey="YOUR_API_KEY_HERE" />
-            </LinearLayout>
+                    android:layout_height="match_parent" />
+            </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+        <!-- Predict Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPredictRoutes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:elevation="6dp"
-            app:cardCornerRadius="12dp">
+            android:text="Predict Patrol Routes"
+            android:textAllCaps="false"
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="20dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="12dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="2dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Routes List"
-                        android:textColor="@color/accentSaffron"
-                        android:textStyle="bold"
-                        android:textSize="18sp">
-                    </TextView>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/surfaceLight"/>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/surfaceLight"
-                    app:cardCornerRadius="12dp"
-                    android:layout_marginHorizontal="12dp"
-                    android:layout_marginTop="8dp"
-                    app:cardElevation="5dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="#PR1"
-                            android:textColor="@color/textSecondary"
-                            android:textSize="15sp">
-                        </TextView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Karol Bagh -> Noida -> LaxmiNagar -> Karol Bagh"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="16sp">
-                        </TextView>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/surfaceLight"
-                    app:cardCornerRadius="12dp"
-                    android:layout_marginHorizontal="12dp"
-                    android:layout_marginTop="8dp"
-                    app:cardElevation="5dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="#PR2"
-                            android:textColor="@color/textSecondary"
-                            android:textSize="15sp">
-                        </TextView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Saket -> Rohini -> Meerut -> Gurgaon"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="16sp">
-                        </TextView>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/viewRoutesHistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:cornerRadius="12dp"
-                    android:layout_marginHorizontal="12dp"
-                    android:text="View All Routes"
-                    android:padding="8dp"
-                    android:textColor="@color/textPrimary"
-                    android:textStyle="bold"
-                    android:backgroundTint="@color/primary">
-
-                </com.google.android.material.button.MaterialButton>
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+        <!-- Route Cards Container -->
+        <LinearLayout
+            android:id="@+id/routeCardsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
     </LinearLayout>
-</FrameLayout>
+</ScrollView>

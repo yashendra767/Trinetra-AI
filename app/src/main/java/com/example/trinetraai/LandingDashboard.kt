@@ -10,11 +10,9 @@ import android.view.WindowInsets
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.trinetraai.bottom_fragments.HeatmapDashboard
@@ -26,7 +24,6 @@ import com.example.trinetraai.drawer_activities.AllFIRsActivity
 import com.example.trinetraai.drawer_activities.AllZones
 import com.example.trinetraai.drawer_activities.Notifications
 import com.example.trinetraai.drawer_activities.Settings
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

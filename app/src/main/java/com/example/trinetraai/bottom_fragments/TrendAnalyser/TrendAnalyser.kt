@@ -6,7 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -55,6 +59,17 @@ class TrendAnalyser : Fragment() {
     private lateinit var ZN_PR3 : TextView
 
 
+    private lateinit var zoneClassSpinner: Spinner
+
+    private lateinit var btnShowLabels: MaterialButton
+
+    private var legendColors: List<Int> = emptyList()
+    private var allCrimeTypes: List<String> = emptyList()
+
+
+
+
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -77,6 +92,29 @@ class TrendAnalyser : Fragment() {
 
         }
 
+        zoneClassSpinner = view.findViewById(R.id.zoneClassSpinner)
+
+        val zoneClassOptions = listOf("All", "Low", "Medium", "High")
+        zoneClassSpinner.adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            zoneClassOptions
+        )
+
+        val filterListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                loadPreviousPredictions()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+
+        zoneClassSpinner.onItemSelectedListener = filterListener
+
+
+
+
         loadPreviousPredictions()
 
         CT_PR1 = view.findViewById(R.id.CT_PR1)
@@ -89,8 +127,53 @@ class TrendAnalyser : Fragment() {
 
         loadLastThreePredictions()
 
+
+        btnShowLabels = view.findViewById(R.id.btnShowLabels)
+        btnShowLabels.setOnClickListener {
+            showLegendDialog(allCrimeTypes, legendColors)
+        }
+
+
+
         return view
     }
+
+
+    private fun showLegendDialog(crimeTypes: List<String>, colorList: List<Int>) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.legend_dialog, null)
+        val legendContainer = dialogView.findViewById<LinearLayout>(R.id.legendContainer)
+
+        for ((index, crime) in crimeTypes.withIndex()) {
+            val itemLayout = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(8, 8, 8, 8)
+            }
+
+            val colorBox = View(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams(50, 50).apply {
+                    setMargins(0, 0, 24, 0)
+                }
+                setBackgroundColor(colorList[index % colorList.size])
+            }
+
+            val label = TextView(requireContext()).apply {
+                text = crime
+                textSize = 16f
+            }
+
+            itemLayout.addView(colorBox)
+            itemLayout.addView(label)
+            legendContainer.addView(itemLayout)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Crime Type Legends")
+            .setView(dialogView)
+            .setPositiveButton("Close", null)
+            .show()
+    }
+
+
 
     private fun loadLastThreePredictions() {
         val db = FirebaseFirestore.getInstance()
@@ -307,7 +390,7 @@ class TrendAnalyser : Fragment() {
 
             val batch = db.batch()
             predictions.forEachIndexed { index, prediction ->
-                val docId = "P${index + 1}" // Start from P1
+                val docId = "P${index + 1}"
                 val docRef = collectionRef.document(docId)
 
                 val data = hashMapOf(
@@ -329,9 +412,6 @@ class TrendAnalyser : Fragment() {
         }
     }
 
-
-
-
     private suspend fun predictAndGet(requestData: RequestData): predictionresult? {
         return withContext(Dispatchers.IO) {
             try {
@@ -346,18 +426,34 @@ class TrendAnalyser : Fragment() {
     private fun updateChartFromPredictionList(predictions: List<predictionresult>) {
         zoneCrimeMap.clear()
 
+        val selectedZoneClass = zoneClassSpinner.selectedItem.toString()
+
+
         for (prediction in predictions) {
             val zone = prediction.zone
             val type = prediction.type
-
             val crimeMap = zoneCrimeMap.getOrPut(zone) { mutableMapOf() }
             crimeMap[type] = crimeMap.getOrDefault(type, 0) + 1
         }
 
-        updateChart(zoneCrimeMap, "Predicted Crimes")
+
+        val filteredMap = zoneCrimeMap.filter { (_, crimes) ->
+            val total = crimes.values.sum()
+            when (selectedZoneClass) {
+                "Low" -> total < 10
+                "Medium" -> total in 10..<50
+                "High" -> total >= 50
+                else -> true
+            }
+        }
+
+        updateChart(filteredMap, "Classified Zones")
     }
 
+
     private fun updateChart(data: Map<String, Map<String, Int>>, type: String) {
+
+
         val allCrimeTypes = data.values.flatMap { it.keys }.toSet().toList().sorted()
         val zoneList = data.keys.sorted()
 
@@ -374,13 +470,15 @@ class TrendAnalyser : Fragment() {
             "#67B7A4", "#F5B041", "#E74C3C", "#A569BD",
             "#2980B9", "#D35400", "#16A085", "#7D3C98"
         )
+
         dataSet.setColors((0 until allCrimeTypes.size).map {
             android.graphics.Color.parseColor(colors[it % colors.size])
         })
         dataSet.stackLabels = allCrimeTypes.toTypedArray()
 
         val barData = BarData(dataSet)
-        barData.barWidth = 0.3f
+        barData.barWidth = 0.25f
+        barData.setValueTextSize(14f)
 
         chart.data = barData
         chart.setFitBars(true)
@@ -393,8 +491,31 @@ class TrendAnalyser : Fragment() {
         xAxis.granularity = 1f
         xAxis.labelCount = zoneList.size
         xAxis.setDrawGridLines(false)
+        xAxis.textSize = 15f
+        xAxis.labelRotationAngle = -60f
 
-        chart.axisLeft.axisMinimum = 0f
+        chart.axisLeft.textSize = 14f
+
+
+        val legend = chart.legend
+        legend.isEnabled = false
+        legend.textSize = 16f
+        legend.verticalAlignment = com.github.mikephil.charting.components.Legend.LegendVerticalAlignment.BOTTOM
+        legend.horizontalAlignment = com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment.LEFT
+        legend.orientation = com.github.mikephil.charting.components.Legend.LegendOrientation.HORIZONTAL
+        legend.setDrawInside(false)
+        legend.setWordWrapEnabled(true)
+        legend.yOffset = 10f
+
         chart.invalidate()
+        chart.setScaleEnabled(true)
+        chart.setDragEnabled(true)
+        chart.setPinchZoom(true)
+        this.allCrimeTypes = allCrimeTypes
+        this.legendColors = allCrimeTypes.mapIndexed { index, _ ->
+            android.graphics.Color.parseColor(colors[index % colors.size])
+        }
+
     }
+
 }

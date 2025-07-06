@@ -94,12 +94,14 @@ class TrendAnalyser : Fragment() {
 
         zoneClassSpinner = view.findViewById(R.id.zoneClassSpinner)
 
-        val zoneClassOptions = listOf("All", "Low", "Medium", "High")
-        zoneClassSpinner.adapter = ArrayAdapter(
+        val zoneClassOptions = listOf("All", "Low Crime Activity", "Medium Crime Activity", "High Crime Activity")
+        val adapter= ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
+            android.R.layout.simple_spinner_item,
             zoneClassOptions
         )
+        adapter.setDropDownViewResource(R.layout.spinner_item_white)
+        zoneClassSpinner.adapter = adapter
 
         val filterListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -167,7 +169,7 @@ class TrendAnalyser : Fragment() {
         }
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Crime Type Legends")
+            .setTitle("Crime Type Labels")
             .setView(dialogView)
             .setPositiveButton("Close", null)
             .show()
@@ -440,9 +442,9 @@ class TrendAnalyser : Fragment() {
         val filteredMap = zoneCrimeMap.filter { (_, crimes) ->
             val total = crimes.values.sum()
             when (selectedZoneClass) {
-                "Low" -> total < 10
-                "Medium" -> total in 10..<50
-                "High" -> total >= 50
+                "Low Crime Activity" -> total < 10
+                "Medium Crime Activity" -> total in 10..<50
+                "High Crime Activity" -> total >= 50
                 else -> true
             }
         }

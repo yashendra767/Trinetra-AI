@@ -31,7 +31,7 @@
                 android:id="@+id/lastUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Last Updated 00:00 Hrs"
+                android:text="Last Updated --:00 Hrs"
                 android:textColor="@color/textSecondary"
                 android:layout_marginTop="6dp"
                 android:textSize="14sp"
@@ -88,7 +88,7 @@
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/trendChart"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="400dp"
                         android:layout_gravity="center"
                         />
 
@@ -152,6 +152,7 @@
                         android:padding="8dp">
 
                         <TextView
+                            android:id="@+id/CT_PR1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -159,6 +160,7 @@
                             android:text="Crime Type" />
 
                         <TextView
+                            android:id="@+id/ZN_PR1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -182,6 +184,7 @@
                         android:padding="8dp">
 
                         <TextView
+                            android:id="@+id/CT_PR2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
@@ -189,6 +192,41 @@
                             android:text="Crime Type" />
 
                         <TextView
+                            android:id="@+id/ZN_PR2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/textPrimary"
+                            android:text="Zone No" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="5dp"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="@color/surfaceLight">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/CT_PR3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/textPrimary"
+                            android:text="Crime Type" />
+
+                        <TextView
+                            android:id="@+id/ZN_PR3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"

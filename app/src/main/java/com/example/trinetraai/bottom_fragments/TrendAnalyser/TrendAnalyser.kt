@@ -25,14 +25,17 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-data class predictionresult(val type: String, val zone: String)
+
 
 class TrendAnalyser : Fragment() {
+
+    data class predictionresult(val type: String, val zone: String)
 
     private lateinit var chart: BarChart
     private var gifProgressDialog: AlertDialog? = null
@@ -40,6 +43,18 @@ class TrendAnalyser : Fragment() {
     private var cancelRequested = false
 
     private var zoneCrimeMap = mutableMapOf<String, MutableMap<String, Int>>()
+    private lateinit var btnAnalyseTrend: Button
+
+    private lateinit var lastUpdate : TextView
+
+    private lateinit var CT_PR1 : TextView
+    private lateinit var ZN_PR1 : TextView
+    private lateinit var CT_PR2 : TextView
+    private lateinit var ZN_PR2 : TextView
+    private lateinit var CT_PR3 : TextView
+    private lateinit var ZN_PR3 : TextView
+
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -48,8 +63,125 @@ class TrendAnalyser : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_trend_analyser, container, false)
         chart = view.findViewById(R.id.trendChart)
-        simulatePredictionFromFirestore()
+
+        btnAnalyseTrend = view.findViewById(R.id.btnAnalyseTrend)
+        lastUpdate = view.findViewById(R.id.lastUpdate)
+
+
+        loadLastUpdateTimestamp()
+
+        btnAnalyseTrend.setOnClickListener {
+            simulatePredictionFromFirestore()
+            saveLastUpdateTimestamp()
+            loadLastUpdateTimestamp()
+
+        }
+
+        loadPreviousPredictions()
+
+        CT_PR1 = view.findViewById(R.id.CT_PR1)
+        ZN_PR1 = view.findViewById(R.id.ZN_PR1)
+        CT_PR2 = view.findViewById(R.id.CT_PR2)
+        ZN_PR2 = view.findViewById(R.id.ZN_PR2)
+        CT_PR3 = view.findViewById(R.id.CT_PR3)
+        ZN_PR3 = view.findViewById(R.id.ZN_PR3)
+
+
+        loadLastThreePredictions()
+
         return view
+    }
+
+    private fun loadLastThreePredictions() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("PredictionResult")
+            .get()
+            .addOnSuccessListener { result ->
+                val sortedDocs = result.documents.sortedBy {
+                    it.id.removePrefix("P").toIntOrNull() ?: 0
+                }
+
+                val lastThree = sortedDocs.takeLast(3).reversed()
+
+
+                if (lastThree.size > 0) {
+                    ZN_PR1.text = lastThree[0].getString("zone") ?: "N/A"
+                    CT_PR1.text = lastThree[0].getString("type") ?: "N/A"
+                }
+
+                if (lastThree.size > 1) {
+                    ZN_PR2.text = lastThree[1].getString("zone") ?: "N/A"
+                    CT_PR2.text = lastThree[1].getString("type") ?: "N/A"
+                }
+
+                if (lastThree.size > 2) {
+                    ZN_PR3.text = lastThree[2].getString("zone") ?: "N/A"
+                    CT_PR3.text = lastThree[2].getString("type") ?: "N/A"
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(
+                    requireContext(),
+                    "Error fetching predictions: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+
+
+    private fun loadLastUpdateTimestamp() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("Metadata").document("LastPredictionTime")
+            .get()
+            .addOnSuccessListener { document ->
+                val timestamp = document.getString("last_update")
+                if (timestamp != null) {
+                    lastUpdate.text = "Last Analysed\n$timestamp"
+                }
+            }
+            .addOnFailureListener {
+            }
+    }
+
+
+    private  fun saveLastUpdateTimestamp() {
+        val db = FirebaseFirestore.getInstance()
+        val timestamp = getCurrentTimestamp()
+
+        val data = hashMapOf("last_update" to timestamp)
+
+        try {
+            db.collection("Metadata").document("LastPredictionTime")
+                .set(data)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Failed to save update time: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun loadPreviousPredictions() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("PredictionResult")
+            .get()
+            .addOnSuccessListener { documents ->
+                val predictions = documents.mapNotNull { doc ->
+                    val zone = doc.getString("zone")
+                    val type = doc.getString("type")
+                    if (zone != null && type != null) {
+                        predictionresult(type, zone)
+                    } else null
+                }
+
+                if (predictions.isNotEmpty()) {
+                    updateChartFromPredictionList(predictions)
+                } else {
+                    Toast.makeText(requireContext(), "No previous prediction results", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Failed to load previous predictions: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun getCurrentTimestamp(): String {
@@ -95,7 +227,8 @@ class TrendAnalyser : Fragment() {
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
-                    Toast.makeText(requireContext(), "No FIR records found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "No FIR records found", Toast.LENGTH_SHORT)
+                        .show()
                     return@addOnSuccessListener
                 }
 
@@ -104,7 +237,9 @@ class TrendAnalyser : Fragment() {
                     val actCategory = doc.getString("act_category") ?: "IPC"
                     val status = doc.getString("status") ?: "Pending"
                     val reportingStation = doc.getString("reporting_station") ?: "Unknown"
-                    val ipcSections = (doc.get("ipc_sections") as? List<*>)?.mapNotNull { it?.toString() } ?: emptyList()
+                    val ipcSections =
+                        (doc.get("ipc_sections") as? List<*>)?.mapNotNull { it?.toString() }
+                            ?: emptyList()
                     val location = doc.get("location") as? Map<*, *>
                     val lat = location?.get("lat") as? Double ?: 0.0
                     val lng = location?.get("lng") as? Double ?: 0.0
@@ -143,7 +278,10 @@ class TrendAnalyser : Fragment() {
 
                     withContext(Dispatchers.Main) {
                         dismissGifProgressDialog()
-                        if (!cancelRequested) {
+                    }
+                    if (!cancelRequested) {
+                        savePredictionsToFirestore(predictionList)
+                        withContext(Dispatchers.Main) {
                             updateChartFromPredictionList(predictionList)
                         }
                     }
@@ -153,6 +291,46 @@ class TrendAnalyser : Fragment() {
                 Toast.makeText(requireContext(), "Failed to fetch FIR data: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    private suspend fun savePredictionsToFirestore(predictions: List<predictionresult>) {
+        val db = FirebaseFirestore.getInstance()
+        val collectionRef = db.collection("PredictionResult")
+
+        try {
+
+            withContext(Dispatchers.IO) {
+                val existingDocs = collectionRef.get().await()
+                for (doc in existingDocs.documents) {
+                    doc.reference.delete().await()
+                }
+            }
+
+            val batch = db.batch()
+            predictions.forEachIndexed { index, prediction ->
+                val docId = "P${index + 1}" // Start from P1
+                val docRef = collectionRef.document(docId)
+
+                val data = hashMapOf(
+                    "zone" to prediction.zone,
+                    "type" to prediction.type,
+                )
+
+                batch.set(docRef, data)
+            }
+
+            withContext(Dispatchers.IO) {
+                batch.commit().await()
+            }
+
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "Failed to save predictions: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+
 
     private suspend fun predictAndGet(requestData: RequestData): predictionresult? {
         return withContext(Dispatchers.IO) {

@@ -6,8 +6,9 @@
     android:id="@+id/main"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:padding="16dp"
+    android:padding="20dp"
     android:fitsSystemWindows="true">
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bannerImage"
         android:layout_width="0dp"
@@ -19,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="Crime Heatmap Banner" />
-
 
     <TextView
         android:id="@+id/titleText"
@@ -35,7 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bannerImage" />
 
-
     <TextView
         android:id="@+id/descriptionText"
         android:layout_width="0dp"
@@ -49,7 +48,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
-
     <TextView
         android:id="@+id/keyFeaturesText"
         android:layout_width="0dp"
@@ -62,7 +60,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
-
 
     <TextView
         android:id="@+id/useCaseText"
@@ -89,7 +86,6 @@
         app:tint="@color/primary_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"

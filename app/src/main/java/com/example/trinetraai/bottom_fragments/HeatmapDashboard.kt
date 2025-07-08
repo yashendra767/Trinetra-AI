@@ -1,6 +1,7 @@
 package com.example.trinetraai.bottom_fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -71,6 +72,8 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     private var topHotspotZone1: String? = null
     private var topHotspotZone2: String? = null
 
+    private lateinit var showmap : ImageView
+
 
     private lateinit var toggle : SwitchCompat
 
@@ -127,6 +130,10 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_heatmap_dashboard, container, false)
 
+        showmap = view.findViewById(R.id.showmap)
+        showmap.setOnClickListener {
+            mapdialog()
+        }
 
 
 
@@ -220,6 +227,22 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
 
 
         return view
+    }
+    private fun mapdialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_map, null)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val closeBtn = dialogView.findViewById<Button>(R.id.closeBtn)
+        closeBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

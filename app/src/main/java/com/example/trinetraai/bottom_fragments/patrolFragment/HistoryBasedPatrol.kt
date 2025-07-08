@@ -1,7 +1,6 @@
 package com.example.trinetraai.bottom_fragments.patrolFragment
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -27,7 +26,6 @@ import org.json.JSONObject
 
 class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
 
-    //private lateinit var mapView: MapView
     private var googleMap: GoogleMap? = null
     private val apiKey = "AIzaSyCtR6Ly2xen0veKWOsMa5__pcSkj_JOHeQ"
     private var groupedZoneRoutes: List<List<HotspotZone>> = emptyList()
@@ -240,14 +238,6 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
         return groups
     }
 
-
-    private fun drawGroupedPatrolRoutes(groups: List<List<HotspotZone>>) {
-        for (group in groups) {
-            if (group.size >= 2) {
-                drawFullPatrolRoute(group)
-            }
-        }
-    }
 
     private fun drawFullPatrolRoute(zones: List<HotspotZone>) {
         val map = googleMap ?: return

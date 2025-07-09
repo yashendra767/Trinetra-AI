@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:padding="24dp"
+    android:padding="16dp"
+    android:layout_marginHorizontal="8dp"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -18,7 +19,7 @@
         android:layout_width="match_parent"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_height="wrap_content"
-        android:hint=" Name"
+        android:hint="Name"
         android:textColorHint="@color/textPrimary"
         app:boxBackgroundColor="@color/surface"
         app:boxCornerRadiusTopStart="12dp"
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:drawableStart="@drawable/user"
+            android:drawablePadding="5dp"
             android:drawableTint="@color/textPrimary"
             android:textColor="@color/textPrimary"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -43,7 +45,7 @@
             android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content"
-            android:hint=" Email"
+            android:hint="Email"
             android:layout_marginTop="8dp"
             android:textColorHint="@color/textPrimary"
             app:boxBackgroundColor="@color/surface"
@@ -61,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:drawableStart="@drawable/envelope"
+                android:drawablePadding="5dp"
                 android:drawableTint="@color/textPrimary"
                 android:textColor="@color/textPrimary"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -69,7 +72,7 @@
             android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content"
-            android:hint=" Assigned Area"
+            android:hint="Assigned Area"
             android:layout_marginTop="8dp"
             android:textColorHint="@color/textPrimary"
             app:boxBackgroundColor="@color/surface"
@@ -86,6 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/area_assigned"
+                android:drawablePadding="5dp"
                 android:drawableTint="@color/textPrimary"
                 android:textColor="@color/textPrimary"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -94,7 +98,7 @@
             android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content"
-            android:hint=" Post"
+            android:hint="Post"
             android:layout_marginTop="8dp"
             android:textColorHint="@color/textPrimary"
             app:boxBackgroundColor="@color/surface"
@@ -111,6 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/post"
+                android:drawablePadding="5dp"
                 android:drawableTint="@color/textPrimary"
                 android:textColor="@color/textPrimary"/>
         </com.google.android.material.textfield.TextInputLayout>

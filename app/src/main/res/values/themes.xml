@@ -35,6 +35,9 @@
         <item name="android:fontFamily">@font/inter</item>
         <item name="fontFamily">@font/inter</item>
 
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
+        <item name="android:statusBarColor">@color/surface</item>
+
     </style>
 
     <style name="RoundedCornerImage" parent="">
@@ -45,7 +48,6 @@
     <style name="RoundedDialog" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="android:background">@drawable/dialog_background</item>
     </style>
-
 
 
 </resources>

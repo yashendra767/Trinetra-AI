@@ -1,6 +1,7 @@
 package com.example.trinetraai.drawer_activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
@@ -14,12 +15,19 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import com.example.trinetraai.R
+import com.example.trinetraai.authentication.ForgotPass
+import com.example.trinetraai.authentication.Login
+import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
 
 class Settings : AppCompatActivity() {
 
     private lateinit var switchDarkMode: SwitchCompat
     private lateinit var switchNotifications: SwitchCompat
     private lateinit var prefs: SharedPreferences
+    private lateinit var btnChangePassword: MaterialButton
+    private lateinit var btnLogoutSettings: MaterialButton
+
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -43,6 +51,8 @@ class Settings : AppCompatActivity() {
         // Initialize views
         switchDarkMode = findViewById(R.id.switchDarkMode)
         switchNotifications = findViewById(R.id.switchNotifications)
+        btnChangePassword = findViewById(R.id.btnChangePassword)
+        btnLogoutSettings = findViewById(R.id.btnLogoutSettings)
         prefs = getSharedPreferences("settings_prefs", MODE_PRIVATE)
 
         // Load saved states
@@ -61,6 +71,21 @@ class Settings : AppCompatActivity() {
                 else
                     AppCompatDelegate.MODE_NIGHT_NO
             )
+        }
+
+        btnChangePassword.setOnClickListener {
+            val intent = Intent(this, ForgotPass::class.java)
+            startActivity(intent)
+        }
+
+        btnLogoutSettings.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+
+            val intent = Intent(this, Login::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
+            finish()
         }
 
         // Notifications Toggle

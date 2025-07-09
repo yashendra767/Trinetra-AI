@@ -64,11 +64,13 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun setupDropdowns() {
-        val postAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, postList)
+        val postAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, postList)
+        postAdapter.setDropDownViewResource(R.layout.spinner_item_white)
         postField.setAdapter(postAdapter)
         postField.setOnClickListener { postField.showDropDown() }
 
-        val areaAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, zoneList)
+        val areaAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, zoneList)
+        areaAdapter.setDropDownViewResource(R.layout.spinner_item_white)
         areaField.setAdapter(areaAdapter)
         areaField.setOnClickListener { areaField.showDropDown() }
     }

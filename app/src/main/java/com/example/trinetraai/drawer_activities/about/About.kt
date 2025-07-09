@@ -7,9 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.widget.Button
+import android.widget.ScrollView
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updatePadding
 import androidx.viewpager2.widget.ViewPager2
 import com.example.trinetraai.R
 import com.example.trinetraai.drawer_activities.about.TeamPagerAdapter
@@ -22,13 +30,30 @@ class About : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_about)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.surface)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.surface)
+
+
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightStatusBars = false
+        controller.isAppearanceLightNavigationBars = false
+
+        val rootScrollView = findViewById<ScrollView>(R.id.about_scroll)
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootScrollView) { view, insets ->
+            val statusBarInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val navBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+
+            view.updatePadding(
+                top = statusBarInsets.top,
+                bottom = navBarInsets.bottom
+            )
+            WindowInsetsCompat.CONSUMED
         }
+
         btnMeetTeam = findViewById(R.id.btn_meet_team)
         val aboutDescription = findViewById<TextView>(R.id.about_description)
 

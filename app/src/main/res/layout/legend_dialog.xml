@@ -6,7 +6,9 @@
     <LinearLayout
         android:id="@+id/legendContainer"
         android:layout_width="match_parent"
+        android:padding="8dp"
         android:layout_height="wrap_content"
+        android:background= "@drawable/dialog_background"
         android:orientation="vertical"/>
 
 </ScrollView>

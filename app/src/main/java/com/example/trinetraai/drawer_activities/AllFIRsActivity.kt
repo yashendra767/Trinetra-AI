@@ -7,7 +7,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.widget.*
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -47,13 +54,31 @@ class AllFIRsActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_all_f_i_rs)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.surface)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.surface)
+
+
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightStatusBars = false
+        controller.isAppearanceLightNavigationBars = false
+
+        val rootFrame = findViewById<FrameLayout>(R.id.rootFrameAllFirs)
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootFrame) { view, insets ->
+            val statusBarInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val navBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+
+            view.updatePadding(
+                top = statusBarInsets.top,
+                bottom = navBarInsets.bottom
+            )
+            WindowInsetsCompat.CONSUMED
         }
+
         newFIR = findViewById(R.id.addNewFIR)
         newFIR.setOnClickListener {
             val bottomSheet = AddNewFIRBottomSheet()

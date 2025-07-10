@@ -31,12 +31,6 @@
                     android:textColor="@color/textPrimary">
                 </TextView>
 
-                <ImageView
-                    android:id="@+id/alertWomen"
-                    android:layout_width="26dp"
-                    android:layout_height="29dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/alertwomen"></ImageView>
 
             </LinearLayout>
 

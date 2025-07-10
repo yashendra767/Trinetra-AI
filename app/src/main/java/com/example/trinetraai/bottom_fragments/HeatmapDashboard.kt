@@ -166,14 +166,26 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         expandMap = view.findViewById(R.id.ExpandMapHotspot)
 
         expandMap.setOnClickListener {
-            val currentPosition = mGoogleMap?.cameraPosition
             val dialog = FullScreenMap()
             val bundle = Bundle()
-            bundle.putDouble("lat", currentPosition?.target?.latitude ?: 28.6139)
-            bundle.putDouble("lng", currentPosition?.target?.longitude ?: 77.2090)
-            bundle.putFloat("zoom", currentPosition?.zoom ?: 13f)
+
+            bundle.putDouble("lat", mGoogleMap?.cameraPosition?.target?.latitude?: 28.6139)
+            bundle.putDouble("lng", mGoogleMap?.cameraPosition?.target?.longitude?: 77.2090)
+            bundle.putFloat("zoom", mGoogleMap?.cameraPosition?.zoom?: 13f)
+
+            //Passing the Filters INfo
+            bundle.putString("selecteddCrime" , selectedCrimeType)
+            bundle.putString("selectedDateRange" , selectedDateRange)
+            bundle.putString("selectedTimePeriod" , selectedTimePeriod)
+
+            //Convertzone data to json (because the  Map<String, LatLng> is not bundleable )
+
+            val gson = Gson()
+            bundle.putString("zoneFIRMap", gson.toJson(savedZoneFIRMap))
+            bundle.putString("zoneLatLngMap", gson.toJson(savedZoneLatLngMap))
+
             dialog.arguments = bundle
-            dialog.show(parentFragmentManager, "map_fullscreen")
+            dialog.show(parentFragmentManager,"map_fullscreen")
         }
 
         activeFIR = view.findViewById(R.id.tVActiveFir)
@@ -245,11 +257,22 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         dialog.show()
     }
 
+
+    private var savedZoneFIRMap : Map<String, Int>? = emptyMap()
+    private var savedZoneLatLngMap : Map<String, LatLng>? = emptyMap()
+
+    private var selectedCrimeType: String? = "All"
+    private var selectedDateRange: String? = "All Time"
+    private var selectedTimePeriod: String? = "All Hours"
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun applyFiltersAndDrawHeatmap() {
         val selectedCrime = crimeTypeSpinner.selectedItem.toString()
+        selectedCrimeType = selectedCrime
         val selectedDateRange = dateRangeSpinner.selectedItem.toString()
+        this.selectedDateRange = selectedDateRange
         val selectedTimePeriod = timePeriodSpinner.selectedItem.toString()
+        this.selectedTimePeriod = selectedTimePeriod
 
         val db = FirebaseFirestore.getInstance()
         db.collection("FIR_Records").get().addOnSuccessListener { result ->
@@ -317,6 +340,8 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 Toast.makeText(requireContext(), "No FIRs found for selected filters", Toast.LENGTH_SHORT).show()
                 mGoogleMap?.clear()
             } else {
+                savedZoneFIRMap = zoneFIRMap
+                savedZoneLatLngMap = zoneLatLngMap
                 drawHeatMap(zoneFIRMap, zoneLatLngMap)
             }
         }
@@ -332,6 +357,9 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
             null
         }
     }
+
+
+
 
 
 
@@ -364,28 +392,6 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
         mGoogleMap?.addTileOverlay(TileOverlayOptions().tileProvider(heatmapProvider))
     }
 
-
-
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun isDateInRange(selectedRange: String, firDate: Date): Boolean {
-        val now = Calendar.getInstance().time
-        val diffInMillis = now.time - firDate.time
-        val diffInDays = diffInMillis / (1000 * 60 * 60 * 24)
-
-        return when (selectedRange) {
-            "All" -> true
-            "Last 7 Days" -> diffInDays <= 7
-            "Last 30 Days" -> diffInDays <= 30
-            "This Year" -> {
-                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-                val firYear = Calendar.getInstance().apply { time = firDate }.get(Calendar.YEAR)
-                firYear == currentYear
-            }
-            else -> true
-        }
-    }
 
 
 
@@ -925,7 +931,7 @@ class HeatmapDashboard : Fragment(), OnMapReadyCallback {
                 PolygonOptions()
                     .addAll(box)
                     .strokeColor(Color.GRAY)
-                    .fillColor(0x3300FF00)
+                    .fillColor(0x330000FF)
                     .strokeWidth(2f)
                     .clickable(true)
             )

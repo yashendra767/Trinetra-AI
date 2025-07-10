@@ -8,9 +8,6 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
-
-
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -22,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
+<!--        <activity-->
+<!--            android:name=".bottom_fragments.PatrolExpandMap.e"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".authentication.ForgotPass"
             android:exported="false" />
@@ -46,9 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".LandingDashboard"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".navigationScreen.Nav_PatrolRoute"
             android:exported="false" />
@@ -60,8 +58,7 @@
             android:exported="false" />
         <activity
             android:name=".authentication.Login"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".authentication.SignUp"
             android:exported="false" />
@@ -73,7 +70,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

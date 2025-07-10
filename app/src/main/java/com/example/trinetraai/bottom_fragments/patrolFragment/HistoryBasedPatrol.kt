@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
@@ -21,7 +22,9 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.example.trinetraai.HotspotZone
 import com.example.trinetraai.R
+import com.example.trinetraai.bottom_fragments.expandMap.expandH_Map
 import com.example.trinetraai.presetData.ZoneData.delhiZones
+import com.google.gson.Gson
 import org.json.JSONObject
 
 class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
@@ -30,6 +33,8 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
     private val apiKey = "AIzaSyCtR6Ly2xen0veKWOsMa5__pcSkj_JOHeQ"
     private var groupedZoneRoutes: List<List<HotspotZone>> = emptyList()
     private var selectedCardIndex: Int = 0
+
+    private lateinit var expandHistoryRouteMAP : ImageView
 
 
 
@@ -50,6 +55,8 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
         //Load Map
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
 
         return view
     }
@@ -325,7 +332,19 @@ class HistoryBasedPatrol : Fragment(), OnMapReadyCallback {
                 selectedCardIndex = index
                 googleMap?.clear()
                 drawFullPatrolRoute(group)
-                updateRouteListUI(groups)  
+                updateRouteListUI(groups)
+
+                //save route
+                val gson = Gson()
+                val routeJson = gson.toJson(group)
+                expandHistoryRouteMAP = view?.findViewById(R.id.iVExpandMapPatrolHistory)!!
+                expandHistoryRouteMAP.setOnClickListener {
+                    val dialog = expandH_Map()
+                    val bundle = Bundle()
+                    bundle.putString("routeZonesJson", routeJson)
+                    dialog.arguments = bundle
+                    dialog.show(parentFragmentManager, "expandH_Map")
+                }
             }
 
             container.addView(card)

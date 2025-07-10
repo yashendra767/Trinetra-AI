@@ -213,13 +213,30 @@
                         app:tint="@color/textPrimary"
                         app:shapeAppearanceOverlay="@style/RectangularFABStyle" />
 
-
-                    <ImageView
-                        android:id="@+id/noFIRsIV"
+                      <TextView
+                          android:id="@+id/nofir_showtxt"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:gravity="center"
+                          android:textStyle="bold"
+                         android:visibility="visible"
+                        android:layout_gravity="center"
+                        android:text="No FIR selected. Please Select "
+                       android:textColor="@color/white"/>
+                    <pl.droidsonroids.gif.GifImageView
+                        android:id="@+id/noDataGif"
+                        android:layout_width="300dp"
+                        android:layout_height="400dp"
+                        android:src="@drawable/no_data_found"
                         android:gravity="center"
-                        android:layout_gravity="center"/>
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:layout_constraintTop_toBottomOf="@id/clearAllButton"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintVertical_bias="0.3"/>
+
                 </FrameLayout>
 
 

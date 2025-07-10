@@ -5,8 +5,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,13 +19,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import androidx.core.graphics.toColorInt
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.google.android.material.snackbar.Snackbar
+import pl.droidsonroids.gif.GifImageView
 
 class Notifications : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var clearAllButton: MaterialButton
     private lateinit var adapter: NotificationAdapter
+
+    private lateinit var noDataGif: GifImageView
     private val notifications = mutableListOf<HashMap<String, Any>>()
     private val docIdMap = mutableListOf<String>()
 
@@ -42,6 +48,10 @@ class Notifications : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         setupSwipeGestures()
+
+        noDataGif = findViewById<GifImageView>(R.id.noDataGif)
+
+
 
         clearAllButton.setOnClickListener {
             clearAllNotifications()
@@ -177,25 +187,42 @@ class Notifications : AppCompatActivity() {
             .document(userId)
             .collection("notifications")
             .orderBy("timestamp", Query.Direction.DESCENDING)
-            .addSnapshotListener { snapshot, _ ->
-                if (snapshot == null) return@addSnapshotListener
+            .addSnapshotListener { snapshot, exception ->
+
+                if (exception != null) {
+                    Toast.makeText(this, "Network Error: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    noDataGif.visibility = View.VISIBLE
+
+                    return@addSnapshotListener
+                }
 
                 notifications.clear()
                 docIdMap.clear()
 
-                for (doc in snapshot.documents) {
-                    val map = HashMap<String, Any>()
-                    map["title"] = doc.getString("title") ?: ""
-                    map["message"] = doc.getString("message") ?: ""
-                    map["isRead"] = doc.getBoolean("isRead") ?: false
+                if (snapshot != null && !snapshot.isEmpty) {
+                    for (doc in snapshot.documents) {
+                        val map = HashMap<String, Any>()
+                        map["title"] = doc.getString("title") ?: ""
+                        map["message"] = doc.getString("message") ?: ""
+                        map["isRead"] = doc.getBoolean("isRead") ?: false
 
-                    notifications.add(map)
-                    docIdMap.add(doc.id)
+                        notifications.add(map)
+                        docIdMap.add(doc.id)
+                    }
+
+                    noDataGif.visibility = View.GONE
+
+
+                } else {
+
+                    noDataGif.visibility = View.VISIBLE
+
                 }
 
                 adapter.notifyDataSetChanged()
             }
     }
+
 
     private fun clearAllNotifications() {
         db.collection("UserNotifications")
@@ -208,6 +235,8 @@ class Notifications : AppCompatActivity() {
                     batch.delete(doc.reference)
                 }
                 batch.commit().addOnSuccessListener {
+
+                    noDataGif.visibility = View.VISIBLE
                     Toast.makeText(this, "All notifications cleared", Toast.LENGTH_SHORT).show()
                 }
             }

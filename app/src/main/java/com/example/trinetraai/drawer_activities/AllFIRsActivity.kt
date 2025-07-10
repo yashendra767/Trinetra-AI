@@ -29,6 +29,7 @@ import com.example.trinetraai.presetData.TimePeriodData
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
+import pl.droidsonroids.gif.GifImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,7 +48,8 @@ class AllFIRsActivity : AppCompatActivity() {
     private lateinit var statusSpinner: Spinner
 
     private lateinit var matchedFIRs: TextView
-    private lateinit var noFIRsImageView: ImageView
+    private lateinit var plsselectFIR: TextView
+    private lateinit var noFIRsgif: GifImageView
 
     private lateinit var btnApplyFilter: MaterialButton
 
@@ -98,17 +100,14 @@ class AllFIRsActivity : AppCompatActivity() {
         timePeriodSpinner = findViewById(R.id.timePeriodSpinner)
         statusSpinner = findViewById(R.id.statusSpinner)
         matchedFIRs = findViewById(R.id.countMatchedTV)
-        noFIRsImageView = findViewById(R.id.noFIRsIV)
+        plsselectFIR=findViewById(R.id.nofir_showtxt)
+        noFIRsgif = findViewById(R.id.noDataGif)
 
         matchedFIRs.visibility = TextView.GONE
-        noFIRsImageView.visibility = ImageView.GONE
+
 
         btnApplyFilter = findViewById(R.id.btnApplyFilter)
 
-        Glide.with(this)
-            .asGif()
-            .load(R.drawable.not_found)
-            .into(noFIRsImageView)
 
         setupCrimeTypeSpinner()
         setupdateRangeSpinner()
@@ -126,6 +125,11 @@ class AllFIRsActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 allFIRs.clear()
+          if (documents.size()==0){
+              plsselectFIR.visibility =View.GONE
+              noFIRsgif.visibility =View.VISIBLE
+          }else{
+              plsselectFIR.visibility =View.GONE
                 for (doc in documents) {
                     try {
                         val fir = FIR(
@@ -150,8 +154,11 @@ class AllFIRsActivity : AppCompatActivity() {
                     }
                 }
                 applyFilters()
+            }}
+            .addOnFailureListener { it.printStackTrace()
+                noFIRsgif.visibility =View.VISIBLE
+                Toast.makeText(this," Exception Error ",Toast.LENGTH_SHORT).show()
             }
-            .addOnFailureListener { it.printStackTrace() }
     }
 
     private fun applyFilters() {
@@ -198,16 +205,16 @@ class AllFIRsActivity : AppCompatActivity() {
 
         adapter.notifyDataSetChanged()
         if (filteredFIRs.isEmpty()) {
-            noFIRsImageView.visibility = View.VISIBLE
+
             matchedFIRs.text = "Matched FIRs: 0"
         } else {
-            noFIRsImageView.visibility = View.GONE
+
             matchedFIRs.text = "Matched FIRs: ${filteredFIRs.size}"
         }
         matchedFIRs.alpha = 0f
         matchedFIRs.visibility = View.VISIBLE
         matchedFIRs.animate().alpha(1f).setDuration(400).start()
-        noFIRsImageView.animate().alpha(1f).setDuration(400).start()
+
     }
 
     private fun formatTimestampReadable(rawTimestamp: String): String {

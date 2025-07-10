@@ -11,6 +11,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.trinetraai.R
+import com.example.trinetraai.bottom_fragments.PatrolExpandMap.expandP_Map
 import com.example.trinetraai.presetData.ZoneData
 import com.example.trinetraai.presetData.ZoneData.delhiZones
 import com.example.trinetraai.presetData.ZoneInfo
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.google.maps.android.PolyUtil
 import org.json.JSONObject
 
@@ -36,6 +38,8 @@ class AIPredictionPatrol : Fragment(), OnMapReadyCallback {
     private val apiKey = "AIzaSyCtR6Ly2xen0veKWOsMa5__pcSkj_JOHeQ"
     private var selectedCardIndex = -1
     private var groupedZoneRoutes: List<List<ZoneInfo>> = emptyList()
+
+    private lateinit var expandRouteMap : ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -131,11 +135,26 @@ class AIPredictionPatrol : Fragment(), OnMapReadyCallback {
                 googleMap?.clear()
                 drawFullPatrolRoute(group)
                 updateRouteListUI(groups)
+                expandRouteMap = view?.findViewById<ImageView>(R.id.iVExpandMapPatrolAi)!!
+                expandRouteMap.setOnClickListener {
+                    openFullScreenMap(group)
+                }
+
             }
 
             container.addView(card)
         }
     }
+
+    private fun openFullScreenMap(routeZones: List<ZoneInfo>) {
+        val dialog = expandP_Map()
+        val bundle = Bundle()
+        val json = Gson().toJson(routeZones)
+        bundle.putString("routeZonesJsonforPrediction", json)
+        dialog.arguments = bundle
+        dialog.show(childFragmentManager, "expandP_Map")
+    }
+
 
     private fun mapZoneNamesToZoneInfo(zoneNames: List<String>): List<ZoneInfo> {
         val zoneInfoMap = ZoneData.delhiZones.associateBy { "Zone ${it.id}" }

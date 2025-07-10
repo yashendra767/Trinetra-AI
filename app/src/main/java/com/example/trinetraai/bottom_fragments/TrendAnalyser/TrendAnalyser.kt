@@ -488,10 +488,14 @@ class TrendAnalyser : Fragment() {
         barData.barWidth = 0.25f
         barData.setValueTextSize(14f)
 
+
         chart.data = barData
         chart.setFitBars(true)
         chart.description.isEnabled = false
         chart.axisRight.isEnabled = false
+        chart.highlightValues(null)
+
+
 
         val xAxis = chart.xAxis
         xAxis.valueFormatter = IndexAxisValueFormatter(zoneList)

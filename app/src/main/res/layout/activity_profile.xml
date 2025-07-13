@@ -22,8 +22,6 @@
             android:src="@drawable/policeman"
             app:shapeAppearanceOverlay="@style/RoundedCornerImage"
             android:contentDescription="Profile Image"
-            app:strokeColor="@color/primary"
-            app:strokeWidth="1dp"
             android:scaleType="centerCrop" />
 
         <TextView

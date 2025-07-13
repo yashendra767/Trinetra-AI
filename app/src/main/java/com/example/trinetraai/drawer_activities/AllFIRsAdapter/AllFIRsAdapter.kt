@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trinetraai.R
 import com.example.trinetraai.firdataclass.FIR
+import com.google.android.material.button.MaterialButton
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -152,7 +153,7 @@ class AllFIRsAdapter(
             .setView(dialogView)
             .create()
 
-        dialogView.findViewById<Button>(R.id.closeDialogBtn).setOnClickListener {
+        dialogView.findViewById<MaterialButton>(R.id.closeDialogBtn).setOnClickListener {
             alertDialog.dismiss()
         }
 

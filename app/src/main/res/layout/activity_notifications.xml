@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Clear All"
-        app:cornerRadius="16dp"
+        app:cornerRadius="12dp"
         app:iconPadding="8dp"
         app:iconTint="@color/white"
         android:textColor="@android:color/white"

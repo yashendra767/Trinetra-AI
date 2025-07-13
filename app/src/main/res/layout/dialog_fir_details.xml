@@ -2,7 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,45 +15,63 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:textColor="@color/accentGold"
             android:textSize="16sp"/>
 
         <TextView android:id="@+id/detailCrimeType"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/detailTimestamp"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/detailLocation"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/detailZone"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/detailStatus"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/detailActCategory"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/detailReportingStation"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/detailIPCSections"
             android:layout_width="match_parent"
+            android:textColor="@color/textPrimary"
+            android:layout_marginTop="3dp"
             android:layout_height="wrap_content" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/closeDialogBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Close"
+            app:cornerRadius="12dp"
             android:layout_marginTop="16dp"/>
     </LinearLayout>
 </ScrollView>

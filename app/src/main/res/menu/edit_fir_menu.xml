@@ -2,8 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/edit_fir_option"
-        android:title="Edit" />
+        android:title="Edit"
+        android:icon="@drawable/pencil"
+        android:iconTint="@color/textPrimary"/>
     <item
         android:id="@+id/delete_fir_option"
-        android:title="Delete" />
+        android:title="Delete"
+        android:icon="@drawable/trash"
+        android:iconTint="@color/textPrimary"/>
 </menu>

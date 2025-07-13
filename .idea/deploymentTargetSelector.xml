@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-07-10T14:23:53.957344400Z">
+        <DropdownSelection timestamp="2025-07-13T06:46:16.648069Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\aryan\.android\avd\Resizable.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\aryan\.android\avd\Pixel_9a.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=083143124Q114270" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\aryan\.android\avd\Resizable.avd" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=HA1WR818" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\aryan\.android\avd\Pixel_9a.avd" />
               </handle>
             </Target>
           </targets>

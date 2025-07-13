@@ -19,9 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrinetraAI"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".bottom_fragments.PatrolExpandMap.e"-->
-<!--            android:exported="false" />-->
+
+
+
+
         <activity
             android:name=".authentication.ForgotPass"
             android:exported="false" />
@@ -46,7 +47,7 @@
             android:exported="false" />
         <activity
             android:name=".LandingDashboard"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".navigationScreen.Nav_PatrolRoute"
             android:exported="false" />
@@ -55,10 +56,13 @@
             android:exported="false" />
         <activity
             android:name=".navigationScreen.Nav_Heatmap"
-            android:exported="false" />
+            android:exported="false" >
+
+
+        </activity>
         <activity
             android:name=".authentication.Login"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".authentication.SignUp"
             android:exported="false" />
@@ -76,6 +80,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <meta-data

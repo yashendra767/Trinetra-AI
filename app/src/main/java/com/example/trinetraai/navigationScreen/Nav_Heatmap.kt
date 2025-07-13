@@ -43,8 +43,6 @@ class Nav_Heatmap : AppCompatActivity() {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
     }
-
-    // Gesture Listener Class
     private inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         private val SWIPE_THRESHOLD = 100

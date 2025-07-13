@@ -7,11 +7,13 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.trinetraai.R
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -31,10 +33,14 @@ class Nav_PatrolRoute : AppCompatActivity() {
 
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
 
+
+
+
         patrolNxt = findViewById(R.id.patrol_nextbtn)
         patrolNxt.setOnClickListener {
             startActivity(Intent(this, Nav_WomenSafety::class.java))
         }
+
     }
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)

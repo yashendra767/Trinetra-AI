@@ -10,7 +10,7 @@
     >
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/headerImage"
+        android:id="@+id/headerImage_hm"
         android:layout_width="match_parent"
         android:layout_height="480dp"
         android:scaleType="centerCrop"

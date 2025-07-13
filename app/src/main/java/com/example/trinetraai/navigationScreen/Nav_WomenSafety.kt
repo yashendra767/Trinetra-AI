@@ -1,5 +1,6 @@
 package com.example.trinetraai.navigationScreen
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsets
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
@@ -16,10 +18,12 @@ import com.example.trinetraai.R
 import com.example.trinetraai.authentication.Login
 import com.google.android.material.imageview.ShapeableImageView
 import androidx.core.content.edit
+import com.bumptech.glide.Glide
 
 class Nav_WomenSafety : AppCompatActivity() {
     private lateinit var gestureDetector: GestureDetectorCompat
     private lateinit var womenSafetyNxt : ShapeableImageView
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +34,11 @@ class Nav_WomenSafety : AppCompatActivity() {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
         setContentView(R.layout.activity_nav_women_safety)
+
+
+
+
+
 
         womenSafetyNxt = findViewById(R.id.women_nextbtn)
 

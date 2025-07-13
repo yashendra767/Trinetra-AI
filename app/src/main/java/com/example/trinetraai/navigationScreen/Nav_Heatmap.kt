@@ -1,5 +1,6 @@
 package com.example.trinetraai.navigationScreen
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.trinetraai.R
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -21,6 +23,7 @@ class Nav_Heatmap : AppCompatActivity() {
     private lateinit var gestureDetector: GestureDetectorCompat
     private lateinit var heatMapNxt : ShapeableImageView
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,12 +35,16 @@ class Nav_Heatmap : AppCompatActivity() {
         }
         setContentView(R.layout.activity_nav_heatmap)
 
+
+
+
         gestureDetector = GestureDetectorCompat(this, SwipeGestureListener())
 
         heatMapNxt = findViewById(R.id.heatmap_nextBtn)
         heatMapNxt.setOnClickListener {
             startActivity(Intent(this, Nav_PatrolRoute::class.java))
         }
+
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

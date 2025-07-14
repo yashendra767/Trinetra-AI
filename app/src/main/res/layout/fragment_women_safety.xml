@@ -254,7 +254,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -353,18 +354,6 @@
                     </com.google.android.material.card.MaterialCardView>
 
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnViewAllRiskZoneWomen"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:text="View All Zones"
-                        android:textColor="@color/textPrimary"
-                        android:textStyle="bold"
-                        app:cornerRadius="12dp"
-                        android:backgroundTint="@color/primary">
-                    </com.google.android.material.button.MaterialButton>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

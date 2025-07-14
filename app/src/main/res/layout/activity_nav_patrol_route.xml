@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:padding="8dp"
     >
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -18,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/patrol_route"
+        app:shapeAppearanceOverlay="@style/RoundedCornerImage"
         android:contentDescription="Header Image" />
 
 
@@ -28,35 +30,38 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            app:cardCornerRadius="20dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="@color/surface"
-            android:layout_marginTop="34dp"
-            android:layout_marginHorizontal="16dp"
-            >
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="8dp">
 
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Patrol Route\nGeneration"
-                android:textSize="30dp"
-                android:fontFamily="@font/changa_extralight"
-                android:textColor="@color/textPrimary"
-                android:layout_marginTop="22dp"
-                android:layout_marginLeft="22dp"
-                />
+                android:padding="22dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="122dp"
-                android:layout_marginRight="22dp"
-                android:fontFamily="@font/changa_extralight"
-                android:text="History and Prediction Based Patrol Route Generation."
-                android:textColor="@color/textSecondary"
-                android:textSize="21dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Patrol Route\nGeneration"
+                    android:textSize="28sp"
+                    android:fontFamily="@font/changa_extralight"
+                    android:textColor="@color/textPrimary"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/changa_extralight"
+                    android:text="History and Prediction Based Patrol Route Generation."
+                    android:textColor="@color/textSecondary"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
 
         </androidx.cardview.widget.CardView>
 
@@ -89,11 +94,11 @@
                 android:layout_marginBottom="12dp"
                 android:padding="12dp"
                 app:srcCompat="@drawable/ic_next"
-                app:tint="@color/primary_light"></com.google.android.material.imageview.ShapeableImageView>
+                app:tint="@color/primary_light">
+
+            </com.google.android.material.imageview.ShapeableImageView>
 
         </RelativeLayout>
-
-
 
     </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.example.trinetraai.bottom_fragments.TrendAnalyser
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,8 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -67,8 +70,8 @@ class TrendAnalyser : Fragment() {
     private var legendColors: List<Int> = emptyList()
     private var allCrimeTypes: List<String> = emptyList()
 
-
-
+    private var mediaPlayer: MediaPlayer? = null
+    private var fadeJob: Job? = null
 
 
 
@@ -280,6 +283,42 @@ class TrendAnalyser : Fragment() {
         return sdf.format(Date())
     }
 
+    private fun fadeInMusic(duration: Long = 1500L, maxVolume: Float = 0.7f) {
+        mediaPlayer?.setVolume(0f, 0f)
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.start()
+
+        fadeJob = lifecycleScope.launch {
+            val steps = 20
+            val delayStep = duration / steps
+            for (i in 1..steps) {
+                val volume = (i / steps.toFloat()) * maxVolume
+                mediaPlayer?.setVolume(volume, volume)
+                delay(delayStep)
+            }
+        }
+    }
+
+
+    private fun fadeOutMusic(duration: Long = 1500L, maxVolume: Float = 0.7f, onComplete: () -> Unit) {
+        fadeJob?.cancel()
+
+        fadeJob = lifecycleScope.launch {
+            val steps = 20
+            val delayStep = duration / steps
+            for (i in steps downTo 0) {
+                val volume = (i / steps.toFloat()) * maxVolume
+                mediaPlayer?.setVolume(volume, volume)
+                delay(delayStep)
+            }
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+            mediaPlayer = null
+            onComplete()
+        }
+    }
+
+
     private fun showGifProgressDialog() {
         cancelRequested = false
         val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
@@ -291,6 +330,11 @@ class TrendAnalyser : Fragment() {
             dismissGifProgressDialog()
             Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT).show()
         }
+
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.analysis_beat)
+        fadeInMusic()
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.start()
 
         val builder = AlertDialog.Builder(requireContext())
             .setView(dialogView)
@@ -306,8 +350,17 @@ class TrendAnalyser : Fragment() {
     }
 
     private fun dismissGifProgressDialog() {
+
+        fadeOutMusic {
+            //Todo
+        }
+
         gifProgressDialog?.dismiss()
         gifProgressDialog = null
+
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     private fun simulatePredictionFromFirestore() {
@@ -528,6 +581,14 @@ class TrendAnalyser : Fragment() {
             android.graphics.Color.parseColor(colors[index % colors.size])
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fadeJob?.cancel()
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
 }

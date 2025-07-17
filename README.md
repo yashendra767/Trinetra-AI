@@ -99,8 +99,7 @@ Trinetra AI addresses these gaps through:
 
 - **Android (Kotlin + XML)** – Mobile UI  
 - **Google Maps SDK** – Visualizations  
-- **Firebase Firestore** – FIR & zone data backend  
-- **Firebase Realtime Database** – Patrol system updates  
+- **Firebase Firestore** – FIR & zone data backend    
 - **Firebase Auth** – Role-based login  
 - **ML Model** – Crime prediction classifier  
 - **Flask API** – Backend ML predictions  

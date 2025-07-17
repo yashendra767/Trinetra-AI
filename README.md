@@ -1,134 +1,196 @@
-# Trinetra-AI: Intelligent Crime Mapping and Predictive Policing Platform
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+# 🔐 Trinetra AI – Intelligent Crime Mapping & Predictive Policing
 
-**Trinetra-AI** is a smart crime-mapping and behavioral analysis platform that visualizes, predicts, and assists law enforcement in planning patrols and identifying high-risk zones. Developed as part of a smart policing initiative, the system processes FIR and public datasets to generate real-time crime heatmaps, patrol routes, women safety areas and risk assessments.
-The current version uses dummy FIR and zone data from New Delhi and is designed to scale seamlessly when nourished with real time and larger datasets.
----
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**Trinetra AI - Crime Mapping**
+**Trinetra AI** is a prototype mobile application designed to revolutionize urban policing through smart crime pattern detection, zone-based prediction, and patrol optimization. Built for law enforcement use, the app leverages machine learning, FIR analytics, and zone-based heatmaps to aid safer and smarter decision-making.
 
-Trinetra-AI aims to provide:
-
-- A visual interface linking FIR data to generate dynamic hotspots depending on the crime type.
-- Color-coded heatmaps based on parameters like crime category, date, time, and severity.
-- Behavior pattern analysis of criminals using past FIRs and seasonal trends.
-- Automatic patrol route generation based on historical crime patterns and severity.
-- Special emphasis on women safety through predictive patrol in vulnerable zones.
+> 🚨 **Note**: This app uses **dummy FIR data for New Delhi**, with 60 virtual zones for demonstration only. No real FIRs or personal data are involved.
 
 ---
 
-## 🔍 Key Features
+## 🚨 Problem Overview
 
-- 🔴 **Crime Heatmaps**: Real-time mapping of crime zones filtered by IPC/NDPS/Arms Act sections.
-- 🔄 **Dynamic Filters**: View crime hotspots based on date, time, season, and location.
-- 🧠 **Behavioral Analysis**: Predict repeat offense patterns and seasonal crime surges.
-- 🚔 **Auto Patrol Routing**: Generates gasht routes for seasonal and shift-based patrolling.
-- 🚨 **Women Safety Zones**: Identify and monitor vulnerable areas based on past FIR data.
-- 🤖 **Dedicated Systems**: Dedicated patrol route suggestions to ensure women safety in high risk zones.
-- 🔒 **Role-Based Interface**: Tailored dashboards for Police Admin, Patrol Unit.
+Traditional policing struggles with:
 
----
+- Unstructured and scattered FIR data  
+- Unoptimized and manual patrol planning  
+- Lack of predictive insights from crime trends  
 
-## 🛠️ Tech Stack
-
-- **Android (Kotlin + XML)** — Mobile interface for law enforcement teams
-- **Google Maps SDK** — Heatmap and route visualization
-- **Firebase Firestore** — Real-time backend database for FIRs, alerts, and users
-- **Firebase Cloud Messaging** - Real time notifications for downloading the data of zones and FIRs
-- **GeoSpatial Clustering** — Custom zone creation for intelligent grouping
-- **ML Module (WIP)** — Crime type prediction and seasonal behavior modeling
-- **Firebase Authentication** — Sign up using seamless firebase authentication
-- **Firebase Realtime Database** — For live updates in patrol/route system
-- **Custom Flask API** — AI-based crime prediction and patrol zone analysis
- 
----
-
-## 🧪 Crime Categories Supported
-
-Mapped to these acts:
-
-- **Indian Penal Code**: Sections 121, 141, 144, 146–148, 151, 153-A, 302, 304-B, 307, 354, 376, 498-A, etc.
-- **NDPS Act**: Sections 20–22
-- **Arms Act**: Section 25
-- **Excise Act**: Sections 60, 60(2), 72
-- **SC/ST Act**, **Gambling**, **Cow Protection**, **Goonda Act**, etc.
+These issues lead to **delayed responses**, **inefficient resource deployment**, and **reduced public safety**.
 
 ---
 
-## 🧭 Modules Overview
+## ✅ Proposed Solution
 
-- **FIR Parser**: Imports dummy or real FIRs and maps crimes to zones
-- **Hotspot Generator**: Clusters FIRs to define severity zones
-- **Patrol Planner**: Suggests balanced patrolling routes across crime-heavy zones
-- **Women Safety Mode**: Dedicated tab with alerts and pink-patrol suggestions
-- **Admin Panel**: Controls user access, assigns zones, and monitors activity
+Trinetra AI addresses these gaps through:
 
----
-
-## 🖥️ Screenshots 
-
-- Crime Zone Heatmap
-  ![IMG-20250714-WA0007](https://github.com/user-attachments/assets/c4cf2a8d-dabc-451a-84ee-59fde56ffb33)
-- FIR List and Crime Classification
-  ![IMG-20250714-WA0005](https://github.com/user-attachments/assets/2999cf4c-7201-471b-a45a-b9b937e01815)
-  ![IMG-20250714-WA0012](https://github.com/user-attachments/assets/e369fa35-6ff5-4daf-b6c3-61aa4b205b65)
-- Patrol Route Generator
-  ![IMG-20250714-WA0006](https://github.com/user-attachments/assets/0b9662ef-a325-4f93-ae9b-9d9eab3c2558)
-- Women Safety
-  ![IMG-20250714-WA0004](https://github.com/user-attachments/assets/3a0bda25-6882-44d2-b4d2-77020d3c812a)
-- Other functions
-  ![IMG-20250714-WA0011](https://github.com/user-attachments/assets/2518ea40-cde1-4e53-9c5d-5a44096a03ac)
-  ![IMG-20250714-WA0010](https://github.com/user-attachments/assets/6fa88faf-88f9-4dbe-92af-a076468e4d1a)
-  ![IMG-20250714-WA0009](https://github.com/user-attachments/assets/c77f2bf0-1ef9-4b6e-a5c7-0dfadd842c6a)
-  ![IMG-20250714-WA0008](https://github.com/user-attachments/assets/cae13d6b-ce25-4abc-89a9-6765919c871d)
+- FIR data analysis to detect crime patterns  
+- Geospatial crime heatmaps to visualize hotspots  
+- Predictive ML model to suggest future crime-prone areas  
+- Smart patrol route generation based on severity and history  
+- Women safety matrix and risk zone detection  
 
 ---
 
-## 🚀 Getting Started
+## 🧠 Key Features
 
-1. Clone this repo:
+### 🔴 **Crime Heatmap Generator**
+- Visualize high-crime areas using filters:
+  - Crime type 
+  - Date range
+  - Time slot
+- Expandable map view for detailed zone analysis
 
-```bash
-git clone https://github.com/yashendra767/Trinetra-AI.git
-cd Trinetra-AI
-```
+### 📈 **ML-Powered Crime Trend Analyzer**
+- Predict crime type and potential zones
+- Uses past FIR patterns and trained classification model
+- Displays last analyzed trends with bar charts
 
-2. Open in Android Studio.
-3. Connect Firebase and enable Maps API key.
-4. Run on Android Emulator or physical device with Maps access.
+### 🛣️ **Smart Patrol Route Generator**
+- Generates shift-based and AI-predicted patrol routes
+- View history-based route maps
+- Expand and view patrol route details for all 60 zones
+
+### 👩‍🦰 **Women Safety Module**
+- Auto-detection of FIRs under sections like 354, 376
+- Highlights zones with >5 women-related FIRs
+- Matrix-style visualization of risk intensity by zone
 
 ---
 
-## 📂 Data Sources
+## 🛡️ Access & Authentication
 
-- **Dummy FIR Data** (simulated)
+- **Restricted Access**: Only authorized police users can register  
+- **Role-Based Dashboard**: Admin vs Field Officers  
+- **Secure FIR Management**: Add/Edit FIRs, Patrol Access only for verified users
 
 ---
 
-## 🤝 Contribution
+## 🗂️ Additional Features
 
-We welcome law enforcement personnel, developers, and researchers to contribute. Submit issues or PRs for:
+- Add & view detailed FIR cases  
+- FIR list filters by zone, category, time  
+- FIR count visualized zone-wise  
+- User profile, app settings  
 
-- New data integrations
-- Real time dataset (of Govt.)
-- Better classification algorithms
-- UI improvements
+---
+
+## 📱 App Screens Preview
+
+| Crime Heatmap | Crime Trend Analyser | Patrol Planner | Women Safety |
+|---------------|--------------------|----------------|--------------|
+| ![](https://github.com/user-attachments/assets/c4cf2a8d-dabc-451a-84ee-59fde56ffb33) | ![](https://github.com/user-attachments/assets/2999cf4c-7201-471b-a45a-b9b937e01815) | ![](https://github.com/user-attachments/assets/0b9662ef-a325-4f93-ae9b-9d9eab3c2558) | ![](https://github.com/user-attachments/assets/3a0bda25-6882-44d2-b4d2-77020d3c812a) |
+
+
+
+  <img src="https://github.com/user-attachments/assets/2999cf4c-7201-471b-a45a-b9b937e01815" width="300"/>
+  <img src="https://github.com/user-attachments/assets/e369fa35-6ff5-4daf-b6c3-61aa4b205b65" width="300"/>
+
+  <img src="https://github.com/user-attachments/assets/2518ea40-cde1-4e53-9c5d-5a44096a03ac" width="300"/>
+  <img src="https://github.com/user-attachments/assets/6fa88faf-88f9-4dbe-92af-a076468e4d1a" width="300"/>
+  <img src="https://github.com/user-attachments/assets/c77f2bf0-1ef9-4b6e-a5c7-0dfadd842c6a" width="300"/>
+  <img src="https://github.com/user-attachments/assets/cae13d6b-ce25-4abc-89a9-6765919c871d" width="300"/>
+
+
+---
+
+## ⚙️ Tech Stack
+
+- **Android (Kotlin + XML)** – Mobile UI  
+- **Google Maps SDK** – Visualizations  
+- **Firebase Firestore** – FIR & zone data backend  
+- **Firebase Realtime Database** – Patrol system updates  
+- **Firebase Auth** – Role-based login  
+- **ML Model** – Crime prediction classifier  
+- **Flask API** – Backend ML predictions  
+
+---
+
+
+## 📊 Data Disclaimer
+
+> **This app is a research prototype.**  
+> - FIR data is completely dummy and auto-generated.  
+> - Delhi is divided into **60 virtual zones** for analysis.  
+> - No connection to any live law enforcement or surveillance database.  
+> - ML models trained on synthetic data mimicking realistic crime patterns.  
+
+---
+
+## 🧪 Steps to Run the App
+
+Follow these steps to set up and run the Trinetra AI app locally:
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yashendra767/Trinetra-AI.git
+   cd Trinetra-AI
+   ```
+
+2. **Open in Android Studio**
+   - Launch Android Studio
+   - Open the cloned project
+
+3. **Firebase Setup**
+   - Add your `google-services.json` file to the `/app` directory
+   - Enable Firebase Firestore, Realtime Database, and Authentication from the Firebase Console
+
+4. **Google Maps Integration**
+   - Enable Google Maps SDK for Android in your Firebase project
+   - Add your Maps API key to the `local.properties` or `AndroidManifest.xml`
+
+5. **Build & Run**
+   - Connect a physical Android device or emulator with Maps enabled
+   - Sync Gradle and Run the app
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from developers, designers, and domain experts.
+
+### Ways to Contribute:
+- 💡 Improve UI/UX design
+- 🔍 Optimize ML prediction logic
+- 🔌 Add real-time datasets or APIs
+- 🐞 Report bugs or suggest new features
+
+### To Contribute:
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature-name`
+3. Commit your changes: `git commit -m "Add feature"`
+4. Push to the branch: `git push origin feature-name`
+5. Open a Pull Request
+
+---
+
+
+
+## 👨‍💻 Team
+
+Built by:
+
+- **Aryan Sharma** — [LinkedIn](https://www.linkedin.com/in/aryan-sharma-26276131a)  
+- **Yashendra Awasthi** — [LinkedIn](https://www.linkedin.com/in/yashendra-awasthi-5800772b8)  
+- **Aayush Nagar** — [LinkedIn](https://www.linkedin.com/in/aayush-nagar-gujjar-73a96131a)  
+- **Happy Saxena** — [LinkedIn](https://www.linkedin.com/in/happy-saxena)
+
+---
+
+## 📬 Contact
+
+📧 Aryan → aryan180906@gmail.com  
+📧 Yashendra → yashendraawasthi@gmail.com  
+📧 Aayush → aayushnagargujjar@gmail.com
+📧 Happy → 24je0622@iitism.ac.in
+
+
+GitHub Project: [Trinetra-AI](https://github.com/yashendra767/Trinetra-AI)  
+
 
 ---
 
 ## 📄 License
 
-MIT License - see [`LICENSE`](LICENSE) file for details.
-
----
-
-## 🙋 Contact
-
-Developed with ❤️ by **Yashendra Awasthi**, **Aayush Gujjar**, **Aryan Sharma**
-GitHub: [@yashendra767](https://github.com/yashendra767)
-Email: Aryan-> [aryan180906@gmail.com]
-       Aayush-> [aayushnagargujjar@gmail.com]
-       Yashendra-> [yashendraawasthi@gmail.com]
-
-Open for collaboration with police forces, gov bodies, or researchers in smart policing and public safety AI.
+This project is licensed under the [MIT License](LICENSE).
